@@ -110,6 +110,6 @@ public final class ByteReadStream extends AbstractReadStream {
 	}
 
 	private void requireBytes(int count) {
-		if (position + count > limit) throw StreamException.EOS;
+		if (position + count > limit) throw EndOfStreamException.EOS;
 	}
 }

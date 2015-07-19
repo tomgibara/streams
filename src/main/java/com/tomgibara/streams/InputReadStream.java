@@ -18,7 +18,7 @@ public final class InputReadStream extends AbstractReadStream {
 	public byte readByte() {
 		try {
 			int r = in.read();
-			if (r < 0) throw StreamException.EOS;
+			if (r < 0) throw EndOfStreamException.EOS;
 			return (byte) r;
 		} catch (IOException e) {
 			throw new StreamException(e);
@@ -30,7 +30,7 @@ public final class InputReadStream extends AbstractReadStream {
 		try {
 			while (len > 0) {
 				int r = in.read(bs, off, len);
-				if (r < 0) throw StreamException.EOS;
+				if (r < 0) throw EndOfStreamException.EOS;
 				off += r;
 				len -= r;
 			}

@@ -147,7 +147,7 @@ abstract class FuzzStreamTest extends TestCase {
 		try {
 			b.readByte();
 			fail();
-		} catch (StreamException e) {
+		} catch (EndOfStreamException e) {
 			/* expected */
 		}
 	}
