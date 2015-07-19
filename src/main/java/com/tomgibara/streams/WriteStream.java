@@ -17,7 +17,7 @@
 package com.tomgibara.streams;
 
 /**
- * Abstraction for writing basic Java types into a byte based stream. 
+ * An abstraction for writing basic Java types into a byte based stream. 
  * 
  * @author Tom Gibara
  *

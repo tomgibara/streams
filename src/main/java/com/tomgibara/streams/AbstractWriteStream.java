@@ -28,6 +28,7 @@ package com.tomgibara.streams;
  * @author Tom Gibara
  *
  */
+
 public abstract class AbstractWriteStream implements WriteStream {
 
 	/**
@@ -78,7 +79,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	}
 
 	/**
-	 * Writes a single float to the stream. The float is written a per
+	 * Writes a single float to the stream. The float is written as per
 	 * {@link Float#floatToIntBits(float)}.
 	 * 
 	 * @param v
@@ -93,7 +94,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	}
 
 	/**
-	 * Writes a single double to the stream. The double is written a per
+	 * Writes a single double to the stream. The double is written as per
 	 * {@link Double#doubleToLongBits(double)}.
 	 * 
 	 * @param v

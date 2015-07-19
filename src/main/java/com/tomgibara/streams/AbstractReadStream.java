@@ -1,5 +1,18 @@
 package com.tomgibara.streams;
 
+/**
+ * <p>
+ * A convenient base implementation of the {@link ReadStream} interface. When
+ * extending this class, the only method that a concrete implementation is
+ * required to implement is the {@link #readByte()} method.
+ * 
+ * <p>
+ * All values are read big-endian.
+ * 
+ * @author Tom Gibara
+ *
+ */
+
 public abstract class AbstractReadStream implements ReadStream {
 
 	@Override
@@ -31,6 +44,13 @@ public abstract class AbstractReadStream implements ReadStream {
 				 readByte() & 0xff;
 	}
 
+	/**
+	 * Reads a byte as a boolean. A zero value is returned a false and any
+	 * non-zero value as true.
+	 * 
+	 * @return the boolean value read
+	 */
+
 	@Override
 	public boolean readBoolean() {
 		return readByte() != 0;
@@ -54,15 +74,36 @@ public abstract class AbstractReadStream implements ReadStream {
 				 (long) readByte() & 0xff;
 	}
 
+	/**
+	 * Reads a single float from the stream. The float is read as per
+	 * {@link Float#intBitsToFloat(int)}.
+	 * 
+	 * @return the float read
+	 */
+
 	@Override
 	public float readFloat() {
 		return Float.intBitsToFloat(readInt());
 	}
 
+	/**
+	 * Reads a single double from the stream. The double is read as per
+	 * {@link Double#longBitsToDouble(long)}.
+	 * 
+	 * @return the double read
+	 */
+
 	@Override
 	public double readDouble() {
 		return Double.longBitsToDouble(readLong());
 	}
+
+	/**
+	 * Reads a single char from the stream. The charactter is treated as a Java
+	 * primitive with a width of two bytes.
+	 * 
+	 * @return the character read
+	 */
 
 	@Override
 	public char readChar() {
@@ -83,6 +124,13 @@ public abstract class AbstractReadStream implements ReadStream {
 			cs[i] = readChar();
 		}
 	}
+
+	/**
+	 * Reads a string from the stream. The length of the string is read as an
+	 * int and then the character data is read as per {@link #readChar()}.
+	 * 
+	 * @return the string read
+	 */
 
 	@Override
 	public String readChars() {
