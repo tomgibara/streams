@@ -18,6 +18,12 @@ package com.tomgibara.streams;
 
 import java.security.MessageDigest;
 
+/**
+ * Writes values to a {@link MessageDigest}. Closing this stream has no effect.
+ * 
+ * @author Tom Gibara
+ */
+
 public final class DigestWriteStream extends AbstractWriteStream {
 
 	private final MessageDigest digest;

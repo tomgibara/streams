@@ -3,6 +3,16 @@ package com.tomgibara.streams;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Reads values from an {@link InputStream}. Any {@link IOException} encountered
+ * by this class is wrapped as {@link StreamException} and rethrown. Any
+ * end-of-stream condition is signalled with an {@link EndOfStreamException}.
+ * 
+ * @author Tom Gibara
+ * 
+ * @see EndOfStreamException#EOS
+ */
+
 public final class InputReadStream extends AbstractReadStream {
 
 	private final InputStream in;
@@ -63,6 +73,19 @@ public final class InputReadStream extends AbstractReadStream {
 				(       buffer[5] & 0xff) << 16 |
 				(       buffer[6] & 0xff) <<  8 |
 				        buffer[7] & 0xff;
+	}
+
+	/**
+	 * Closes the underlying {@link InputStream}.
+	 */
+
+	@Override
+	public void close() {
+		try {
+			in.close();
+		} catch (IOException e) {
+			throw new StreamException(e);
+		}
 	}
 
 }

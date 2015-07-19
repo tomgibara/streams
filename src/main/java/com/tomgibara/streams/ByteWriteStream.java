@@ -18,6 +18,14 @@ package com.tomgibara.streams;
 
 import java.util.Arrays;
 
+/**
+ * Writes values to a growable byte array. Calling close on this writer has no
+ * effect.
+ * 
+ * @author Tom Gibara
+ *
+ */
+
 public final class ByteWriteStream extends AbstractWriteStream {
 
 	private static final int DEFAULT_CAPACITY = 32;
@@ -27,14 +35,33 @@ public final class ByteWriteStream extends AbstractWriteStream {
 	private int position;
 	private byte[] bytes;
 
+	/**
+	 * Creates a new stream with a default initial capacity.
+	 */
+
 	public ByteWriteStream() {
 		this(DEFAULT_CAPACITY);
 	}
+
+	/**
+	 * Creates a new stream with the specified initial capacity. No new storage
+	 * will be allocated unless this initial capacity is exceeded.
+	 * 
+	 * @param initialCapacity
+	 *            the initial capacity in bytes.
+	 */
 
 	public ByteWriteStream(int initialCapacity) {
 		position = 0;
 		bytes = new byte[initialCapacity];
 	}
+
+	/**
+	 * The byte data recorded by the stream. The returned array is a copy of the
+	 * internal data store and may thus be subsequently mutated by the caller.
+	 * 
+	 * @return the byte data streamed
+	 */
 
 	public byte[] getBytes() {
 		ensureFurtherCapacity(0);
@@ -115,14 +142,7 @@ public final class ByteWriteStream extends AbstractWriteStream {
 		bytes[position++] = (byte) (v      );
 	}
 
-	@Override
-	public void close() {
-		position = -1;
-		bytes = null;
-	}
-
 	private void ensureFurtherCapacity(int n) {
-		if (bytes == null) throw new IllegalStateException("closed");
 		int required = position + n;
 		if (required > bytes.length) {
 			int c = bytes.length;

@@ -1,17 +1,47 @@
 package com.tomgibara.streams;
 
+/**
+ * Reads values from a byte array. When the bytes in the array (or array
+ * segment) are exhausted calling any read method on this class will result in
+ * an {@link EndOfStreamException} being thrown. Closing this stream has no
+ * effect.
+ * 
+ * @author Tom Gibara
+ * 
+ * @see EndOfStreamException#EOS
+ */
+
 public final class ByteReadStream extends AbstractReadStream {
 
 	private final byte[] bytes;
 	private final int limit;
 	private int position;
 
+	/**
+	 * Creates a stream that reads values from the supplied byte data.
+	 * The supplied byte array is not modified.
+	 * 
+	 * @param bytes the data to be streamed
+	 */
+	
 	public ByteReadStream(byte[] bytes) {
 		if (bytes == null) throw new IllegalArgumentException("null bytes");
 		this.bytes = bytes;
 		this.limit = bytes.length;
 		this.position = 0;
 	}
+
+	/**
+	 * Creates a stream that reads values from the specified byte array segment.
+	 * The supplied byte array is not modified.
+	 * 
+	 * @param bytes
+	 *            contains the bytes to be streamed
+	 * @param off
+	 *            the index of the first byte to be streamed
+	 * @param len
+	 *            the number of bytes that should be streamed.
+	 */
 
 	public ByteReadStream(byte[] bytes, int off, int len) {
 		if (bytes == null) throw new IllegalArgumentException("null bytes");

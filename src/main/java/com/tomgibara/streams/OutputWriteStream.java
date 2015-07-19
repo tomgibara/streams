@@ -3,6 +3,14 @@ package com.tomgibara.streams;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Writes values to an {@link OutputStream}. Any {@link IOException} encountered
+ * by this class is wrapped as {@link StreamException} and rethrown.
+ * 
+ * @author Tom Gibara
+ *
+ */
+
 public final class OutputWriteStream extends AbstractWriteStream {
 
 	private final OutputStream out;
@@ -77,6 +85,10 @@ public final class OutputWriteStream extends AbstractWriteStream {
 			throw new StreamException(e);
 		}
 	}
+
+	/**
+	 * Closes the underlying {@link OutputStream}.
+	 */
 
 	@Override
 	public void close() {
