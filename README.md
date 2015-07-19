@@ -35,7 +35,8 @@ implementations to a single method:
 * `AbstractWriteStream` only requires implementation of the
    `writeByte()` method
 
-All the classes are available in the `com.tomgibara.streams` package. 
+All the classes are available in the `com.tomgibara.streams` package.
+Read the complete javadocs for more API details.
 
 
 Usage
