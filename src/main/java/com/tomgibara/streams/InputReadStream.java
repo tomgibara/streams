@@ -19,6 +19,14 @@ public final class InputReadStream extends AbstractReadStream {
 
 	private byte[] buffer = null;
 
+	/**
+	 * Creates a new stream which obtains bytes data from an underlying
+	 * {@link InputStream}
+	 * 
+	 * @param in
+	 *            an input stream from which bytes should be read
+	 */
+
 	public InputReadStream(InputStream in) {
 		if (in == null) throw new IllegalArgumentException("null in");
 		this.in = in;

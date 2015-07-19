@@ -28,7 +28,15 @@ public final class DigestWriteStream extends AbstractWriteStream {
 
 	private final MessageDigest digest;
 
+	/**
+	 * Creates a new stream which writes values to the supplied digest
+	 * 
+	 * @param digest
+	 *            digests the resulting byte stream
+	 */
+
 	public DigestWriteStream(MessageDigest digest) {
+		if (digest == null) throw new IllegalArgumentException("null digest");
 		this.digest = digest;
 	}
 

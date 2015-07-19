@@ -15,6 +15,13 @@ public final class OutputWriteStream extends AbstractWriteStream {
 
 	private final OutputStream out;
 
+	/**
+	 * Creates a new stream which writes to an underlying {@link OutputStream}.
+	 * 
+	 * @param out
+	 *            an output stream to which bytes should be written
+	 */
+
 	public OutputWriteStream(OutputStream out) {
 		if (out == null) throw new IllegalArgumentException("null out");
 		this.out = out;

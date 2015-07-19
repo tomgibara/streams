@@ -1,24 +1,34 @@
 package com.tomgibara.streams;
 
+/**
+ * Instances of this exception are thrown when errors are encountered reading
+ * from (resp. writing to) {@link ReadStream} (resp. {@link WriteStream})
+ * instances.
+ * 
+ * @author Tom Gibara
+ * 
+ * @see EndOfStreamException
+ */
+
 public class StreamException extends RuntimeException {
 
 	private static final long serialVersionUID = -1150629438483125099L;
 
-	StreamException() { }
+	public StreamException() { }
 
-	StreamException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+	public StreamException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	StreamException(String message, Throwable cause) {
+	public StreamException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	StreamException(String message) {
+	public StreamException(String message) {
 		super(message);
 	}
 
-	StreamException(Throwable cause) {
+	public StreamException(Throwable cause) {
 		super(cause);
 	}
 
