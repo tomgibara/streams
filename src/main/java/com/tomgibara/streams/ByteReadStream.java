@@ -105,7 +105,7 @@ public final class ByteReadStream extends AbstractReadStream {
 		for (int i = 0; i < len; i++) {
 			byte b0 = bytes[position++];
 			byte b1 = bytes[position++];
-			cs[off + i] = (char) (b0 << 8 | b1);
+			cs[off + i] = (char) (b0 << 8 | b1 & 0xff);
 		}
 	}
 

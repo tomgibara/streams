@@ -1,5 +1,6 @@
 package com.tomgibara.streams;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -28,7 +29,7 @@ abstract class FuzzStreamTest extends TestCase {
 		WriteStream s = newWriter();
 		int count = 100;
 		for (int i = 0; i < count; i++) {
-			switch (r.nextInt(7)) {
+			switch (r.nextInt(11)) {
 			case 0:
 				s.writeBoolean(r.nextBoolean());
 				break;
@@ -58,12 +59,32 @@ abstract class FuzzStreamTest extends TestCase {
 				s.writeBytes(bs, off, len);
 				break;
 			}
+			case 7: {
+				char[] cs = chars(r);
+				s.writeChars(cs);
+				break;
+			}
+			case 8: {
+				char[] cs = chars(r);
+				int len = r.nextInt(cs.length + 1);
+				int off = r.nextInt(cs.length - len + 1);
+				s.writeChars(cs, off, len);
+				break;
+			}
+			case 9: {
+				s.writeChars(new String(chars(r)));
+				break;
+			}
+			case 10: {
+				s.writeChars(CharBuffer.wrap(chars(r)));
+				break;
+			}
 			}
 		}
 		r = new Random(seed);
 		ReadStream b = newReader(s);
 		for (int i = 0; i < count; i++) {
-			switch(r.nextInt(7)) {
+			switch(r.nextInt(11)) {
 			case 0:
 				assertEquals(r.nextBoolean(), b.readBoolean());
 				break;
@@ -97,6 +118,30 @@ abstract class FuzzStreamTest extends TestCase {
 				Assert.assertArrayEquals(Arrays.copyOfRange(bs, off, off + len), Arrays.copyOfRange(bs2, off, off + len));
 				break;
 			}
+			case 7: {
+				char[] cs = chars(r);
+				char[] cs2 = new char[cs.length];
+				b.readChars(cs2);
+				Assert.assertArrayEquals(cs, cs2);
+				break;
+			}
+			case 8: {
+				char[] cs = chars(r);
+				int len = r.nextInt(cs.length + 1);
+				int off = r.nextInt(cs.length - len + 1);
+				char[] cs2 = new char[ cs.length ];
+				b.readChars(cs2, off, len);
+				Assert.assertArrayEquals(Arrays.copyOfRange(cs, off, off + len), Arrays.copyOfRange(cs2, off, off + len));
+				break;
+			}
+			case 9: {
+				assertEquals(new String(chars(r)), b.readChars());
+				break;
+			}
+			case 10: {
+				assertEquals(CharBuffer.wrap(chars(r)), CharBuffer.wrap(b.readChars().toCharArray()));
+				break;
+			}
 			}
 		}
 		try {
@@ -105,6 +150,15 @@ abstract class FuzzStreamTest extends TestCase {
 		} catch (StreamException e) {
 			/* expected */
 		}
+	}
+	
+	private static char[] chars(Random r) {
+		int len = r.nextInt(50);
+		char[] cs = new char[len];
+		for (int i = 0; i < len; i++) {
+			cs[i] = (char) r.nextInt();
+		}
+		return cs;
 	}
 
 }
