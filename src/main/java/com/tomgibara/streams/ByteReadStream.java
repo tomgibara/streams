@@ -52,7 +52,7 @@ public final class ByteReadStream extends AbstractReadStream {
 		requireBytes(2);
 		byte b0 = bytes[position++];
 		byte b1 = bytes[position++];
-		return (char) (b0 << 8 | b1);
+		return (char) (b0 << 8 | b1 & 0xff);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public final class ByteReadStream extends AbstractReadStream {
 		requireBytes(2);
 		byte b0 = bytes[position++];
 		byte b1 = bytes[position++];
-		return (short) (b0 << 8 | b1);
+		return (short) (b0 << 8 | b1 & 0xff);
 	}
 
 	@Override

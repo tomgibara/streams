@@ -123,10 +123,12 @@ public final class ByteWriteStream extends AbstractWriteStream {
 
 	private void ensureFurtherCapacity(int n) {
 		if (bytes == null) throw new IllegalStateException("closed");
-		if (position + n > bytes.length) {
+		int required = position + n;
+		if (required > bytes.length) {
 			int c = bytes.length;
 			c += c < DEFAULT_CAPACITY ? DEFAULT_CAPACITY : c;
 			if (c - bytes.length > MAX_CAPACITY_INCR) c = bytes.length + MAX_CAPACITY_INCR;
+			if (c < required) c = required;
 			bytes = Arrays.copyOf(bytes, c);
 		}
 
