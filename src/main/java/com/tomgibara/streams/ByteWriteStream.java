@@ -37,6 +37,7 @@ public class ByteWriteStream extends AbstractWriteStream {
 	}
 	
 	public byte[] getBytes() {
+		ensureFurtherCapacity(0);
 		return Arrays.copyOf(bytes, position);
 	}
 	
@@ -114,7 +115,14 @@ public class ByteWriteStream extends AbstractWriteStream {
 		bytes[position++] = (byte) (v      );
 	}
 	
+	@Override
+	public void close() {
+		position = -1;
+		bytes = null;
+	}
+	
 	private void ensureFurtherCapacity(int n) {
+		if (bytes == null) throw new IllegalStateException("closed");
 		if (position + n > bytes.length) {
 			int c = bytes.length;
 			c += c < DEFAULT_CAPACITY ? DEFAULT_CAPACITY : c;

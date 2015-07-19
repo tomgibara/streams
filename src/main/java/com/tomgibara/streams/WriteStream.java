@@ -16,7 +16,7 @@
  */
 package com.tomgibara.streams;
 
-public interface WriteStream {
+public interface WriteStream extends CloseableStream {
 
 	void writeByte(byte v);
 

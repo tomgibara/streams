@@ -99,5 +99,10 @@ public abstract class AbstractWriteStream implements WriteStream {
 			}
 		}
 	}
+	
+	@Override
+	public void close() {
+		/* do nothing */
+	}
 
 }
