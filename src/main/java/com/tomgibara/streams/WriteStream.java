@@ -142,7 +142,7 @@ public interface WriteStream extends CloseableStream {
 	/**
 	 * Writes an array of chars to the stream.
 	 *
-	 * @param bs
+	 * @param cs
 	 *            a char array
 	 * @throws StreamException
 	 *             if an error occurs writing the chars
@@ -153,7 +153,7 @@ public interface WriteStream extends CloseableStream {
 	/**
 	 * Writes an array slice of chars to the stream.
 	 *
-	 * @param bs
+	 * @param cs
 	 *            a char array
 	 * @param off
 	 *            the index from which the first char written is read

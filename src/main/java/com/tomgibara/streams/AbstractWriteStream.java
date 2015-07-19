@@ -52,6 +52,16 @@ public abstract class AbstractWriteStream implements WriteStream {
 		writeByte( (byte) (v      ) );
 	}
 
+	/**
+	 * Writes a single char to the stream. The char is treated as a Java
+	 * primitive with a width of two bytes.
+	 *
+	 * @param v
+	 *            a char
+	 * @throws StreamException
+	 *             if an error occurs writing the char
+	 */
+
 	@Override
 	public void writeChar(char v) {
 		writeByte( (byte) (v >>  8) );
@@ -118,16 +128,6 @@ public abstract class AbstractWriteStream implements WriteStream {
 		final int lim = off + len;
 		for (int i = off; i < lim; i++) writeByte(bs[i]);
 	}
-
-	/**
-	 * Writes a single char to the stream. The char is treated as a Java
-	 * primitive with a width of two bytes.
-	 *
-	 * @param v
-	 *            a char
-	 * @throws StreamException
-	 *             if an error occurs writing the char
-	 */
 
 	@Override
 	public void writeChars(char[] cs) {

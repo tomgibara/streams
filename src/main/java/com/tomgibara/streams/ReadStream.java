@@ -153,7 +153,7 @@ public interface ReadStream extends CloseableStream {
 	 * filled with characters from the stream or an {@link EndOfStreamException}
 	 * is thrown.
 	 *
-	 * @param bs
+	 * @param cs
 	 *            the char array into which characters are read
 	 * @param off
 	 *            the index at which the first character read should be written
