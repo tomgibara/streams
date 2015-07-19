@@ -44,10 +44,10 @@ public class InputReadStream extends AbstractReadStream {
 		if (buffer == null) buffer = new byte[8];
 		readBytes(buffer, 0, 4);
 		return
-				buffer[0]        << 24 |
-				buffer[1] & 0xff << 16 |
-				buffer[2] & 0xff <<  8 |
-				buffer[3] & 0xff;
+				 buffer[0]         << 24 |
+				(buffer[1] & 0xff) << 16 |
+				(buffer[2] & 0xff) <<  8 |
+				 buffer[3] & 0xff;
 	}
 	
 	@Override
@@ -60,8 +60,8 @@ public class InputReadStream extends AbstractReadStream {
 				((long) buffer[2] & 0xff) << 40 |
 				((long) buffer[3] & 0xff) << 32 |
 				((long) buffer[4] & 0xff) << 24 |
-				        buffer[5] & 0xff  << 16 |
-				        buffer[6] & 0xff  <<  8 |
+				(       buffer[5] & 0xff) << 16 |
+				(       buffer[6] & 0xff) <<  8 |
 				        buffer[7] & 0xff;
 	}
 
