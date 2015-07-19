@@ -20,9 +20,9 @@ package com.tomgibara.streams;
  * Instances of this exception are thrown when errors are encountered reading
  * from (resp. writing to) {@link ReadStream} (resp. {@link WriteStream})
  * instances.
- * 
+ *
  * @author Tom Gibara
- * 
+ *
  * @see EndOfStreamException
  */
 

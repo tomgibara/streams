@@ -22,13 +22,13 @@ package com.tomgibara.streams;
  * an end-of-stream condition. {@link WriteStream} implementations with
  * fixed-size output may also choose to employ this exception type to indicate
  * that the stream is 'full'.
- * 
+ *
  * <p>
  * In the interests of efficiency, stream implementations are encouraged to
  * throw a fixed instance of this exception type.
- * 
+ *
  * @author Tom Gibara
- * 
+ *
  * @see #EOS
  *
  */

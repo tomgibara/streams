@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class IOStreamTest extends FuzzStreamTest {
 
 	private HashMap<OutputWriteStream, ByteArrayOutputStream> map = new HashMap<>();
-	
+
 	@Override
 	WriteStream newWriter() {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();

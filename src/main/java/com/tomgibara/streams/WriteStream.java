@@ -17,8 +17,8 @@
 package com.tomgibara.streams;
 
 /**
- * An abstraction for writing basic Java types into a byte based stream. 
- * 
+ * An abstraction for writing basic Java types into a byte based stream.
+ *
  * @author Tom Gibara
  *
  */
@@ -27,7 +27,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single byte to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a byte
 	 * @throws StreamException
@@ -38,7 +38,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes an array of bytes to the stream.
-	 * 
+	 *
 	 * @param bs
 	 *            a byte array
 	 * @throws StreamException
@@ -49,7 +49,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes an array slice of bytes to the stream.
-	 * 
+	 *
 	 * @param bs
 	 *            a byte array
 	 * @param off
@@ -64,7 +64,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single int to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            an int
 	 * @throws StreamException
@@ -75,7 +75,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single boolean to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a boolean
 	 * @throws StreamException
@@ -86,7 +86,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single short to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a short
 	 * @throws StreamException
@@ -97,7 +97,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single long to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a long
 	 * @throws StreamException
@@ -108,7 +108,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single float to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a float
 	 * @throws StreamException
@@ -119,7 +119,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single double to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a double
 	 * @throws StreamException
@@ -130,7 +130,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes a single char to the stream.
-	 * 
+	 *
 	 * @param v
 	 *            a char
 	 * @throws StreamException
@@ -141,7 +141,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes an array of chars to the stream.
-	 * 
+	 *
 	 * @param bs
 	 *            a char array
 	 * @throws StreamException
@@ -152,7 +152,7 @@ public interface WriteStream extends CloseableStream {
 
 	/**
 	 * Writes an array slice of chars to the stream.
-	 * 
+	 *
 	 * @param bs
 	 *            a char array
 	 * @param off
@@ -169,7 +169,7 @@ public interface WriteStream extends CloseableStream {
 	 * Writes a character sequence (typically a String instance) to the stream.
 	 * The stream implementation is expected to record the length of the
 	 * character sequence in addition to any character data it contains.
-	 * 
+	 *
 	 * @param cs
 	 *            a character sequence
 	 * @throws StreamException

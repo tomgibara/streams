@@ -28,9 +28,9 @@ import org.junit.Test;
 abstract class FuzzStreamTest extends TestCase {
 
 	abstract WriteStream newWriter();
-	
+
 	abstract ReadStream newReader(WriteStream writer);
-	
+
 	@Test
 	public void testFuzz() {
 		Random r = new Random(0L);
@@ -38,7 +38,7 @@ abstract class FuzzStreamTest extends TestCase {
 			fuzz(r.nextLong());
 		}
 	}
-	
+
 	void fuzz(long seed) {
 		Random r;
 		r = new Random(seed);
@@ -167,7 +167,7 @@ abstract class FuzzStreamTest extends TestCase {
 			/* expected */
 		}
 	}
-	
+
 	private static char[] chars(Random r) {
 		int len = r.nextInt(50);
 		char[] cs = new char[len];

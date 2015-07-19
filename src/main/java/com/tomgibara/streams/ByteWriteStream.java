@@ -21,7 +21,7 @@ import java.util.Arrays;
 /**
  * Writes values to a growable byte array. Calling close on this writer has no
  * effect.
- * 
+ *
  * @author Tom Gibara
  *
  */
@@ -46,7 +46,7 @@ public final class ByteWriteStream extends AbstractWriteStream {
 	/**
 	 * Creates a new stream with the specified initial capacity. No new storage
 	 * will be allocated unless this initial capacity is exceeded.
-	 * 
+	 *
 	 * @param initialCapacity
 	 *            the initial capacity in bytes.
 	 */
@@ -59,7 +59,7 @@ public final class ByteWriteStream extends AbstractWriteStream {
 	/**
 	 * The byte data recorded by the stream. The returned array is a copy of the
 	 * internal data store and may thus be subsequently mutated by the caller.
-	 * 
+	 *
 	 * @return the byte data streamed
 	 */
 

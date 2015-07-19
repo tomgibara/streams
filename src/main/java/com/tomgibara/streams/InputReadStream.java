@@ -23,9 +23,9 @@ import java.io.InputStream;
  * Reads values from an {@link InputStream}. Any {@link IOException} encountered
  * by this class is wrapped as {@link StreamException} and rethrown. Any
  * end-of-stream condition is signalled with an {@link EndOfStreamException}.
- * 
+ *
  * @author Tom Gibara
- * 
+ *
  * @see EndOfStreamException#EOS
  */
 
@@ -38,7 +38,7 @@ public final class InputReadStream extends AbstractReadStream {
 	/**
 	 * Creates a new stream which obtains bytes data from an underlying
 	 * {@link InputStream}
-	 * 
+	 *
 	 * @param in
 	 *            an input stream from which bytes should be read
 	 */

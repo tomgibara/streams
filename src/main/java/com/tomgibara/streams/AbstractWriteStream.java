@@ -21,10 +21,10 @@ package com.tomgibara.streams;
  * A convenient base implementation of the {@link WriteStream} interface. When
  * extending this class, the only method that a concrete implementation is
  * required to implement is the {@link #writeByte(byte)} method.
- * 
+ *
  * <p>
  * All values are written big-endian.
- * 
+ *
  * @author Tom Gibara
  *
  */
@@ -34,7 +34,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	/**
 	 * Writes a single boolean to the stream. A false value is encoded as zero
 	 * and a true value as minus one (ie. all bits set).
-	 * 
+	 *
 	 * @param v
 	 *            a boolean
 	 * @throws StreamException
@@ -81,7 +81,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	/**
 	 * Writes a single float to the stream. The float is written as per
 	 * {@link Float#floatToIntBits(float)}.
-	 * 
+	 *
 	 * @param v
 	 *            a float
 	 * @throws StreamException
@@ -96,7 +96,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	/**
 	 * Writes a single double to the stream. The double is written as per
 	 * {@link Double#doubleToLongBits(double)}.
-	 * 
+	 *
 	 * @param v
 	 *            a double
 	 * @throws StreamException
@@ -122,7 +122,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	/**
 	 * Writes a single char to the stream. The char is treated as a Java
 	 * primitive with a width of two bytes.
-	 * 
+	 *
 	 * @param v
 	 *            a char
 	 * @throws StreamException
@@ -143,7 +143,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	/**
 	 * Writes a character sequence to the stream. The length of the character
 	 * sequence is encoded as an int followed by its character data.
-	 * 
+	 *
 	 * @param cs
 	 *            a character sequence
 	 * @throws StreamException

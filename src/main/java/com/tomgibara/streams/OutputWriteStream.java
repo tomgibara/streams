@@ -22,7 +22,7 @@ import java.io.OutputStream;
 /**
  * Writes values to an {@link OutputStream}. Any {@link IOException} encountered
  * by this class is wrapped as {@link StreamException} and rethrown.
- * 
+ *
  * @author Tom Gibara
  *
  */
@@ -33,7 +33,7 @@ public final class OutputWriteStream extends AbstractWriteStream {
 
 	/**
 	 * Creates a new stream which writes to an underlying {@link OutputStream}.
-	 * 
+	 *
 	 * @param out
 	 *            an output stream to which bytes should be written
 	 */

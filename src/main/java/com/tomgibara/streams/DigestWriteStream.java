@@ -20,7 +20,7 @@ import java.security.MessageDigest;
 
 /**
  * Writes values to a {@link MessageDigest}. Closing this stream has no effect.
- * 
+ *
  * @author Tom Gibara
  */
 
@@ -30,7 +30,7 @@ public final class DigestWriteStream extends AbstractWriteStream {
 
 	/**
 	 * Creates a new stream which writes values to the supplied digest
-	 * 
+	 *
 	 * @param digest
 	 *            digests the resulting byte stream
 	 */

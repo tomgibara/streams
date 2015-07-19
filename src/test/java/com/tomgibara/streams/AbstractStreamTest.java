@@ -31,16 +31,16 @@ public class AbstractStreamTest extends FuzzStreamTest {
 	ReadStream newReader(WriteStream writer) {
 		return new TestReadStream((TestWriteStream) writer);
 	}
-	
+
 	private static final class TestWriteStream extends AbstractWriteStream {
 
 		final List<Byte> list = new ArrayList<Byte>();
-		
+
 		@Override
 		public void writeByte(byte v) {
 			list.add(v);
 		}
-		
+
 	}
 
 	private static final class TestReadStream extends AbstractReadStream {
@@ -58,5 +58,5 @@ public class AbstractStreamTest extends FuzzStreamTest {
 		}
 
 	}
-	
+
 }
