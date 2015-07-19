@@ -4,5 +4,5 @@ public interface CloseableStream extends AutoCloseable {
 
 	@Override
 	public void close();
-	
+
 }

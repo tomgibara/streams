@@ -8,12 +8,12 @@ public final class InputReadStream extends AbstractReadStream {
 	private final InputStream in;
 
 	private byte[] buffer = null;
-	
+
 	public InputReadStream(InputStream in) {
 		if (in == null) throw new IllegalArgumentException("null in");
 		this.in = in;
 	}
-	
+
 	@Override
 	public byte readByte() {
 		try {
@@ -38,7 +38,7 @@ public final class InputReadStream extends AbstractReadStream {
 			throw new StreamException(e);
 		}
 	}
-	
+
 	@Override
 	public int readInt() {
 		if (buffer == null) buffer = new byte[8];
@@ -49,7 +49,7 @@ public final class InputReadStream extends AbstractReadStream {
 				(buffer[2] & 0xff) <<  8 |
 				 buffer[3] & 0xff;
 	}
-	
+
 	@Override
 	public long readLong() {
 		if (buffer == null) buffer = new byte[8];

@@ -6,12 +6,12 @@ import java.io.OutputStream;
 public final class OutputWriteStream extends AbstractWriteStream {
 
 	private final OutputStream out;
-	
+
 	public OutputWriteStream(OutputStream out) {
 		if (out == null) throw new IllegalArgumentException("null out");
 		this.out = out;
 	}
-	
+
 	@Override
 	public void writeByte(byte v) {
 		try {
@@ -20,7 +20,7 @@ public final class OutputWriteStream extends AbstractWriteStream {
 			throw new StreamException(e);
 		}
 	}
-	
+
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) {
 		try {
@@ -61,7 +61,7 @@ public final class OutputWriteStream extends AbstractWriteStream {
 			throw new StreamException(e);
 		}
 	}
-	
+
 	@Override
 	public void writeLong(long v) {
 		try {
@@ -86,5 +86,5 @@ public final class OutputWriteStream extends AbstractWriteStream {
 			throw new StreamException(e);
 		}
 	}
-	
+
 }

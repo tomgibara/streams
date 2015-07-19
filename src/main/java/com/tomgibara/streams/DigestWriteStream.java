@@ -1,6 +1,6 @@
 /*
  * Copyright 2010 Tom Gibara
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 package com.tomgibara.streams;
 
@@ -21,31 +21,31 @@ import java.security.MessageDigest;
 public final class DigestWriteStream extends AbstractWriteStream {
 
 	private final MessageDigest digest;
-	
+
 	public DigestWriteStream(MessageDigest digest) {
 		this.digest = digest;
 	}
-	
+
 	@Override
 	public void writeByte(byte v) {
 		digest.update(v);
 	}
-	
+
 	@Override
 	public void writeBytes(byte[] vs) {
 		digest.update(vs);
 	}
-	
+
 	@Override
 	public void writeBytes(byte[] vs, int off, int len) {
 		digest.update(vs, off, len);
 	}
-	
+
 	@Override
 	public void writeBoolean(boolean v) {
 		digest.update((byte) (v ? -1 : 0));
 	}
-	
+
 	@Override
 	public void writeInt(int v) {
 		digest.update((byte) (v >> 24));
@@ -53,7 +53,7 @@ public final class DigestWriteStream extends AbstractWriteStream {
 		digest.update((byte) (v >>  8));
 		digest.update((byte) (v      ));
 	}
-	
+
 	@Override
 	public void writeShort(short v) {
 		digest.update((byte) (v >>  8));
@@ -71,7 +71,7 @@ public final class DigestWriteStream extends AbstractWriteStream {
 		digest.update((byte) (v >>  8));
 		digest.update((byte) (v      ));
 	}
-	
+
 	@Override
 	public void writeChar(char v) {
 		digest.update((byte) (v >>  8));
