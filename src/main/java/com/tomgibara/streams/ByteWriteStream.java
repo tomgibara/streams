@@ -18,7 +18,7 @@ package com.tomgibara.streams;
 
 import java.util.Arrays;
 
-public class ByteWriteStream extends AbstractWriteStream {
+public final class ByteWriteStream extends AbstractWriteStream {
 
 	private static final int DEFAULT_CAPACITY = 32;
 

@@ -3,7 +3,7 @@ package com.tomgibara.streams;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class InputReadStream extends AbstractReadStream {
+public final class InputReadStream extends AbstractReadStream {
 
 	private final InputStream in;
 

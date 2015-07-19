@@ -18,7 +18,7 @@ package com.tomgibara.streams;
 
 import java.security.MessageDigest;
 
-public class DigestWriteStream extends AbstractWriteStream {
+public final class DigestWriteStream extends AbstractWriteStream {
 
 	private final MessageDigest digest;
 	

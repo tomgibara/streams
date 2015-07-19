@@ -3,7 +3,7 @@ package com.tomgibara.streams;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class OutputWriteStream extends AbstractWriteStream {
+public final class OutputWriteStream extends AbstractWriteStream {
 
 	private final OutputStream out;
 	
