@@ -30,6 +30,7 @@ public abstract class AbstractWriteStream implements WriteStream {
 	}
 	
 	@Override
+	//TODO change to int char and UTF-8?
 	public void writeChar(char v) {
 		writeByte( (byte) (v >>  8) );
 		writeByte( (byte) (v      ) );
