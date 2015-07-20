@@ -39,6 +39,16 @@ public final class DigestWriteStream extends AbstractWriteStream {
 		if (digest == null) throw new IllegalArgumentException("null digest");
 		this.digest = digest;
 	}
+	
+	/**
+	 * The digest with which values are accumulated by this stream.
+	 *
+	 * @return the digest for this stream
+	 */
+
+	public MessageDigest getDigest() {
+		return digest;
+	}
 
 	@Override
 	public void writeByte(byte v) {
