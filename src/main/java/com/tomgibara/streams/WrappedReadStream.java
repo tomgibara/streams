@@ -2,7 +2,7 @@ package com.tomgibara.streams;
 
 /**
  * Delegates all method calls to a wrapped {@link ReadStream}.
- * 
+ *
  * @author Tom Gibara
  *
  * @param <S>
@@ -16,10 +16,10 @@ public class WrappedReadStream<S extends ReadStream> implements ReadStream {
 	 */
 
 	protected final S wrapped;
-	
+
 	/**
 	 * Creates a new stream that wraps an existing {@link ReadStream}.
-	 * 
+	 *
 	 * @param wrapped
 	 *            the {@link ReadStream} to which all calls should be delegated.
 	 */

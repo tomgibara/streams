@@ -39,7 +39,7 @@ public final class DigestWriteStream extends AbstractWriteStream {
 		if (digest == null) throw new IllegalArgumentException("null digest");
 		this.digest = digest;
 	}
-	
+
 	/**
 	 * The digest with which values are accumulated by this stream.
 	 *
