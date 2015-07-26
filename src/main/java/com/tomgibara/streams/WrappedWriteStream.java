@@ -1,9 +1,29 @@
 package com.tomgibara.streams;
 
+/**
+ * Delegates all method calls to a wrapped {@link WriteStream}.
+ * 
+ * @author Tom Gibara
+ *
+ * @param <S>
+ *            the type of {@link WriteStream} being wrapped
+ */
+
 public class WrappedWriteStream<S extends WriteStream> implements WriteStream {
+
+	/**
+	 * The stream that is being wrapped.
+	 */
 
 	protected final S wrapped;
 	
+	/**
+	 * Creates a new stream that wraps an existing {@link WriteStream}.
+	 * 
+	 * @param wrapped
+	 *            the {@link WriteStream} to which all calls should be delegated.
+	 */
+
 	public WrappedWriteStream(S wrapped) {
 		if (wrapped == null) throw new IllegalArgumentException("null wrapped");
 		this.wrapped = wrapped;

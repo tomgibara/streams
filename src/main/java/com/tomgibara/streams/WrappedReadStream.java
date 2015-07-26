@@ -1,9 +1,29 @@
 package com.tomgibara.streams;
 
+/**
+ * Delegates all method calls to a wrapped {@link ReadStream}.
+ * 
+ * @author Tom Gibara
+ *
+ * @param <S>
+ *            the type of {@link ReadStream} being wrapped
+ */
+
 public class WrappedReadStream<S extends ReadStream> implements ReadStream {
+
+	/**
+	 * The stream that is being wrapped.
+	 */
 
 	protected final S wrapped;
 	
+	/**
+	 * Creates a new stream that wraps an existing {@link ReadStream}.
+	 * 
+	 * @param wrapped
+	 *            the {@link ReadStream} to which all calls should be delegated.
+	 */
+
 	public WrappedReadStream(S wrapped) {
 		if (wrapped == null) throw new IllegalArgumentException("null wrapped");
 		this.wrapped = wrapped;
