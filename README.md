@@ -35,9 +35,15 @@ implementations to a single method:
 * `AbstractWriteStream` only requires implementation of the
    `writeByte()` method
 
+Finally a pair of delegating wrapper classes is available:
+
+* `WrappedReadStream` delegates all method calls to a wrapped
+  `ReadStream`
+* `WrappedWriteStream` delegates all method calls to a wrapped
+  `WriteStream`
+
 All the classes are available in the `com.tomgibara.streams` package.
 Read the complete javadocs for more API details.
-
 
 Usage
 -----
@@ -46,19 +52,24 @@ The streams library is available from the Maven central repository:
 
 > Group ID:    `com.tomgibara.streams`
 > Artifact ID: `streams`
-> Version:     `1.0.0`
+> Version:     `1.1.0`
 
 The Maven dependency being:
 
     <dependency>
       <groupId>com.tomgibara.streams</groupId>
       <artifactId>streams</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
     </dependency>
 
 Release History
 ---------------
 
-**2015.20.07** Version 1.0.0
+**2015.07.27** Version 1.1.0
+
+ * Added new WrappedReadStream and WrappedWriteStream
+ * Added getDigest() to DigestWriteStream
+
+**2015.07.20** Version 1.0.0
 
 Initial release
