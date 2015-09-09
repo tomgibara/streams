@@ -16,6 +16,10 @@
  */
 package com.tomgibara.streams;
 
+import java.util.Arrays;
+
+import org.junit.Assert;
+
 
 public class ByteStreamTest extends FuzzStreamTest {
 
@@ -24,7 +28,23 @@ public class ByteStreamTest extends FuzzStreamTest {
 
 	@Override
 	ReadStream newReader(WriteStream writer) {
-		return new ByteReadStream(((ByteWriteStream) writer).getBytes());
+		return new ByteReadStream(((ByteWriteStream) writer).getBytes(true));
+	}
+	
+	public void testGetUncopiedBytes() {
+		try (ByteWriteStream writer = new ByteWriteStream(8)) {
+			writer.writeLong(-1L);
+			byte[] bytes = writer.getBytes(false);
+			byte[] expected = new byte[8];
+			Arrays.fill(expected, (byte) -1);
+			Assert.assertArrayEquals(expected, bytes);
+			try {
+				writer.writeByte((byte) 0);
+				fail();
+			} catch (EndOfStreamException e) {
+				/* expected */
+			}
+		}
 	}
 
 }

@@ -19,8 +19,8 @@ package com.tomgibara.streams;
 import java.util.Arrays;
 
 /**
- * Writes values to a growable byte array. Calling close on this writer has no
- * effect.
+ * Writes values to a growable byte array. Closing this writer results in all
+ * subsequent writes throwing an {@link EndOfStreamException}.
  *
  * @author Tom Gibara
  *
@@ -32,6 +32,8 @@ public final class ByteWriteStream extends AbstractWriteStream {
 
 	private static final int MAX_CAPACITY_INCR = 1024 * 1024;
 
+	private static final int CLOSED_POSITION = -1;
+	
 	private int position;
 	private byte[] bytes;
 
@@ -61,11 +63,38 @@ public final class ByteWriteStream extends AbstractWriteStream {
 	 * internal data store and may thus be subsequently mutated by the caller.
 	 *
 	 * @return the byte data streamed
+	 * @deprecated use {@link #getBytes(boolean)} instead
 	 */
 
+	@Deprecated
 	public byte[] getBytes() {
-		ensureFurtherCapacity(0);
-		return Arrays.copyOf(bytes, position);
+		return getBytes(true);
+	}
+
+	/**
+	 * <p>
+	 * The byte data recorded by the stream. Supplying true returns a copy of
+	 * the internal data store of the writer. Supplying closes the writer and
+	 * returns the byte array which backed the writer. Subsequent attempts to
+	 * write to the writer will fail with an {@link EndOfStreamException} as per
+	 * the {@link #close()} method.
+	 * 
+	 * <p>
+	 * Note that the length of an uncopied byte array may exceed the number of
+	 * bytes written, for this reason direct retrieval of the byte storage is
+	 * best reserved for situations where the initial capacity specified and not
+	 * exceeded.
+	 *
+	 * @param copy
+	 *            whether the bytes returned should be a copy of the bytes
+	 *            accumulated by this writer
+	 * @return the byte data streamed
+	 */
+
+	public byte[] getBytes(boolean copy) {
+		if (copy) return Arrays.copyOf(bytes, position);
+		if (!isClosed()) close();
+		return bytes;
 	}
 
 	@Override
@@ -142,7 +171,23 @@ public final class ByteWriteStream extends AbstractWriteStream {
 		bytes[position++] = (byte) (v      );
 	}
 
+	/**
+	 * Closes the writer. All subsequent attempts to write to the writer will
+	 * fail with an {@link EndOfStreamException} as per the {@link #close()}
+	 * method.
+	 */
+	
+	@Override
+	public void close() {
+		position = CLOSED_POSITION;
+	}
+
+	private boolean isClosed() {
+		return position == CLOSED_POSITION;
+	}
+	
 	private void ensureFurtherCapacity(int n) {
+		if (isClosed()) throw EndOfStreamException.EOS;
 		int required = position + n;
 		if (required > bytes.length) {
 			int c = bytes.length;
