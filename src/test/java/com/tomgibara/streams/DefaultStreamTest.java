@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class AbstractStreamTest extends FuzzStreamTest {
+public class DefaultStreamTest extends FuzzStreamTest {
 
 	@Override
 	WriteStream newWriter() {
