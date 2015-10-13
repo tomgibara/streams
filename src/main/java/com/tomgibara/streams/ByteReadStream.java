@@ -27,7 +27,7 @@ package com.tomgibara.streams;
  * @see EndOfStreamException#EOS
  */
 
-public final class ByteReadStream extends AbstractReadStream {
+public final class ByteReadStream implements ReadStream {
 
 	private final byte[] bytes;
 	private final int limit;

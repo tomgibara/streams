@@ -29,7 +29,7 @@ import java.io.InputStream;
  * @see EndOfStreamException#EOS
  */
 
-public final class InputReadStream extends AbstractReadStream {
+public final class InputReadStream implements ReadStream {
 
 	private final InputStream in;
 

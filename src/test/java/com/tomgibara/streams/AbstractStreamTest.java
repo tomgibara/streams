@@ -43,7 +43,7 @@ public class AbstractStreamTest extends FuzzStreamTest {
 
 	}
 
-	private static final class TestReadStream extends AbstractReadStream {
+	private static final class TestReadStream implements ReadStream {
 
 		final Iterator<Byte> iter;
 
