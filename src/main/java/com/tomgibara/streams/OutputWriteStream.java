@@ -27,7 +27,7 @@ import java.io.OutputStream;
  *
  */
 
-public final class OutputWriteStream extends AbstractWriteStream {
+public final class OutputWriteStream implements WriteStream {
 
 	private final OutputStream out;
 

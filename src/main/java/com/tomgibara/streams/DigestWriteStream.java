@@ -24,7 +24,7 @@ import java.security.MessageDigest;
  * @author Tom Gibara
  */
 
-public final class DigestWriteStream extends AbstractWriteStream {
+public final class DigestWriteStream implements WriteStream {
 
 	private final MessageDigest digest;
 

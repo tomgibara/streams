@@ -17,7 +17,14 @@
 package com.tomgibara.streams;
 
 /**
+ * <p>
  * An abstraction for writing basic Java types into a byte based stream.
+ *
+ * <p>
+ * Due to the presence of default implementations, the only method that a
+ * concrete implementation is required to implement is the
+ * {@link #writeByte(byte)} method. In the default implementations all values
+ * are written big-endian.
  *
  * @author Tom Gibara
  *
@@ -45,7 +52,9 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the bytes
 	 */
 
-	void writeBytes(byte bs[]) throws StreamException;
+	default void writeBytes(byte bs[]) throws StreamException {
+		writeBytes(bs, 0, bs.length);
+	}
 
 	/**
 	 * Writes an array slice of bytes to the stream.
@@ -60,7 +69,10 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the bytes
 	 */
 
-	void writeBytes(byte bs[], int off, int len) throws StreamException;
+	default void writeBytes(byte bs[], int off, int len) throws StreamException {
+		final int lim = off + len;
+		for (int i = off; i < lim; i++) writeByte(bs[i]);
+	}
 
 	/**
 	 * Writes a single int to the stream.
@@ -71,10 +83,20 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the int
 	 */
 
-	void writeInt(int v) throws StreamException;
+	default void writeInt(int v) throws StreamException {
+		writeByte( (byte) (v >> 24) );
+		writeByte( (byte) (v >> 16) );
+		writeByte( (byte) (v >>  8) );
+		writeByte( (byte) (v      ) );
+	}
 
 	/**
+	 * <p>
 	 * Writes a single boolean to the stream.
+	 *
+	 * <p>
+	 * In the default implementation a false value is encoded as zero and a true
+	 * value as minus one (ie. all bits set).
 	 *
 	 * @param v
 	 *            a boolean
@@ -82,7 +104,9 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the boolean.
 	 */
 
-	void writeBoolean(boolean v) throws StreamException;
+	default void writeBoolean(boolean v) throws StreamException {
+		writeByte( (byte) (v ? -1 : 0) );
+	}
 
 	/**
 	 * Writes a single short to the stream.
@@ -93,7 +117,10 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the short
 	 */
 
-	void writeShort(short v) throws StreamException;
+	default void writeShort(short v) throws StreamException {
+		writeByte( (byte) (v >>  8) );
+		writeByte( (byte) (v      ) );
+	}
 
 	/**
 	 * Writes a single long to the stream.
@@ -104,10 +131,24 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the long
 	 */
 
-	void writeLong(long v) throws StreamException;
+	default void writeLong(long v) throws StreamException {
+		writeByte( (byte) (v >> 56) );
+		writeByte( (byte) (v >> 48) );
+		writeByte( (byte) (v >> 40) );
+		writeByte( (byte) (v >> 32) );
+		writeByte( (byte) (v >> 24) );
+		writeByte( (byte) (v >> 16) );
+		writeByte( (byte) (v >>  8) );
+		writeByte( (byte) (v      ) );
+	}
 
 	/**
+	 * <p>
 	 * Writes a single float to the stream.
+	 *
+	 * <p>
+	 * In the default implementation, the float is written as per
+	 * {@link Float#floatToIntBits(float)}.
 	 *
 	 * @param v
 	 *            a float
@@ -115,10 +156,17 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the float
 	 */
 
-	void writeFloat(float v) throws StreamException;
+	default void writeFloat(float v) throws StreamException {
+		writeInt(Float.floatToIntBits(v));
+	}
 
 	/**
+	 * <p>
 	 * Writes a single double to the stream.
+	 *
+	 * <p>
+	 * In the default implementation, the double is written as per
+	 * {@link Double#doubleToLongBits(double)}.
 	 *
 	 * @param v
 	 *            a double
@@ -126,10 +174,17 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the double
 	 */
 
-	void writeDouble(double v) throws StreamException;
+	default void writeDouble(double v) throws StreamException {
+		writeLong(Double.doubleToLongBits(v));
+	}
 
 	/**
+	 * <p>
 	 * Writes a single char to the stream.
+	 *
+	 * <p>
+	 * In the default implementation, the char is treated as a Java primitive
+	 * with a width of two bytes.
 	 *
 	 * @param v
 	 *            a char
@@ -137,7 +192,10 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the char
 	 */
 
-	void writeChar(char v) throws StreamException;
+	default void writeChar(char v) throws StreamException {
+		writeByte( (byte) (v >>  8) );
+		writeByte( (byte) (v      ) );
+	}
 
 	/**
 	 * Writes an array of chars to the stream.
@@ -148,7 +206,9 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the chars
 	 */
 
-	void writeChars(char[] cs) throws StreamException;
+	default void writeChars(char[] cs) throws StreamException {
+		writeChars(cs, 0, cs.length);
+	}
 
 	/**
 	 * Writes an array slice of chars to the stream.
@@ -163,12 +223,20 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the chars
 	 */
 
-	void writeChars(char[] cs, int off, int len) throws StreamException;
+	default void writeChars(char[] cs, int off, int len) throws StreamException {
+		final int lim = off + len;
+		for (int i = off; i < lim; i++) writeChar(cs[i]);
+	}
 
 	/**
+	 * <p>
 	 * Writes a character sequence (typically a String instance) to the stream.
 	 * The stream implementation is expected to record the length of the
 	 * character sequence in addition to any character data it contains.
+	 *
+	 * <p>
+	 * In the default implementation, the length of the character sequence is
+	 * encoded as an int followed by its character data.
 	 *
 	 * @param cs
 	 *            a character sequence
@@ -176,6 +244,23 @@ public interface WriteStream extends CloseableStream {
 	 *             if an error occurs writing the chars
 	 */
 
-	void writeChars(CharSequence cs) throws StreamException;
+	default void writeChars(CharSequence cs) throws StreamException {
+		final int length = cs.length();
+		writeInt(length);
+		if (cs instanceof String) {
+			writeChars(((String) cs).toCharArray());
+		} else {
+			for (int i = 0; i < length; i++) {
+				writeChar(cs.charAt(i));
+			}
+		}
+	}
+
+	// closeable
+	
+	@Override
+	default void close() {
+		/* do nothing */
+	}
 
 }

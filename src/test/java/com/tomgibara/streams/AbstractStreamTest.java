@@ -32,7 +32,7 @@ public class AbstractStreamTest extends FuzzStreamTest {
 		return new TestReadStream((TestWriteStream) writer);
 	}
 
-	private static final class TestWriteStream extends AbstractWriteStream {
+	private static final class TestWriteStream implements WriteStream {
 
 		final List<Byte> list = new ArrayList<Byte>();
 

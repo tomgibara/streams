@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  */
 
-public final class ByteWriteStream extends AbstractWriteStream {
+public final class ByteWriteStream implements WriteStream {
 
 	private static final int DEFAULT_CAPACITY = 32;
 
