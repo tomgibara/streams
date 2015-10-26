@@ -54,10 +54,18 @@ public final class ByteWriteStream implements WriteStream {
 	 */
 
 	public ByteWriteStream(int initialCapacity) {
-		position = 0;
-		bytes = new byte[initialCapacity];
+		this(new byte[initialCapacity]);
 	}
 
+	public ByteWriteStream(byte[] bytes) {
+		position = 0;
+		this.bytes = bytes;
+	}
+
+	public int position() {
+		return position;
+	}
+	
 	/**
 	 * The byte data recorded by the stream. The returned array is a copy of the
 	 * internal data store and may thus be subsequently mutated by the caller.

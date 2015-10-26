@@ -72,6 +72,10 @@ public final class ByteReadStream implements ReadStream {
 		this.limit = limit;
 	}
 
+	public int position() {
+		return position;
+	}
+
 	@Override
 	public byte readByte() {
 		requireBytes(1);
