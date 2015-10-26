@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import com.tomgibara.fundament.Consumer;
+
 /**
  * <p>
  * An abstraction for writing basic Java types into a byte based stream.
@@ -256,6 +258,12 @@ public interface WriteStream extends CloseableStream {
 		}
 	}
 
+	// convenience methods
+	
+	default <T> Consumer<T> writeWith(StreamSerializer<T> serializer) {
+		return v -> serializer.serialize(v, this);
+	}
+	
 	// closeable
 	
 	@Override

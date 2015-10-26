@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import com.tomgibara.fundament.Producer;
+
 /**
  * <p>
  * An abstraction for reading basic Java types into a byte based stream.
@@ -253,6 +255,12 @@ public interface ReadStream extends CloseableStream {
 		return new String(cs);
 	}
 
+	// convenience methods
+	
+	default <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {
+		return () -> deserializer.deserialize(this);
+	}
+	
 	// closeable
 
 	default void close() {
