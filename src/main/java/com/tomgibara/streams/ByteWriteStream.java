@@ -32,8 +32,6 @@ public final class ByteWriteStream implements WriteStream {
 
 	private static final int MAX_CAPACITY_INCR = 1024 * 1024;
 
-	private static final int CLOSED_POSITION = -1;
-	
 	private int position;
 	private byte[] bytes;
 
@@ -100,7 +98,7 @@ public final class ByteWriteStream implements WriteStream {
 	 */
 
 	public byte[] getBytes(boolean copy) {
-		if (copy) return Arrays.copyOf(bytes, position);
+		if (copy) return Arrays.copyOf(bytes, position < 0 ? -1 - position : position);
 		if (!isClosed()) close();
 		return bytes;
 	}
@@ -187,11 +185,11 @@ public final class ByteWriteStream implements WriteStream {
 	
 	@Override
 	public void close() {
-		position = CLOSED_POSITION;
+		position = -1 - position;
 	}
 
 	private boolean isClosed() {
-		return position == CLOSED_POSITION;
+		return position < 0;
 	}
 	
 	private void ensureFurtherCapacity(int n) {
