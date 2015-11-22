@@ -15,52 +15,52 @@ public class ChannelWriteStream implements WriteStream {
 	
 	@Override
 	public void writeByte(byte v) throws StreamException {
-		drainBuffer( buffer.put(v) );
+		write( buffer.put(v) );
 	}
 	
 	@Override
 	public void writeBytes(byte[] bs) throws StreamException {
-		drainBuffer(ByteBuffer.wrap(bs));
+		write(ByteBuffer.wrap(bs));
 	}
 	
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) throws StreamException {
-		drainBuffer(ByteBuffer.wrap(bs, off, len));
+		write(ByteBuffer.wrap(bs, off, len));
 	}
 	
 	@Override
 	public void writeInt(int v) throws StreamException {
-		drainBuffer( buffer.putInt(v) );
+		write( buffer.putInt(v) );
 	}
 	
 	@Override
 	public void writeBoolean(boolean v) throws StreamException {
-		drainBuffer( buffer.put(v ? (byte) 1 : (byte) 0) );
+		write( buffer.put(v ? (byte) 1 : (byte) 0) );
 	}
 	
 	@Override
 	public void writeShort(short v) throws StreamException {
-		drainBuffer( buffer.putShort(v) );
+		write( buffer.putShort(v) );
 	}
 	
 	@Override
 	public void writeLong(long v) throws StreamException {
-		drainBuffer( buffer.putLong(v) );
+		write( buffer.putLong(v) );
 	}
 	
 	@Override
 	public void writeFloat(float v) throws StreamException {
-		drainBuffer( buffer.putFloat(v) );
+		write( buffer.putFloat(v) );
 	}
 	
 	@Override
 	public void writeDouble(double v) throws StreamException {
-		drainBuffer( buffer.putDouble(v) );
+		write( buffer.putDouble(v) );
 	}
 	
 	@Override
 	public void writeChar(char v) throws StreamException {
-		drainBuffer( buffer.putChar(v) );
+		write( buffer.putChar(v) );
 	}
 	
 	@Override
