@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import java.nio.ByteBuffer;
+
 import com.tomgibara.fundament.Consumer;
 
 /**
@@ -256,6 +258,27 @@ public interface WriteStream extends CloseableStream {
 				writeChar(cs.charAt(i));
 			}
 		}
+	}
+	
+	/**
+	 * Writes bytes to the stream from a buffer. Bytes will be read starting at
+	 * <i>position</i> and continuing until <i>limit</i> is reached.
+	 * 
+	 * @param buffer
+	 *            the buffer containing bytes to be written
+	 * @return the number of bytes written
+	 * @throws StreamException
+	 *             if the bytes could not be written
+	 * @throws EndOfStreamException
+	 *             if the stream attempted to exceed its capacity
+	 */
+	
+	default int drainBuffer(ByteBuffer buffer) throws StreamException {
+		int r = buffer.remaining();
+		for (int i = r; i > 0; i--) {
+			writeByte(buffer.get());
+		}
+		return r;
 	}
 
 	// convenience methods

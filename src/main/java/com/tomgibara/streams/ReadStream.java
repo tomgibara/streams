@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import java.nio.ByteBuffer;
+
 import com.tomgibara.fundament.Producer;
 
 /**
@@ -255,6 +257,29 @@ public interface ReadStream extends CloseableStream {
 		return new String(cs);
 	}
 
+	/**
+	 * Fills the buffer with bytes read from the stream. Bytes will be written
+	 * starting from <i>position</i> and continuing until <i>limit</i> is
+	 * reached.
+	 * 
+	 * @param buffer
+	 *            the buffer to contain the read bytes
+	 * @return the number of bytes read
+	 * @throws StreamException
+	 *             if the bytes could not be read
+	 * @throws EndOfStreamException
+	 *             if the stream was exhausted before the buffer limit was
+	 *             reached
+	 */
+	
+	default int fillBuffer(ByteBuffer buffer) throws StreamException {
+		int r = buffer.remaining();
+		for (int i = r; i > 0; i--) {
+			buffer.put(readByte());
+		}
+		return r;
+	}
+	
 	// convenience methods
 	
 	default <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {
