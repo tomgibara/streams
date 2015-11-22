@@ -29,12 +29,12 @@ public class ChannelWriteStream implements WriteStream {
 	
 	@Override
 	public void writeBytes(byte[] bs) throws StreamException {
-		write(ByteBuffer.wrap(bs));
+		drainBuffer(ByteBuffer.wrap(bs));
 	}
 	
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) throws StreamException {
-		write(ByteBuffer.wrap(bs, off, len));
+		drainBuffer(ByteBuffer.wrap(bs, off, len));
 	}
 	
 	@Override
