@@ -1,5 +1,7 @@
 package com.tomgibara.streams;
 
+import java.nio.ByteBuffer;
+
 /**
  * Delegates all method calls to a wrapped {@link ReadStream}.
  *
@@ -83,5 +85,10 @@ public class WrappedReadStream<S extends ReadStream> implements ReadStream {
 
 	public String readChars() throws StreamException {
 		return wrapped.readChars();
+	}
+	
+	@Override
+	public int fillBuffer(ByteBuffer buffer) throws StreamException {
+		return wrapped.fillBuffer(buffer);
 	}
 }

@@ -16,6 +16,7 @@
  */
 package com.tomgibara.streams;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -175,6 +176,15 @@ public final class ByteWriteStream implements WriteStream {
 		bytes[position++] = (byte) (v >> 16);
 		bytes[position++] = (byte) (v >>  8);
 		bytes[position++] = (byte) (v      );
+	}
+	
+	@Override
+	public int drainBuffer(ByteBuffer buffer) throws StreamException {
+		int length = buffer.remaining();
+		ensureFurtherCapacity(length);
+		buffer.get(bytes, position, length);
+		position += length;
+		return length;
 	}
 
 	/**

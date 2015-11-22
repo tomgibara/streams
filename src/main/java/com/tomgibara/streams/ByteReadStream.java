@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import java.nio.ByteBuffer;
+
 /**
  * Reads values from a byte array. When the bytes in the array (or array
  * segment) are exhausted calling any read method on this class will result in
@@ -157,6 +159,15 @@ public final class ByteReadStream implements ReadStream {
 			byte b1 = bytes[position++];
 			cs[off + i] = (char) (b0 << 8 | b1 & 0xff);
 		}
+	}
+
+	@Override
+	public int fillBuffer(ByteBuffer buffer) throws StreamException {
+		int length = buffer.remaining();
+		requireBytes(length);
+		buffer.put(bytes, position, length);
+		position += length;
+		return length;
 	}
 
 	private void requireBytes(int count) {

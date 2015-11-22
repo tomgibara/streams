@@ -1,5 +1,7 @@
 package com.tomgibara.streams;
 
+import java.nio.ByteBuffer;
+
 /**
  * Delegates all method calls to a wrapped {@link WriteStream}.
  *
@@ -83,6 +85,11 @@ public class WrappedWriteStream<S extends WriteStream> implements WriteStream {
 
 	public void writeChars(CharSequence cs) throws StreamException {
 		wrapped.writeChars(cs);
+	}
+	
+	@Override
+	public int drainBuffer(ByteBuffer buffer) throws StreamException {
+		return wrapped.drainBuffer(buffer);
 	}
 
 }
