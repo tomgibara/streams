@@ -43,9 +43,16 @@ public class Streams {
 		if (out == null) throw new IllegalArgumentException("null out");
 		if (count < 0L) throw new IllegalArgumentException("negative count");
 		if (buffer == null) throw new IllegalArgumentException("null buffer");
+		buffer.clear();
+		int capacity = buffer.capacity();
 		while (count > 0) {
-			if (count < buffer.remaining()) buffer.position( (int) (buffer.limit() - count) );
-			count -= in.fillBuffer(buffer);
+			if (count < capacity) {
+				buffer.limit((int) count);
+				count = 0;
+			} else {
+				count -= capacity;
+			}
+			in.fillBuffer(buffer);
 			buffer.flip();
 			out.drainBuffer(buffer);
 			buffer.flip();
