@@ -273,12 +273,10 @@ public interface WriteStream extends CloseableStream {
 	 *             if the stream attempted to exceed its capacity
 	 */
 	
-	default int drainBuffer(ByteBuffer buffer) throws StreamException {
-		int r = buffer.remaining();
-		for (int i = r; i > 0; i--) {
+	default void drainBuffer(ByteBuffer buffer) throws StreamException {
+		for (int i = buffer.remaining(); i > 0; i--) {
 			writeByte(buffer.get());
 		}
-		return r;
 	}
 
 	// convenience methods

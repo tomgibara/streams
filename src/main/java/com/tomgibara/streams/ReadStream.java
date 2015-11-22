@@ -272,12 +272,10 @@ public interface ReadStream extends CloseableStream {
 	 *             reached
 	 */
 	
-	default int fillBuffer(ByteBuffer buffer) throws StreamException {
-		int r = buffer.remaining();
-		for (int i = r; i > 0; i--) {
+	default void fillBuffer(ByteBuffer buffer) throws StreamException {
+		for (int i = buffer.remaining(); i > 0; i--) {
 			buffer.put(readByte());
 		}
-		return r;
 	}
 	
 	// convenience methods

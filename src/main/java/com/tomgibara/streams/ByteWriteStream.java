@@ -179,12 +179,11 @@ public final class ByteWriteStream implements WriteStream {
 	}
 	
 	@Override
-	public int drainBuffer(ByteBuffer buffer) throws StreamException {
+	public void drainBuffer(ByteBuffer buffer) throws StreamException {
 		int length = buffer.remaining();
 		ensureFurtherCapacity(length);
 		buffer.get(bytes, position, length);
 		position += length;
-		return length;
 	}
 
 	/**

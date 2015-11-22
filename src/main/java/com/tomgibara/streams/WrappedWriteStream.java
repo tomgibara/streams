@@ -88,8 +88,8 @@ public class WrappedWriteStream<S extends WriteStream> implements WriteStream {
 	}
 	
 	@Override
-	public int drainBuffer(ByteBuffer buffer) throws StreamException {
-		return wrapped.drainBuffer(buffer);
+	public void drainBuffer(ByteBuffer buffer) throws StreamException {
+		wrapped.drainBuffer(buffer);
 	}
 
 }

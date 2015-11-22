@@ -88,7 +88,7 @@ public class WrappedReadStream<S extends ReadStream> implements ReadStream {
 	}
 	
 	@Override
-	public int fillBuffer(ByteBuffer buffer) throws StreamException {
-		return wrapped.fillBuffer(buffer);
+	public void fillBuffer(ByteBuffer buffer) throws StreamException {
+		wrapped.fillBuffer(buffer);
 	}
 }
