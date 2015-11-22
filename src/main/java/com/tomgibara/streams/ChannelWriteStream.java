@@ -4,6 +4,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
+/**
+ * Writes values to a {@link WritableByteChannel}. Any {@link IOException}
+ * encountered by this class is wrapped as a {@link StreamException} and
+ * rethrown.
+ * 
+ * @author Tom Gibara
+ *
+ */
+
 public class ChannelWriteStream implements WriteStream {
 
 	private final WritableByteChannel channel;
@@ -61,6 +70,22 @@ public class ChannelWriteStream implements WriteStream {
 	@Override
 	public void writeChar(char v) throws StreamException {
 		write( buffer.putChar(v) );
+	}
+	
+	/**
+	 * Closes the underlying channel.
+	 * 
+	 * @throws StreamException
+	 *             if an {@link IOException} occurs while closing the channel
+	 */
+	
+	@Override
+	public void close() throws StreamException {
+		try {
+			channel.close();
+		} catch (IOException e) {
+			throw new StreamException();
+		}
 	}
 	
 	@Override

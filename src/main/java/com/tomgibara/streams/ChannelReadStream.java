@@ -4,6 +4,16 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
+/**
+ * Reads values from a {@link ReadableByteChannel}. Any {@link IOException}
+ * encountered by this class is wrapped as {@link StreamException} and rethrown.
+ * Any end-of-stream condition is signalled with an {@link EndOfStreamException}
+ * .
+ * @author Tom Gibara
+ *
+ * @see EndOfStreamException#EOS
+ */
+
 public final class ChannelReadStream implements ReadStream {
 
 	private final ReadableByteChannel channel;
@@ -75,6 +85,13 @@ public final class ChannelReadStream implements ReadStream {
 			throw new StreamException(e);
 		}
 	}
+	
+	/**
+	 * Closes the underlying channel.
+	 * 
+	 * @throws StreamException
+	 *             if an {@link IOException} occurs while closing the channel
+	 */
 	
 	@Override
 	public void close() {
