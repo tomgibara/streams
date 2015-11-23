@@ -163,8 +163,7 @@ public final class ByteReadStream implements ReadStream {
 
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
-		int length = buffer.remaining();
-		requireBytes(length);
+		int length = Math.min(buffer.remaining(), limit - position);
 		buffer.put(bytes, position, length);
 		position += length;
 	}
@@ -172,4 +171,5 @@ public final class ByteReadStream implements ReadStream {
 	private void requireBytes(int count) {
 		if (position + count > limit) throw EndOfStreamException.EOS;
 	}
+
 }

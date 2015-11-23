@@ -260,21 +260,25 @@ public interface ReadStream extends CloseableStream {
 	/**
 	 * Fills the buffer with bytes read from the stream. Bytes will be written
 	 * starting from <i>position</i> and continuing until <i>limit</i> is
-	 * reached.
+	 * reached. If an 'end-of-stream' condition occurs, no
+	 * {@link EndOfStreamException} is raised, instead the buffer is returned
+	 * without reaching its limit.
 	 * 
 	 * @param buffer
 	 *            the buffer to contain the read bytes
 	 * @return the number of bytes read
 	 * @throws StreamException
 	 *             if the bytes could not be read
-	 * @throws EndOfStreamException
-	 *             if the stream was exhausted before the buffer limit was
-	 *             reached
 	 */
 	
 	default void fillBuffer(ByteBuffer buffer) throws StreamException {
-		for (int i = buffer.remaining(); i > 0; i--) {
-			buffer.put(readByte());
+		try {
+			for (int i = buffer.remaining(); i > 0; i--) {
+				buffer.put(readByte());
+			}
+		} catch (EndOfStreamException e) {
+			// swallowed - unfilled buffer indicates EOS
+			return;
 		}
 	}
 	

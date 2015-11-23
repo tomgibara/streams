@@ -262,20 +262,25 @@ public interface WriteStream extends CloseableStream {
 	
 	/**
 	 * Writes bytes to the stream from a buffer. Bytes will be read starting at
-	 * <i>position</i> and continuing until <i>limit</i> is reached.
+	 * <i>position</i> and continuing until <i>limit</i> is reached. If an
+	 * 'end-of-stream' condition occurs, no {@link EndOfStreamException} is
+	 * raised, instead the buffer is returned without reaching its limit.
 	 * 
 	 * @param buffer
 	 *            the buffer containing bytes to be written
 	 * @return the number of bytes written
 	 * @throws StreamException
 	 *             if the bytes could not be written
-	 * @throws EndOfStreamException
-	 *             if the stream attempted to exceed its capacity
 	 */
 	
 	default void drainBuffer(ByteBuffer buffer) throws StreamException {
-		for (int i = buffer.remaining(); i > 0; i--) {
-			writeByte(buffer.get());
+		try {
+			for (int i = buffer.remaining(); i > 0; i--) {
+				writeByte(buffer.get());
+			}
+		} catch (EndOfStreamException e) {
+			// swallowed - unfilled buffer indicates EOS
+			return;
 		}
 	}
 
