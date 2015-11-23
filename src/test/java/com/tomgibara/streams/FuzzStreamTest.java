@@ -27,6 +27,9 @@ import org.junit.Test;
 
 abstract class FuzzStreamTest extends TestCase {
 
+	static final int MAX_WRITES = 100;
+	static final int MAX_LEN = 50;
+	
 	abstract WriteStream newWriter();
 
 	abstract ReadStream newReader(WriteStream writer);
