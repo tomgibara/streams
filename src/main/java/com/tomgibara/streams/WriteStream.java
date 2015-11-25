@@ -260,7 +260,13 @@ public interface WriteStream extends CloseableStream {
 		}
 	}
 
-	//TODO document
+	/**
+	 * Indicates the preferred buffering strategy for this stream
+	 * implementation.
+	 * 
+	 * @return the preferred buffering strategy
+	 */
+
 	default StreamBuffering getBuffering() {
 		return StreamBuffering.UNSUPPORTED;
 	}
