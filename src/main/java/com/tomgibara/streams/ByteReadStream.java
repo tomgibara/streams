@@ -162,6 +162,11 @@ public final class ByteReadStream implements ReadStream {
 	}
 
 	@Override
+	public StreamBuffering getBuffering() {
+		return StreamBuffering.PREFER_ANY;
+	}
+	
+	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		int length = Math.min(buffer.remaining(), limit - position);
 		buffer.put(bytes, position, length);

@@ -37,7 +37,7 @@ public class ChannelWriteStream extends AbstractChannelWriteStream {
 	void drainBuffer(WritableByteChannel channel, ByteBuffer buffer) throws IOException {
 		while (buffer.hasRemaining()) {
 			int count = channel.write(buffer);
-			if (count == -1) throw EndOfStreamException.EOS;
+			if (count == -1) return;
 		}
 	}
 	

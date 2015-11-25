@@ -91,10 +91,7 @@ abstract class AbstractChannelWriteStream implements WriteStream {
 	@Override
 	public void drainBuffer(ByteBuffer buffer) throws StreamException {
 		try {
-			while (buffer.hasRemaining()) {
-				int count = channel.write(buffer);
-				if (count == -1) throw EndOfStreamException.EOS;
-			}
+			drainBuffer(channel, buffer);
 		} catch (IOException e) {
 			throw new StreamException(e);
 		}
@@ -105,7 +102,9 @@ abstract class AbstractChannelWriteStream implements WriteStream {
 	private void write(ByteBuffer buffer) {
 		buffer.flip();
 		drainBuffer(buffer);
+		boolean eos = buffer.hasRemaining();
 		buffer.clear();
+		if (eos) throw EndOfStreamException.EOS;
 	}
 
 }

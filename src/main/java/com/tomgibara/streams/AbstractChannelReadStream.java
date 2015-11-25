@@ -65,6 +65,11 @@ abstract class AbstractChannelReadStream implements ReadStream {
 	}
 	
 	@Override
+	public StreamBuffering getBuffering() {
+		return StreamBuffering.PREFER_DIRECT;
+	}
+	
+	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		try {
 			fillBuffer(channel, buffer);

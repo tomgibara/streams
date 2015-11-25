@@ -18,6 +18,7 @@ package com.tomgibara.streams;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 /**
  * Reads values from an {@link InputStream}. Any {@link IOException} encountered
@@ -62,12 +63,7 @@ public final class InputReadStream implements ReadStream {
 	@Override
 	public void readBytes(byte[] bs, int off, int len) {
 		try {
-			while (len > 0) {
-				int r = in.read(bs, off, len);
-				if (r < 0) throw EndOfStreamException.EOS;
-				off += r;
-				len -= r;
-			}
+			readFully(bs, off, len);
 		} catch (IOException e) {
 			throw new StreamException(e);
 		}
@@ -99,6 +95,36 @@ public final class InputReadStream implements ReadStream {
 				        buffer[7] & 0xff;
 	}
 
+	@Override
+	public void fillBuffer(ByteBuffer buffer) throws StreamException {
+		if (!buffer.hasArray()) {
+			ReadStream.super.fillBuffer(buffer);
+		} else {
+			try {
+				int offset = buffer.arrayOffset();
+				byte[] array = buffer.array();
+				while (buffer.hasRemaining()) {
+					int available = in.available();
+					if (available <= 0) {
+						int b = in.read();
+						if (b == -1) return; //EOS
+						buffer.put((byte) b);
+					} else {
+						int position = Math.min(available, buffer.remaining());
+						readFully(array, offset + buffer.position(), offset + position);
+						buffer.position(position);
+					}
+				}
+			} catch (IOException e) {
+				throw new StreamException(e);
+			} catch (EndOfStreamException e) {
+				// swallowed - unfilled buffer indicates EOS
+				return;
+			}
+		}
+	}
+	
+	
 	/**
 	 * Closes the underlying {@link InputStream}.
 	 */
@@ -109,6 +135,15 @@ public final class InputReadStream implements ReadStream {
 			in.close();
 		} catch (IOException e) {
 			throw new StreamException(e);
+		}
+	}
+
+	private void readFully(byte[] bs, int off, int len) throws IOException {
+		while (len > 0) {
+			int r = in.read(bs, off, len);
+			if (r < 0) throw EndOfStreamException.EOS;
+			off += r;
+			len -= r;
 		}
 	}
 

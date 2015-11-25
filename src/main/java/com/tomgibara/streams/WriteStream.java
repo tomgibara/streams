@@ -259,6 +259,11 @@ public interface WriteStream extends CloseableStream {
 			}
 		}
 	}
+
+	//TODO document
+	default StreamBuffering getBuffering() {
+		return StreamBuffering.UNSUPPORTED;
+	}
 	
 	/**
 	 * Writes bytes to the stream from a buffer. Bytes will be read starting at

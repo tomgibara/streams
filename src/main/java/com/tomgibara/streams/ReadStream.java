@@ -257,6 +257,11 @@ public interface ReadStream extends CloseableStream {
 		return new String(cs);
 	}
 
+	//TODO document
+	default StreamBuffering getBuffering() {
+		return StreamBuffering.UNSUPPORTED;
+	}
+	
 	/**
 	 * Fills the buffer with bytes read from the stream. Bytes will be written
 	 * starting from <i>position</i> and continuing until <i>limit</i> is
@@ -273,7 +278,7 @@ public interface ReadStream extends CloseableStream {
 	
 	default void fillBuffer(ByteBuffer buffer) throws StreamException {
 		try {
-			for (int i = buffer.remaining(); i > 0; i--) {
+			while (buffer.hasRemaining()) {
 				buffer.put(readByte());
 			}
 		} catch (EndOfStreamException e) {
