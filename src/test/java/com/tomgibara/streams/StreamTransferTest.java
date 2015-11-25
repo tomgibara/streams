@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.tomgibara.fundament.Producer;
 
-public class StreamsTest {
+public class StreamTransferTest {
 
 	private final static int MAX_LEN = 3000;
 	
