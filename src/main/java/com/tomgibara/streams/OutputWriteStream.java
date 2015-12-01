@@ -110,6 +110,17 @@ public final class OutputWriteStream implements WriteStream {
 	}
 
 	/**
+	 * Returns the underlying output stream
+	 * 
+	 * @return the output stream
+	 */
+
+	@Override
+	public OutputStream asOutputStream() {
+		return out;
+	}
+	
+	/**
 	 * Closes the underlying {@link OutputStream}.
 	 */
 

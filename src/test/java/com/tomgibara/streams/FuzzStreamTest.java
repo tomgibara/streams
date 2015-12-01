@@ -16,6 +16,11 @@
  */
 package com.tomgibara.streams;
 
+import static org.junit.Assert.assertArrayEquals;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Random;
@@ -178,6 +183,104 @@ abstract class FuzzStreamTest extends TestCase {
 			cs[i] = (char) r.nextInt();
 		}
 		return cs;
+	}
+
+	@Test
+	public void testAsInputStream() throws IOException {
+		Random r = new Random(0L);
+		for (int i = 0; i < 100; i++) {
+			testAsInputStream(r.nextInt(256), r.nextBoolean(), r.nextBoolean());
+		}
+	}
+	
+	private void testAsInputStream(int offset, boolean skipWithArray, boolean readWithArray) throws IOException {
+		WriteStream w = newWriter();
+		for (int i = 0; i < 256; i++) {
+			w.writeByte((byte) i);
+		}
+		ReadStream r = newReader(w);
+		if (skipWithArray) {
+			r.readBytes(new byte[offset]);
+		} else {
+			int count = 0;
+			while (count < offset) {
+				if (offset - count > 8) {
+					r.readLong();
+					count += 8;
+				} else if (offset - count > 4) {
+					r.readInt();
+					count += 4;
+				} else if (offset - count > 2) {
+					r.readShort();
+					count += 2;
+				} else {
+					r.readByte();
+					count += 1;
+				}
+			}
+		}
+		InputStream in = r.asInputStream();
+		if (readWithArray) {
+			offset += in.read(new byte[256]);
+			assertEquals(256, offset);
+		} else {
+			while (offset < 256) {
+				int n = in.read();
+				assertEquals(offset, n);
+				offset ++;
+			}
+		}
+		assertEquals(-1, in.read());
+	}
+
+	@Test
+	public void testAsOutputStream() throws IOException {
+		Random r = new Random(0L);
+		for (int i = 0; i < 25; i++) {
+			testAsOutputStream(r.nextInt(256));
+		}
+	}
+	
+	private void testAsOutputStream(int offset) throws IOException {
+		WriteStream w = newWriter();
+
+		int count = 0;
+		while (count < offset) {
+			if (offset - count > 8) {
+				w.writeLong(0L);
+				count += 8;
+			} else if (offset - count > 4) {
+				w.writeInt(0);
+				count += 4;
+			} else if (offset - count > 2) {
+				w.writeShort((short) 0);
+				count += 2;
+			} else {
+				w.writeByte((byte) 0);
+				count += 1;
+			}
+		}
+
+		OutputStream out = w.asOutputStream();
+		for (; count < 256; count++) {
+			out.write(count);
+		}
+
+		ReadStream r = newReader(w);
+		byte[] bs = new byte[offset];
+		r.readBytes(bs);
+		assertArrayEquals(new byte[offset], bs);
+
+		for (int i = offset; i < 256; i++) {
+			assertEquals(i, r.readByte() & 0xff);
+		}
+
+		try {
+			r.readByte();
+			fail();
+		} catch (EndOfStreamException e) {
+			/* expected */
+		}
 	}
 
 }

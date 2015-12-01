@@ -124,6 +124,16 @@ public final class InputReadStream implements ReadStream {
 		}
 	}
 	
+	/**
+	 * Returns the underlying input stream.
+	 * 
+	 * @return the input stream
+	 */
+
+	@Override
+	public InputStream asInputStream() {
+		return in;
+	}
 	
 	/**
 	 * Closes the underlying {@link InputStream}.

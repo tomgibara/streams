@@ -16,6 +16,7 @@
  */
 package com.tomgibara.streams;
 
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 import com.tomgibara.fundament.Consumer;
@@ -296,6 +297,10 @@ public interface WriteStream extends CloseableStream {
 	}
 
 	// convenience methods
+	
+	default OutputStream asOutputStream() {
+		return new WriteOutputStream(this);
+	}
 	
 	default <T> Consumer<T> writeWith(StreamSerializer<T> serializer) {
 		return v -> serializer.serialize(v, this);
