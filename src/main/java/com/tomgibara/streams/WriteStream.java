@@ -18,6 +18,7 @@ package com.tomgibara.streams;
 
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 
 import com.tomgibara.fundament.Consumer;
 
@@ -300,6 +301,10 @@ public interface WriteStream extends CloseableStream {
 	
 	default OutputStream asOutputStream() {
 		return new WriteOutputStream(this);
+	}
+
+	default WritableByteChannel asChannel() {
+		return new WritableStreamChannel(this);
 	}
 	
 	default <T> Consumer<T> writeWith(StreamSerializer<T> serializer) {

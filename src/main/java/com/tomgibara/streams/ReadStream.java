@@ -18,6 +18,7 @@ package com.tomgibara.streams;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
 
 import com.tomgibara.fundament.Producer;
 
@@ -298,6 +299,10 @@ public interface ReadStream extends CloseableStream {
 	
 	default InputStream asInputStream() {
 		return new ReadInputStream(this);
+	}
+	
+	default ReadableByteChannel asChannel() {
+		return new ReadableStreamChannel(this);
 	}
 	
 	default <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {

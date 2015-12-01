@@ -1,7 +1,9 @@
 package com.tomgibara.streams;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 
 /**
@@ -72,6 +74,28 @@ abstract class AbstractChannelWriteStream implements WriteStream {
 		write( buffer.putChar(v) );
 	}
 	
+	@Override
+	public void drainBuffer(ByteBuffer buffer) throws StreamException {
+		try {
+			while (buffer.hasRemaining()) {
+				int count = channel.write(buffer);
+				if (count == -1) return;
+			}
+		} catch (IOException e) {
+			throw new StreamException(e);
+		}
+	}
+
+	@Override
+	public OutputStream asOutputStream() {
+		return Channels.newOutputStream(channel);
+	}
+	
+	@Override
+	public WritableByteChannel asChannel() {
+		return channel;
+	}
+	
 	/**
 	 * Closes the underlying channel.
 	 * 
@@ -87,17 +111,6 @@ abstract class AbstractChannelWriteStream implements WriteStream {
 			throw new StreamException();
 		}
 	}
-	
-	@Override
-	public void drainBuffer(ByteBuffer buffer) throws StreamException {
-		try {
-			drainBuffer(channel, buffer);
-		} catch (IOException e) {
-			throw new StreamException(e);
-		}
-	}
-	
-	abstract void drainBuffer(WritableByteChannel channel, ByteBuffer buffer) throws IOException;
 	
 	private void write(ByteBuffer buffer) {
 		buffer.flip();

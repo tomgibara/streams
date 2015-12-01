@@ -1,7 +1,9 @@
 package com.tomgibara.streams;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 /**
@@ -32,13 +34,5 @@ public final class ChannelReadStream extends AbstractChannelReadStream {
 	public ChannelReadStream(ReadableByteChannel channel) {
 		super(channel);
 	}
-	
-	@Override
-	void fillBuffer(ReadableByteChannel channel, ByteBuffer buffer) throws IOException  {
-		while (buffer.hasRemaining()) {
-			int count = channel.read(buffer);
-			if (count == -1) return;
-		}
-	}
-	
+
 }

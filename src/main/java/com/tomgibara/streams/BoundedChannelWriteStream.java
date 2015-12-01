@@ -22,8 +22,6 @@ import java.nio.channels.WritableByteChannel;
 
 public class BoundedChannelWriteStream extends AbstractChannelWriteStream {
 
-	private long length;
-	
 	/**
 	 * Creates a stream that writes to the supplied channel. Bytes will be
 	 * written starting from the current channel position. No more than
@@ -38,29 +36,7 @@ public class BoundedChannelWriteStream extends AbstractChannelWriteStream {
 	 */
 
 	public BoundedChannelWriteStream(WritableByteChannel channel, long length) {
-		super(channel);
-		this.length = length;
+		super(new BoundedWritableChannel(channel, length));
 	}
-	
-	@Override
-	void drainBuffer(WritableByteChannel channel, ByteBuffer buffer) throws IOException {
-		int remaining = buffer.remaining();
-		if (remaining < length) { // within bounds case
-			while (buffer.hasRemaining()) {
-				int count = channel.write(buffer);
-				if (count == -1) return;
-				length -= count;
-			}
-		} else { // over bounds case
-			int oldLimit = buffer.limit();
-			buffer.limit(buffer.position() + (int) length);
-			while (buffer.hasRemaining()) {
-				int count = channel.write(buffer);
-				if (count == -1) return;
-				length -= count;
-			}
-			buffer.limit(oldLimit);
-		}
-	}
-	
+
 }

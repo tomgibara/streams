@@ -21,8 +21,6 @@ import java.nio.channels.ReadableByteChannel;
 
 public final class BoundedChannelReadStream extends AbstractChannelReadStream {
 
-	private long length;
-
 	/**
 	 * Creates a stream which reads from the supplied channel. Bytes will be
 	 * read starting from the current channel position. No more than
@@ -36,30 +34,7 @@ public final class BoundedChannelReadStream extends AbstractChannelReadStream {
 	 *            the maximum number of bytes that may be read from the channel
 	 */
 	public BoundedChannelReadStream(ReadableByteChannel channel, long length) {
-		super(channel);
-		if (length < 0L) throw new IllegalArgumentException("negative length");
-		this.length = length;
+		super(new BoundedReadableChannel(channel, length));
 	}
 	
-	@Override
-	void fillBuffer(ReadableByteChannel channel, ByteBuffer buffer) throws IOException {
-		int remaining = buffer.remaining();
-		if (remaining < length) { // within bounds case
-			while (buffer.hasRemaining()) {
-				int count = channel.read(buffer);
-				if (count == -1) return;
-				length -= count;
-			}
-		} else { // over bounds case
-			int oldLimit = buffer.limit();
-			buffer.limit(buffer.position() + (int) length);
-			while (buffer.hasRemaining()) {
-				int count = channel.read(buffer);
-				if (count == -1) return;
-				length -= count;
-			}
-			buffer.limit(oldLimit);
-		}
-	}
-
 }

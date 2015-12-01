@@ -33,12 +33,4 @@ public class ChannelWriteStream extends AbstractChannelWriteStream {
 		super(channel);
 	}
 	
-	@Override
-	void drainBuffer(WritableByteChannel channel, ByteBuffer buffer) throws IOException {
-		while (buffer.hasRemaining()) {
-			int count = channel.write(buffer);
-			if (count == -1) return;
-		}
-	}
-	
 }

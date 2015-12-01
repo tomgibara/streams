@@ -1,7 +1,9 @@
 package com.tomgibara.streams;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 abstract class AbstractChannelReadStream implements ReadStream {
@@ -72,10 +74,23 @@ abstract class AbstractChannelReadStream implements ReadStream {
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		try {
-			fillBuffer(channel, buffer);
+			while (buffer.hasRemaining()) {
+				int count = channel.read(buffer);
+				if (count == -1) return;
+			}
 		} catch (IOException e) {
 			throw new StreamException(e);
 		}
+	}
+	
+	@Override
+	public ReadableByteChannel asChannel() {
+		return channel;
+	}
+
+	@Override
+	public InputStream asInputStream() {
+		return Channels.newInputStream(channel);
 	}
 	
 	/**
@@ -94,9 +109,6 @@ abstract class AbstractChannelReadStream implements ReadStream {
 		}
 	}
 	
-	abstract void fillBuffer(ReadableByteChannel channel, ByteBuffer buffer) throws IOException;
-	
-
 	private ByteBuffer read(ByteBuffer buffer, int position) {
 		buffer.position(position);
 		fillBuffer(buffer);
