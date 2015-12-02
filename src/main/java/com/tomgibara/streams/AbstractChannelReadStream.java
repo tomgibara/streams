@@ -6,9 +6,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
+//TODO eliminate
 abstract class AbstractChannelReadStream implements ReadStream {
 
-	private final ReadableByteChannel channel;
+	final ReadableByteChannel channel;
 	private final ByteBuffer buffer = ByteBuffer.allocate(8);
 
 	public AbstractChannelReadStream(ReadableByteChannel channel) {

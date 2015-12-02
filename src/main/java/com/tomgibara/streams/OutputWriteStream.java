@@ -109,6 +109,11 @@ public final class OutputWriteStream implements WriteStream {
 		}
 	}
 
+	@Override
+	public WriteStream bounded(long length) {
+		return new OutputWriteStream(new BoundedOutputStream(out, length));
+	}
+	
 	/**
 	 * Returns the underlying output stream
 	 * 

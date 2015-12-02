@@ -297,6 +297,10 @@ public interface ReadStream extends CloseableStream {
 	
 	// convenience methods
 	
+	default ReadStream bounded(long length) {
+		return new BoundedReadStream(this, length);
+	}
+	
 	default InputStream asInputStream() {
 		return new ReadInputStream(this);
 	}

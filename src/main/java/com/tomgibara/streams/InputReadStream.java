@@ -123,6 +123,11 @@ public final class InputReadStream implements ReadStream {
 			}
 		}
 	}
+
+	@Override
+	public ReadStream bounded(long length) {
+		return new InputReadStream(new BoundedInputStream(in, length));
+	}
 	
 	/**
 	 * Returns the underlying input stream.

@@ -35,4 +35,19 @@ public final class ChannelReadStream extends AbstractChannelReadStream {
 		super(channel);
 	}
 
+	/**
+	 * Creates a stream which reads from the underlying channel. Bytes will be
+	 * read starting from the current channel position. No more than
+	 * <i>length</i> bytes may be read from the stream. An 'end of stream'
+	 * condition occurs when either the channel is exhausted or when reading
+	 * from the channel would exceed the specified length.
+	 * 
+	 * @param length
+	 *            the maximum number of bytes that may be read from the channel
+	 */
+
+	@Override
+	public ReadStream bounded(long length) {
+		return new ChannelReadStream(new BoundedReadableChannel(channel, length));
+	}
 }

@@ -172,7 +172,7 @@ public final class ByteReadStream implements ReadStream {
 		buffer.put(bytes, position, length);
 		position += length;
 	}
-
+	
 	private void requireBytes(int count) {
 		if (position + count > limit) throw EndOfStreamException.EOS;
 	}

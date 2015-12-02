@@ -32,5 +32,20 @@ public class ChannelWriteStream extends AbstractChannelWriteStream {
 	public ChannelWriteStream(WritableByteChannel channel) {
 		super(channel);
 	}
-	
+
+	/**
+	 * Creates a stream that writes to the underlying channel. Bytes will be
+	 * written starting from the current channel position. No more than
+	 * <i>length</i> bytes may be written to the stream. An 'end of stream'
+	 * condition occurs when either the channel is full or when writing to the
+	 * channel would exceed the specified length.
+	 * 
+	 * @param length
+	 *            the maximum number of bytes that may be written to the channel
+	 */
+
+	@Override
+	public WriteStream bounded(long length) {
+		return new ChannelWriteStream(new BoundedWritableChannel(channel, length));
+	}
 }

@@ -298,6 +298,10 @@ public interface WriteStream extends CloseableStream {
 	}
 
 	// convenience methods
+
+	default WriteStream bounded(long length) {
+		return new BoundedWriteStream(this, length);
+	}
 	
 	default OutputStream asOutputStream() {
 		return new WriteOutputStream(this);
@@ -310,7 +314,7 @@ public interface WriteStream extends CloseableStream {
 	default <T> Consumer<T> writeWith(StreamSerializer<T> serializer) {
 		return v -> serializer.serialize(v, this);
 	}
-	
+
 	// closeable
 	
 	@Override

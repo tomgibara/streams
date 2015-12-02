@@ -15,9 +15,10 @@ import java.nio.channels.WritableByteChannel;
  *
  */
 
+//TODO eliminate
 abstract class AbstractChannelWriteStream implements WriteStream {
 
-	private final WritableByteChannel channel;
+	final WritableByteChannel channel;
 	private final ByteBuffer buffer = ByteBuffer.allocate(8);
 
 	public AbstractChannelWriteStream(WritableByteChannel channel) {
