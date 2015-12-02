@@ -21,7 +21,7 @@ import java.nio.channels.WritableByteChannel;
  * @see EndOfStreamException#EOS
  */
 
-public final class ChannelWriteStream implements WriteStream {
+final class ChannelWriteStream implements WriteStream {
 
 	private final WritableByteChannel channel;
 	private final ByteBuffer buffer = ByteBuffer.allocate(8);
@@ -34,7 +34,7 @@ public final class ChannelWriteStream implements WriteStream {
 	 *            a byte channel
 	 */
 
-	public ChannelWriteStream(WritableByteChannel channel) {
+	ChannelWriteStream(WritableByteChannel channel) {
 		this.channel = channel;
 	}
 	

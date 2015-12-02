@@ -30,7 +30,7 @@ import java.nio.ByteBuffer;
  * @see EndOfStreamException#EOS
  */
 
-public final class InputReadStream implements ReadStream {
+final class InputReadStream implements ReadStream {
 
 	private final InputStream in;
 
@@ -44,8 +44,7 @@ public final class InputReadStream implements ReadStream {
 	 *            an input stream from which bytes should be read
 	 */
 
-	public InputReadStream(InputStream in) {
-		if (in == null) throw new IllegalArgumentException("null in");
+	InputReadStream(InputStream in) {
 		this.in = in;
 	}
 

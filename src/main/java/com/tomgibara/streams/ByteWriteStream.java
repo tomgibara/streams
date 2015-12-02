@@ -27,7 +27,7 @@ import java.util.Arrays;
  *
  */
 
-public final class ByteWriteStream implements WriteStream {
+final class ByteWriteStream implements WriteStream {
 
 	private static final int DEFAULT_CAPACITY = 32;
 
@@ -40,7 +40,7 @@ public final class ByteWriteStream implements WriteStream {
 	 * Creates a new stream with a default initial capacity.
 	 */
 
-	public ByteWriteStream() {
+	ByteWriteStream() {
 		this(DEFAULT_CAPACITY);
 	}
 
@@ -65,45 +65,6 @@ public final class ByteWriteStream implements WriteStream {
 		return position;
 	}
 	
-	/**
-	 * The byte data recorded by the stream. The returned array is a copy of the
-	 * internal data store and may thus be subsequently mutated by the caller.
-	 *
-	 * @return the byte data streamed
-	 * @deprecated use {@link #getBytes(boolean)} instead
-	 */
-
-	@Deprecated
-	public byte[] getBytes() {
-		return getBytes(true);
-	}
-
-	/**
-	 * <p>
-	 * The byte data recorded by the stream. Supplying true returns a copy of
-	 * the internal data store of the writer. Supplying closes the writer and
-	 * returns the byte array which backed the writer. Subsequent attempts to
-	 * write to the writer will fail with an {@link EndOfStreamException} as per
-	 * the {@link #close()} method.
-	 * 
-	 * <p>
-	 * Note that the length of an uncopied byte array may exceed the number of
-	 * bytes written, for this reason direct retrieval of the byte storage is
-	 * best reserved for situations where the initial capacity specified and not
-	 * exceeded.
-	 *
-	 * @param copy
-	 *            whether the bytes returned should be a copy of the bytes
-	 *            accumulated by this writer
-	 * @return the byte data streamed
-	 */
-
-	public byte[] getBytes(boolean copy) {
-		if (copy) return Arrays.copyOf(bytes, position < 0 ? -1 - position : position);
-		if (!isClosed()) close();
-		return bytes;
-	}
-
 	@Override
 	public void writeByte(byte v) {
 		ensureFurtherCapacity(1);
@@ -195,6 +156,32 @@ public final class ByteWriteStream implements WriteStream {
 	@Override
 	public void close() {
 		position = -1 - position;
+	}
+
+	/**
+	 * <p>
+	 * The byte data recorded by the stream. Supplying true returns a copy of
+	 * the internal data store of the writer. Supplying closes the writer and
+	 * returns the byte array which backed the writer. Subsequent attempts to
+	 * write to the writer will fail with an {@link EndOfStreamException} as per
+	 * the {@link #close()} method.
+	 * 
+	 * <p>
+	 * Note that the length of an uncopied byte array may exceed the number of
+	 * bytes written, for this reason direct retrieval of the byte storage is
+	 * best reserved for situations where the initial capacity specified and not
+	 * exceeded.
+	 *
+	 * @param copy
+	 *            whether the bytes returned should be a copy of the bytes
+	 *            accumulated by this writer
+	 * @return the byte data streamed
+	 */
+
+	byte[] getBytes(boolean copy) {
+		if (copy) return Arrays.copyOf(bytes, position < 0 ? -1 - position : position);
+		if (!isClosed()) close();
+		return bytes;
 	}
 
 	private boolean isClosed() {

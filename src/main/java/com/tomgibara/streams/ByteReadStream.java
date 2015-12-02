@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
  * @see EndOfStreamException#EOS
  */
 
-public final class ByteReadStream implements ReadStream {
+final class ByteReadStream implements ReadStream {
 
 	private final byte[] bytes;
 	private final int limit;
@@ -42,7 +42,7 @@ public final class ByteReadStream implements ReadStream {
 	 * @param bytes the data to be streamed
 	 */
 
-	public ByteReadStream(byte[] bytes) {
+	ByteReadStream(byte[] bytes) {
 		if (bytes == null) throw new IllegalArgumentException("null bytes");
 		this.bytes = bytes;
 		this.limit = bytes.length;

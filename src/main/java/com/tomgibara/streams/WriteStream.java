@@ -36,6 +36,7 @@ import com.tomgibara.fundament.Consumer;
  *
  */
 
+@FunctionalInterface
 public interface WriteStream extends CloseableStream {
 
 	/**

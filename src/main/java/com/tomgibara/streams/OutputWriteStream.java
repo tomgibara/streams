@@ -27,7 +27,7 @@ import java.io.OutputStream;
  *
  */
 
-public final class OutputWriteStream implements WriteStream {
+final class OutputWriteStream implements WriteStream {
 
 	private final OutputStream out;
 
@@ -38,8 +38,7 @@ public final class OutputWriteStream implements WriteStream {
 	 *            an output stream to which bytes should be written
 	 */
 
-	public OutputWriteStream(OutputStream out) {
-		if (out == null) throw new IllegalArgumentException("null out");
+	OutputWriteStream(OutputStream out) {
 		this.out = out;
 	}
 

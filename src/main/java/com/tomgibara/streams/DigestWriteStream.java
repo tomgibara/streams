@@ -24,7 +24,7 @@ import java.security.MessageDigest;
  * @author Tom Gibara
  */
 
-public final class DigestWriteStream implements WriteStream {
+final class DigestWriteStream implements WriteStream {
 
 	private final MessageDigest digest;
 
@@ -35,19 +35,8 @@ public final class DigestWriteStream implements WriteStream {
 	 *            digests the resulting byte stream
 	 */
 
-	public DigestWriteStream(MessageDigest digest) {
-		if (digest == null) throw new IllegalArgumentException("null digest");
+	DigestWriteStream(MessageDigest digest) {
 		this.digest = digest;
-	}
-
-	/**
-	 * The digest with which values are accumulated by this stream.
-	 *
-	 * @return the digest for this stream
-	 */
-
-	public MessageDigest getDigest() {
-		return digest;
 	}
 
 	@Override

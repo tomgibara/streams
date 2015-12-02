@@ -21,7 +21,7 @@ import java.nio.channels.ReadableByteChannel;
  * @see EndOfStreamException#EOS
  */
 
-public final class ChannelReadStream implements ReadStream {
+final class ChannelReadStream implements ReadStream {
 
 	private final ReadableByteChannel channel;
 	private final ByteBuffer buffer = ByteBuffer.allocate(8);
@@ -34,8 +34,7 @@ public final class ChannelReadStream implements ReadStream {
 	 *            a byte channel
 	 */
 
-	public ChannelReadStream(ReadableByteChannel channel) {
-		if (channel == null) throw new IllegalArgumentException("null channel");
+	ChannelReadStream(ReadableByteChannel channel) {
 		this.channel = channel;
 	}
 	

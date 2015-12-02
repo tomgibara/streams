@@ -37,6 +37,7 @@ import com.tomgibara.fundament.Producer;
  *
  */
 
+@FunctionalInterface
 public interface ReadStream extends CloseableStream {
 
 	/**
