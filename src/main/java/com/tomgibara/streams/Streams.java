@@ -8,6 +8,19 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
 
+/**
+ * <p>
+ * Main entry point for the streams API.
+ * 
+ * <p>
+ * The class provides static methods for creating {@link ReadStream} and
+ * {@link WriteStream} instances, together with methods to create
+ * {@link StreamBytes}.
+ * 
+ * @author Tom Gibara
+ *
+ */
+
 public final class Streams {
 
 	private static final int DEFAULT_INITIAL_CAPACITY = 32;
@@ -18,17 +31,55 @@ public final class Streams {
 		return new byte[capacity];
 	}
 
+	/**
+	 * Creates a new {@link StreamBytes} to accumulate bytes written via a
+	 * {@link WriteStream}.
+	 * 
+	 * @return new bytes with default initial capacity and an unlimited maximum
+	 *         capacity
+	 */
+
 	public static StreamBytes bytes() {
 		return new StreamBytes(true, new byte[DEFAULT_INITIAL_CAPACITY], DEFAULT_MAXIMUM_CAPACITY);
 	}
-	
+
+	/**
+	 * Creates a new {@link StreamBytes} to accumulate bytes written via a
+	 * {@link WriteStream}.
+	 * 
+	 * @param initialCapacity
+	 *            the initial capacity of the byte store
+	 * @return new bytes with the specified initial capacity and an unlimited
+	 *         maximum capacity
+	 */
+
 	public static StreamBytes bytes(int initialCapacity) {
 		return new StreamBytes(true, array(initialCapacity), DEFAULT_MAXIMUM_CAPACITY);
 	}
-	
+
+	/**
+	 * Creates a new {@link StreamBytes} to expose bytes through a
+	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
+	 * 
+	 * @param bytes
+	 *            a byte array containing the data to be read/overwritten
+	 * @return new bytes with an unlimited maximum capacity
+	 */
+
 	public static StreamBytes bytes(byte[] bytes) {
 		return new StreamBytes(true, bytes, DEFAULT_MAXIMUM_CAPACITY);
 	}
+
+	/**
+	 * Creates a new {@link StreamBytes} to accumulate bytes written via a
+	 * {@link WriteStream}.
+	 * 
+	 * @param initialCapacity
+	 *            the initial capacity of the byte store
+	 * @param maximumCapacity
+	 *            the maximum capacity to which the byte store may grow
+	 * @return new bytes with the specified capacities
+	 */
 
 	public static StreamBytes bytes(int initialCapacity, int maximumCapacity) {
 		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
@@ -36,6 +87,17 @@ public final class Streams {
 		return new StreamBytes(true, array(initialCapacity), maximumCapacity);
 	}
 	
+	/**
+	 * Creates a new {@link StreamBytes} to expose bytes through a
+	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
+	 * 
+	 * @param bytes
+	 *            a byte array containing the data to be read/overwritten
+	 * @param maximumCapacity
+	 *            the maximum capacity to which the byte store may grow
+	 * @return new bytes the specified maximum capacity
+	 */
+
 	public static StreamBytes bytes(byte[] bytes, int maximumCapacity) {
 		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
 		if (bytes.length > maximumCapacity) throw new IllegalArgumentException("initial capacity exceeds maximumCapacity");
