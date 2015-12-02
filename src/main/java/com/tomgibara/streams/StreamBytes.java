@@ -3,13 +3,19 @@ package com.tomgibara.streams;
 public class StreamBytes {
 
 	private final boolean safe;
+	private final int maxCapacity;
 	private byte[] bytes;
 	private ByteWriteStream writer;
 	private ByteReadStream reader;
 
-	StreamBytes(boolean safe, byte[] bytes) {
+	StreamBytes(boolean safe, byte[] bytes, int maxCapacity) {
 		this.safe = safe;
+		this.maxCapacity = maxCapacity;
 		this.bytes = bytes;
+	}
+	
+	public int getMaxCapacity() {
+		return maxCapacity;
 	}
 
 	public WriteStream writer() {
@@ -18,7 +24,7 @@ public class StreamBytes {
 			reader = null;
 		}
 		if (writer == null) {
-			writer = new ByteWriteStream(bytes);
+			writer = new ByteWriteStream(bytes, maxCapacity);
 		}
 		return writer;
 	}

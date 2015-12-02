@@ -10,35 +10,36 @@ import java.security.MessageDigest;
 
 public final class Streams {
 
-	private static final int DEFAULT_CAPACITY = 32;
+	private static final int DEFAULT_INITIAL_CAPACITY = 32;
+	private static final int DEFAULT_MAXIMUM_CAPACITY = Integer.MAX_VALUE;
 
 	private static byte[] array(int capacity) {
-		if (capacity < 1) throw new IllegalArgumentException("capacity non-positive");
+		if (capacity < 0) throw new IllegalArgumentException("capacity non-positive");
 		return new byte[capacity];
 	}
 
-	public static StreamBytes unsafeBytes() {
-		return new StreamBytes(false, new byte[DEFAULT_CAPACITY]);
-	}
-	
-	public static StreamBytes unsafeBytes(int capacity) {
-		return new StreamBytes(false, array(capacity));
-	}
-	
-	public static StreamBytes unsafeBytes(byte[] bytes) {
-		return new StreamBytes(false, bytes);
-	}
-	
 	public static StreamBytes bytes() {
-		return new StreamBytes(true, new byte[DEFAULT_CAPACITY]);
+		return new StreamBytes(true, new byte[DEFAULT_INITIAL_CAPACITY], DEFAULT_MAXIMUM_CAPACITY);
 	}
 	
-	public static StreamBytes bytes(int capacity) {
-		return new StreamBytes(true, array(capacity));
+	public static StreamBytes bytes(int initialCapacity) {
+		return new StreamBytes(true, array(initialCapacity), DEFAULT_MAXIMUM_CAPACITY);
 	}
 	
 	public static StreamBytes bytes(byte[] bytes) {
-		return new StreamBytes(true, bytes);
+		return new StreamBytes(true, bytes, DEFAULT_MAXIMUM_CAPACITY);
+	}
+
+	public static StreamBytes bytes(int initialCapacity, int maximumCapacity) {
+		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
+		if (initialCapacity > maximumCapacity) throw new IllegalArgumentException("initialCapacity exceeds maximumCapacity");
+		return new StreamBytes(true, array(initialCapacity), maximumCapacity);
+	}
+	
+	public static StreamBytes bytes(byte[] bytes, int maximumCapacity) {
+		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
+		if (bytes.length > maximumCapacity) throw new IllegalArgumentException("initial capacity exceeds maximumCapacity");
+		return new StreamBytes(true, bytes, maximumCapacity);
 	}
 
 	/**

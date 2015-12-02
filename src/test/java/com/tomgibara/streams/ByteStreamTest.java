@@ -24,7 +24,7 @@ import org.junit.Assert;
 public class ByteStreamTest extends FuzzStreamTest {
 
 	@Override
-	WriteStream newWriter() { return new ByteWriteStream(); }
+	WriteStream newWriter() { return new ByteWriteStream(new byte[32], Integer.MAX_VALUE); }
 
 	@Override
 	ReadStream newReader(WriteStream writer) {
@@ -32,7 +32,7 @@ public class ByteStreamTest extends FuzzStreamTest {
 	}
 	
 	public void testGetUncopiedBytes() {
-		try (ByteWriteStream writer = new ByteWriteStream(8)) {
+		try (ByteWriteStream writer = new ByteWriteStream(new byte[8], Integer.MAX_VALUE)) {
 			writer.writeLong(-1L);
 			byte[] bytes = writer.getBytes(false);
 			byte[] expected = new byte[8];
@@ -44,6 +44,22 @@ public class ByteStreamTest extends FuzzStreamTest {
 			} catch (EndOfStreamException e) {
 				/* expected */
 			}
+		}
+	}
+
+	public void testMaximumCapacity() {
+		StreamBytes bytes = Streams.bytes(0, 5);
+		WriteStream writer = bytes.writer();
+		writer.writeByte((byte) 0);
+		writer.writeByte((byte) 0);
+		writer.writeByte((byte) 0);
+		writer.writeByte((byte) 0);
+		writer.writeByte((byte) 0);
+		try {
+			writer.writeByte((byte) 0);
+			fail();
+		} catch (EndOfStreamException e) {
+			/* expected */
 		}
 	}
 

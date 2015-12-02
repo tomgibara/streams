@@ -29,36 +29,18 @@ import java.util.Arrays;
 
 final class ByteWriteStream implements WriteStream {
 
-	private static final int DEFAULT_CAPACITY = 32;
-
+	private static final int MIN_CAPACITY_INCR = 32;
 	private static final int MAX_CAPACITY_INCR = 1024 * 1024;
 
-	private int position;
 	private byte[] bytes;
+	private final int maxCapacity;
+	private int position;
 
-	/**
-	 * Creates a new stream with a default initial capacity.
-	 */
-
-	ByteWriteStream() {
-		this(DEFAULT_CAPACITY);
-	}
-
-	/**
-	 * Creates a new stream with the specified initial capacity. No new storage
-	 * will be allocated unless this initial capacity is exceeded.
-	 *
-	 * @param initialCapacity
-	 *            the initial capacity in bytes.
-	 */
-
-	public ByteWriteStream(int initialCapacity) {
-		this(new byte[initialCapacity]);
-	}
-
-	public ByteWriteStream(byte[] bytes) {
-		position = 0;
+	ByteWriteStream(byte[] bytes, int maxCapacity) {
+		// invariant: maxCapacity >= bytes.length
 		this.bytes = bytes;
+		this.maxCapacity = maxCapacity;
+		position = 0;
 	}
 
 	public int position() {
@@ -191,15 +173,18 @@ final class ByteWriteStream implements WriteStream {
 	private void ensureFurtherCapacity(int n) {
 		if (isClosed()) throw EndOfStreamException.EOS;
 		int required = position + n;
+		// checks overflow
+		if (required < 0) throw EndOfStreamException.EOS;
 		if (required > bytes.length) {
+			if (required > maxCapacity) throw EndOfStreamException.EOS;
 			int c = bytes.length;
-			c += c < DEFAULT_CAPACITY ? DEFAULT_CAPACITY : c;
+			c += c < MIN_CAPACITY_INCR ? MIN_CAPACITY_INCR : c;
 			if (c - bytes.length > MAX_CAPACITY_INCR) c = bytes.length + MAX_CAPACITY_INCR;
 			if (c < required) c = required;
+			if (c > maxCapacity) c = maxCapacity;
 			bytes = Arrays.copyOf(bytes, c);
 		}
 
 	}
-
 
 }

@@ -32,7 +32,7 @@ public class StreamTransferTest {
 			}
 
 			ByteReadStream br = new ByteReadStream(srcBytes);
-			ByteWriteStream bw = new ByteWriteStream();
+			ByteWriteStream bw = new ByteWriteStream(new byte[32], Integer.MAX_VALUE);
 			test(br, () -> srcBytes, bw, () -> bw.getBytes(true), length, buffer);
 
 			InputReadStream sr = new InputReadStream(new ByteArrayInputStream(srcBytes));
