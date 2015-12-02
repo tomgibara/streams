@@ -40,7 +40,7 @@ public final class Streams {
 	 */
 
 	public static StreamBytes bytes() {
-		return new StreamBytes(true, new byte[DEFAULT_INITIAL_CAPACITY], DEFAULT_MAXIMUM_CAPACITY);
+		return new StreamBytes(new byte[DEFAULT_INITIAL_CAPACITY], DEFAULT_MAXIMUM_CAPACITY);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public final class Streams {
 	 */
 
 	public static StreamBytes bytes(int initialCapacity) {
-		return new StreamBytes(true, array(initialCapacity), DEFAULT_MAXIMUM_CAPACITY);
+		return new StreamBytes(array(initialCapacity), DEFAULT_MAXIMUM_CAPACITY);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public final class Streams {
 	 */
 
 	public static StreamBytes bytes(byte[] bytes) {
-		return new StreamBytes(true, bytes, DEFAULT_MAXIMUM_CAPACITY);
+		return new StreamBytes(bytes, DEFAULT_MAXIMUM_CAPACITY);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public final class Streams {
 	public static StreamBytes bytes(int initialCapacity, int maximumCapacity) {
 		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
 		if (initialCapacity > maximumCapacity) throw new IllegalArgumentException("initialCapacity exceeds maximumCapacity");
-		return new StreamBytes(true, array(initialCapacity), maximumCapacity);
+		return new StreamBytes(array(initialCapacity), maximumCapacity);
 	}
 	
 	/**
@@ -101,7 +101,7 @@ public final class Streams {
 	public static StreamBytes bytes(byte[] bytes, int maximumCapacity) {
 		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
 		if (bytes.length > maximumCapacity) throw new IllegalArgumentException("initial capacity exceeds maximumCapacity");
-		return new StreamBytes(true, bytes, maximumCapacity);
+		return new StreamBytes(bytes, maximumCapacity);
 	}
 
 	/**

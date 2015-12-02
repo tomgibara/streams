@@ -142,11 +142,11 @@ final class ByteWriteStream implements WriteStream {
 
 	/**
 	 * <p>
-	 * The byte data recorded by the stream. Supplying true returns a copy of
-	 * the internal data store of the writer. Supplying closes the writer and
-	 * returns the byte array which backed the writer. Subsequent attempts to
-	 * write to the writer will fail with an {@link EndOfStreamException} as per
-	 * the {@link #close()} method.
+	 * The byte data recorded by the stream. Supplying false returns a copy of
+	 * the internal data store of the writer. Supplying true closes the writer
+	 * and returns the byte array which backed the writer. Subsequent attempts
+	 * to write to the writer will fail with an {@link EndOfStreamException} as
+	 * per the {@link #close()} method.
 	 * 
 	 * <p>
 	 * Note that the length of an uncopied byte array may exceed the number of
@@ -154,14 +154,14 @@ final class ByteWriteStream implements WriteStream {
 	 * best reserved for situations where the initial capacity specified and not
 	 * exceeded.
 	 *
-	 * @param copy
+	 * @param direct
 	 *            whether the bytes returned should be a copy of the bytes
 	 *            accumulated by this writer
 	 * @return the byte data streamed
 	 */
 
-	byte[] getBytes(boolean copy) {
-		if (copy) return Arrays.copyOf(bytes, position < 0 ? -1 - position : position);
+	byte[] getBytes(boolean direct) {
+		if (!direct) return Arrays.copyOf(bytes, position < 0 ? -1 - position : position);
 		if (!isClosed()) close();
 		return bytes;
 	}

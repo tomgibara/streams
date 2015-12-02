@@ -28,13 +28,13 @@ public class ByteStreamTest extends FuzzStreamTest {
 
 	@Override
 	ReadStream newReader(WriteStream writer) {
-		return new ByteReadStream(((ByteWriteStream) writer).getBytes(true));
+		return new ByteReadStream(((ByteWriteStream) writer).getBytes(false));
 	}
 	
 	public void testGetUncopiedBytes() {
 		try (ByteWriteStream writer = new ByteWriteStream(new byte[8], Integer.MAX_VALUE)) {
 			writer.writeLong(-1L);
-			byte[] bytes = writer.getBytes(false);
+			byte[] bytes = writer.getBytes(true);
 			byte[] expected = new byte[8];
 			Arrays.fill(expected, (byte) -1);
 			Assert.assertArrayEquals(expected, bytes);
