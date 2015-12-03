@@ -1,5 +1,36 @@
 package com.tomgibara.streams;
 
+/**
+ * <p>
+ * Instances of this class can accumulate a byte array via an attached
+ * {@link WriteStream} and/or stream a byte array via an attached
+ * {@link ReadStream}.
+ * 
+ * <p>
+ * The class is designed to support a variety of modes of operation, examples
+ * include:
+ * 
+ * <ul>
+ * <li>Initializing via {@link Streams#bytes(byte[])}, calling {@link #reader()}
+ * and reading the data via its <em>read</em> methods.
+ * <li>Initializing via {@link Streams#bytes()}, calling {@link #writer()},
+ * accumulating byte data via its <em>write</em> methods, and retrieving the
+ * data via the {@link #bytes()} method.
+ * <li>Initializing via {@link Streams#bytes()}, calling {@link #writer()},
+ * accumulating byte data via its <em>write</em> methods, calling
+ * {@link #reader()} and retrieving the data via its <em>read</em> methods.
+ * <li>Initializing via {@link Streams#bytes(int, int)} and alternating calls to
+ * {@link #writer()} and {@link #reader()} to provide a reusable buffer for
+ * proxying structured byte data.
+ * 
+ * @author Tom Gibara
+ * 
+ * @see Streams
+ * @see ReadStream
+ * @see WriteStream
+ *
+ */
+
 public class StreamBytes {
 
 	private final int maxCapacity;
@@ -11,11 +42,26 @@ public class StreamBytes {
 		this.maxCapacity = maxCapacity;
 		this.bytes = bytes;
 	}
-	
+
+	/**
+	 * The maximum capacity permitted for writers attached to this object. When
+	 * unconstrained this method will report the maximum possible array size.
+	 * 
+	 * @return the maximum capacity in bytes
+	 */
+
 	public int getMaxCapacity() {
 		return maxCapacity;
 	}
 
+	/**
+	 * Attaches a writer to the object. If there is already an attached writer,
+	 * the existing writer is returned. If a reader is attached to the object
+	 * when this method is called, the reader is closed and immediately detached
+	 * before a writer is created.
+	 * 
+	 * @return the writer attached to this object
+	 */
 	public WriteStream writer() {
 		if (reader != null) {
 			reader.close(); //TODO should this do something?
@@ -26,6 +72,15 @@ public class StreamBytes {
 		}
 		return writer;
 	}
+	
+	/**
+	 * Attaches a reader to the object. If there is already any attached reader,
+	 * the existing reader is returned. If a writer is attached to the object
+	 * when this method is called, the writer is closed and immediately detached
+	 * before the reader is created.
+	 * 
+	 * @return the reader attached to this object
+	 */
 	
 	public ReadStream reader() {
 		if (writer != null) {
