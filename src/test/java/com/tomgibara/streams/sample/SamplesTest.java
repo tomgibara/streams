@@ -51,8 +51,6 @@ public class SamplesTest {
 	@Test
 	public void samples() {
 		
-		Streams.bytes(0).reader().readBoolean();
-		
 		// read and write all types of primitives
 		try (ReadStream r = someReader) {
 			r.readBoolean();
@@ -66,27 +64,27 @@ public class SamplesTest {
 		}
 		
 		// use an InputStream as a ReadStream
-		try (ReadStream r = Streams.stream(someInput)) {
+		try (ReadStream r = Streams.streamInput(someInput)) {
 			r.readInt();
 			r.readChars();
 			// etc.
 		}
 		
 		// use an OutputStream as a WriteStream
-		try (WriteStream w = Streams.stream(someOutput)) {
+		try (WriteStream w = Streams.streamOutput(someOutput)) {
 			w.writeLong(1234567890123456789L);
 			w.writeChars("Example");
 			// etc.
 		}
 		
 		// use a ReadableByteChannel as a ReadStream
-		try (ReadStream r = Streams.stream(someReadableChannel)) {
+		try (ReadStream r = Streams.streamReadable(someReadableChannel)) {
 			r.fillBuffer(buffer);
 			// etc.
 		}
 
 		// use a WritableByteChannel as a ReadStream
-		try (WriteStream r = Streams.stream(someWritableChannel)) {
+		try (WriteStream r = Streams.streamWritable(someWritableChannel)) {
 			r.drainBuffer(buffer);
 			// etc.
 		}
@@ -120,13 +118,13 @@ public class SamplesTest {
 		Streams.bytes(128).writer().bounded(64); // write only 64 bytes
 		
 		// limit the number of bytes that can be read an input stream
-		Streams.stream(someInput).bounded(1024).asInputStream(); // 1k only
+		Streams.streamInput(someInput).bounded(1024).asInputStream(); // 1k only
 
 		// convert an input stream into a channel...
-		Streams.stream(someInput).asChannel();
+		Streams.streamInput(someInput).asChannel();
 		
 		// ... and vice versa
-		Streams.stream(someReadableChannel).asInputStream();
+		Streams.streamReadable(someReadableChannel).asInputStream();
 		
 		// create a stream using a lambda
 		List<Byte> values = new ArrayList<Byte>();

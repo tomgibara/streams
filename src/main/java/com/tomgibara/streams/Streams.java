@@ -161,7 +161,7 @@ public final class Streams {
 	 * @see EndOfStreamException#EOS
 	 */
 
-	public static ReadStream stream(ReadableByteChannel channel) {
+	public static ReadStream streamReadable(ReadableByteChannel channel) {
 		if (channel == null) throw new IllegalArgumentException("null channel");
 		return new ChannelReadStream(channel);
 	}
@@ -186,7 +186,7 @@ public final class Streams {
 	 * @see EndOfStreamException#EOS
 	 */
 
-	public static WriteStream stream(WritableByteChannel channel) {
+	public static WriteStream streamWritable(WritableByteChannel channel) {
 		if (channel == null) throw new IllegalArgumentException("null channel");
 		return new ChannelWriteStream(channel);
 	}
@@ -207,7 +207,7 @@ public final class Streams {
 	 * @see EndOfStreamException#EOS
 	 */
 
-	public static ReadStream stream(InputStream in) {
+	public static ReadStream streamInput(InputStream in) {
 		if (in == null) throw new IllegalArgumentException("null in");
 		return new InputReadStream(in);
 	}
@@ -224,7 +224,7 @@ public final class Streams {
 	 *            an output stream to which bytes should be written
 	 */
 
-	public static WriteStream stream(OutputStream out) {
+	public static WriteStream streamOutput(OutputStream out) {
 		if (out == null) throw new IllegalArgumentException("null out");
 		return new OutputWriteStream(out);
 	}
@@ -238,7 +238,7 @@ public final class Streams {
 	 *            digests the resulting byte stream
 	 */
 
-	public static WriteStream stream(MessageDigest digest) {
+	public static WriteStream streamDigest(MessageDigest digest) {
 		if (digest == null) throw new IllegalArgumentException("null digest");
 		return new DigestWriteStream(digest);
 	}

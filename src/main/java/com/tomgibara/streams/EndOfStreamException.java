@@ -52,7 +52,6 @@ public class EndOfStreamException extends StreamException {
 	private static final EndOfStreamException EOS = isShared() ? new EndOfStreamException("EOS", null, false, false) : null;
 
 	private static boolean isShared() {
-		System.out.println("B");
 		PrivilegedAction<Boolean> action = () -> { return Boolean.valueOf(System.getProperty(SHARED_PROPERTY)); };
 		return AccessController.doPrivileged(action);
 	}
