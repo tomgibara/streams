@@ -83,7 +83,7 @@ public class SamplesTest {
 			// etc.
 		}
 
-		// use a ReadableByteChannel as a ReadStream
+		// use a WritableByteChannel as a ReadStream
 		try (WriteStream r = Streams.stream(someWritableChannel)) {
 			r.drainBuffer(buffer);
 			// etc.
@@ -134,7 +134,7 @@ public class SamplesTest {
 			r.drainBuffer(buffer);
 		}
 
-		// use a lightweight serialization API to read & write composite values
+		// use a lightweight serialization API to read & write non-primitive values
 		Producer<Point> prd = someReader.readWith(r -> new Point(r.readInt(), r.readInt()));
 		Point pt1 = prd.produce();
 		Point pt2 = prd.produce();
