@@ -53,7 +53,7 @@ public class DefaultStreamTest extends FuzzStreamTest {
 
 		@Override
 		public byte readByte() {
-			if (!iter.hasNext()) throw EndOfStreamException.EOS;
+			if (!iter.hasNext()) EndOfStreamException.raise();
 			return iter.next();
 		}
 

@@ -51,6 +51,8 @@ public class SamplesTest {
 	@Test
 	public void samples() {
 		
+		Streams.bytes(0).reader().readBoolean();
+		
 		// read and write all types of primitives
 		try (ReadStream r = someReader) {
 			r.readBoolean();

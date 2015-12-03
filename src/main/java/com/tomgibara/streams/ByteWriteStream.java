@@ -171,12 +171,12 @@ final class ByteWriteStream implements WriteStream {
 	}
 	
 	private void ensureFurtherCapacity(int n) {
-		if (isClosed()) throw EndOfStreamException.EOS;
+		if (isClosed()) EndOfStreamException.raise();
 		int required = position + n;
 		// checks overflow
-		if (required < 0) throw EndOfStreamException.EOS;
+		if (required < 0) EndOfStreamException.raise();
 		if (required > bytes.length) {
-			if (required > maxCapacity) throw EndOfStreamException.EOS;
+			if (required > maxCapacity) EndOfStreamException.raise();
 			int c = bytes.length;
 			c += c < MIN_CAPACITY_INCR ? MIN_CAPACITY_INCR : c;
 			if (c - bytes.length > MAX_CAPACITY_INCR) c = bytes.length + MAX_CAPACITY_INCR;

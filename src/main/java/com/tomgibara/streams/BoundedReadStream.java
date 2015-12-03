@@ -34,7 +34,7 @@ class BoundedReadStream implements ReadStream {
 	
 	@Override
 	public byte readByte() throws StreamException {
-		if (remaining <= 0) throw EndOfStreamException.EOS;
+		if (remaining <= 0) EndOfStreamException.raise();
 		byte value = stream.readByte();
 		remaining--;
 		return value;

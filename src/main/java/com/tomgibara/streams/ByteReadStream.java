@@ -174,7 +174,7 @@ final class ByteReadStream implements ReadStream {
 	}
 	
 	private void requireBytes(int count) {
-		if (position + count > limit) throw EndOfStreamException.EOS;
+		if (position + count > limit) EndOfStreamException.raise();
 	}
 
 }
