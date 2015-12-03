@@ -28,7 +28,8 @@ public interface CloseableStream extends AutoCloseable {
 
 	/**
 	 * Closes a {@link ReadStream} or {@link WriteStream}. The effect of calling
-	 * this method will vary between implementations.
+	 * this method will vary between implementations, though the method may
+	 * generally be assumed to be idempotent.
 	 *
 	 * @throws StreamException
 	 *             if an error occurs closing the stream

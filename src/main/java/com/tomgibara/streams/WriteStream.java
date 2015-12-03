@@ -300,18 +300,54 @@ public interface WriteStream extends CloseableStream {
 
 	// convenience methods
 
+	/**
+	 * A writer that contributes to the same stream of bytes, but which will not
+	 * permit more than the specified number of bytes to be written without
+	 * reporting an end-of-stream condition.
+	 * 
+	 * @param length
+	 *            the greatest number of bytes that the returned stream may
+	 *            contribute
+	 * @return a stream limited to a specified number of bytes
+	 */
+
 	default WriteStream bounded(long length) {
 		return new BoundedWriteStream(this, length);
 	}
 	
+	/**
+	 * Returns an <code>OutputStream</code> that draws from the same stream of
+	 * bytes.
+	 * 
+	 * @return the stream as an <code>OutputStream</code>
+	 */
+
 	default OutputStream asOutputStream() {
 		return new WriteOutputStream(this);
 	}
+
+	/**
+	 * Returns a <code>WritableByteChannel</code> that draws from the same
+	 * stream of bytes.
+	 * 
+	 * @return the stream as an <code>WritableByteChannel</code>
+	 */
 
 	default WritableByteChannel asChannel() {
 		return new WritableStreamChannel(this);
 	}
 	
+	/**
+	 * Attaches a serializer to the stream to allow object values to be written
+	 * as primitive values to this stream.
+	 * 
+	 * @param serializer
+	 *            converts byte data into objects
+	 * @param <T>
+	 *            the type of object accepted by the serializer
+	 * @return a consumer that supplies objects to the specified serializer
+	 */
+
 	default <T> Consumer<T> writeWith(StreamSerializer<T> serializer) {
 		return v -> serializer.serialize(v, this);
 	}

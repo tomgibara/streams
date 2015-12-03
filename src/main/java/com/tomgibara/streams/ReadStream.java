@@ -298,18 +298,54 @@ public interface ReadStream extends CloseableStream {
 	
 	// convenience methods
 	
+	/**
+	 * A reader that draws from the same stream of bytes, but which will not
+	 * permit more than the specified number of bytes to be read without
+	 * reporting an end-of-stream condition.
+	 * 
+	 * @param length
+	 *            the greatest number of bytes that the returned stream may
+	 *            return
+	 * @return a stream limited to a specified number of bytes
+	 */
+
 	default ReadStream bounded(long length) {
 		return new BoundedReadStream(this, length);
 	}
 	
+	/**
+	 * Returns an <code>InputStream</code> that draws from the same stream of
+	 * bytes.
+	 * 
+	 * @return the stream as an <code>InputStream</code>
+	 */
+
 	default InputStream asInputStream() {
 		return new ReadInputStream(this);
 	}
 	
+	/**
+	 * Returns a <code>ReadableByteChannel</code> that draws from the same
+	 * stream of bytes.
+	 * 
+	 * @return the stream as an <code>ReadableByteChannel</code>
+	 */
+
 	default ReadableByteChannel asChannel() {
 		return new ReadableStreamChannel(this);
 	}
-	
+
+	/**
+	 * Attaches a deserializer to the stream to allow object values to be
+	 * produced from the primitive values returned by this stream.
+	 * 
+	 * @param deserializer
+	 *            converts byte data into objects
+	 * @param <T>
+	 *            the type of object created by the deserializer
+	 * @return a producer that produces object from the supplied deserializer
+	 */
+
 	default <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {
 		return () -> deserializer.deserialize(this);
 	}
