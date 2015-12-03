@@ -43,10 +43,6 @@ final class ByteWriteStream implements WriteStream {
 		position = 0;
 	}
 
-	public int position() {
-		return position;
-	}
-	
 	@Override
 	public void writeByte(byte v) {
 		ensureFurtherCapacity(1);
@@ -166,6 +162,10 @@ final class ByteWriteStream implements WriteStream {
 		return bytes;
 	}
 
+	int position() {
+		return position < 0 ? -1 - position : position;
+	}
+	
 	private boolean isClosed() {
 		return position < 0;
 	}

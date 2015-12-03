@@ -56,7 +56,7 @@ public final class Streams {
 	 */
 
 	public static StreamBytes bytes() {
-		return new StreamBytes(new byte[DEFAULT_INITIAL_CAPACITY], DEFAULT_MAXIMUM_CAPACITY);
+		return new StreamBytes(new byte[DEFAULT_INITIAL_CAPACITY], 0, DEFAULT_MAXIMUM_CAPACITY);
 	}
 
 	/**
@@ -70,20 +70,7 @@ public final class Streams {
 	 */
 
 	public static StreamBytes bytes(int initialCapacity) {
-		return new StreamBytes(array(initialCapacity), DEFAULT_MAXIMUM_CAPACITY);
-	}
-
-	/**
-	 * Creates a new {@link StreamBytes} to expose bytes through a
-	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
-	 * 
-	 * @param bytes
-	 *            a byte array containing the data to be read/overwritten
-	 * @return new bytes with an unlimited maximum capacity
-	 */
-
-	public static StreamBytes bytes(byte[] bytes) {
-		return new StreamBytes(bytes, DEFAULT_MAXIMUM_CAPACITY);
+		return new StreamBytes(array(initialCapacity), 0, DEFAULT_MAXIMUM_CAPACITY);
 	}
 
 	/**
@@ -100,24 +87,58 @@ public final class Streams {
 	public static StreamBytes bytes(int initialCapacity, int maximumCapacity) {
 		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
 		if (initialCapacity > maximumCapacity) throw new IllegalArgumentException("initialCapacity exceeds maximumCapacity");
-		return new StreamBytes(array(initialCapacity), maximumCapacity);
+		return new StreamBytes(array(initialCapacity), 0, maximumCapacity);
 	}
 	
+	/**
+	 * Creates a new {@link StreamBytes} to expose bytes through a
+	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}. If
+	 * a reader is attached to the returned object before a writer is attached,
+	 * all bytes in the array will be readable.
+	 * 
+	 * @param bytes
+	 *            a byte array containing the data to be read/overwritten
+	 * @return new bytes with an unlimited maximum capacity
+	 */
+
+	public static StreamBytes bytes(byte[] bytes) {
+		return new StreamBytes(bytes, bytes.length, DEFAULT_MAXIMUM_CAPACITY);
+	}
+
 	/**
 	 * Creates a new {@link StreamBytes} to expose bytes through a
 	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
 	 * 
 	 * @param bytes
 	 *            a byte array containing the data to be read/overwritten
+	 * @param length
+	 *            the number of readable bytes in the supplied array
+	 * @return new bytes with an unlimited maximum capacity
+	 */
+
+	public static StreamBytes bytes(byte[] bytes, int length) {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		return new StreamBytes(bytes, length, DEFAULT_MAXIMUM_CAPACITY);
+	}
+
+	/**
+	 * Creates a new {@link StreamBytes} to expose bytes through a
+	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
+	 * 
+	 * @param bytes
+	 *            a byte array containing the data to be read/overwritten
+	 * @param length
+	 *            the number of readable bytes in the supplied array
 	 * @param maximumCapacity
 	 *            the maximum capacity to which the byte store may grow
 	 * @return new bytes the specified maximum capacity
 	 */
 
-	public static StreamBytes bytes(byte[] bytes, int maximumCapacity) {
+	public static StreamBytes bytes(byte[] bytes, int length, int maximumCapacity) {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
 		if (maximumCapacity < 0L) throw new IllegalArgumentException("negative maximumCapacity");
 		if (bytes.length > maximumCapacity) throw new IllegalArgumentException("initial capacity exceeds maximumCapacity");
-		return new StreamBytes(bytes, maximumCapacity);
+		return new StreamBytes(bytes, length, maximumCapacity);
 	}
 
 	/**

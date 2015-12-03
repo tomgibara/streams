@@ -45,7 +45,7 @@ public class SamplesTest {
 	private static WritableByteChannel someWritableChannel = new ByteArrayChannel(new byte[1000]);
 	private static ByteBuffer buffer = ByteBuffer.allocate(1000);
 	private static byte[] bytes = new byte[1000];
-	private static ReadStream someReader = Streams.bytes(2000).reader();
+	private static ReadStream someReader = Streams.bytes(new byte[2000]).reader();
 	private static WriteStream someWriter = Streams.bytes().writer();
 	
 	@Test
@@ -110,7 +110,7 @@ public class SamplesTest {
 			r.readByte(); // b6
 			r.close();
 		}
-		
+
 		// expose a write stream as an output stream
 		Streams.bytes().writer().asOutputStream();
 

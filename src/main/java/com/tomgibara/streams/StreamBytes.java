@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import java.util.Arrays;
+
 /**
  * <p>
  * Instances of this class can accumulate a byte array via an attached
@@ -27,8 +29,8 @@ package com.tomgibara.streams;
  * include:
  * 
  * <ul>
- * <li>Initializing via {@link Streams#bytes(byte[])}, calling {@link #reader()}
- * and reading the data via its <em>read</em> methods.
+ * <li>Initializing via {@link Streams#bytes(byte[],int)}, calling
+ * {@link #reader()} and reading the data via its <em>read</em> methods.
  * <li>Initializing via {@link Streams#bytes()}, calling {@link #writer()},
  * accumulating byte data via its <em>write</em> methods, and retrieving the
  * data via the {@link #bytes()} method.
@@ -51,11 +53,13 @@ public class StreamBytes {
 
 	private final int maxCapacity;
 	private byte[] bytes;
+	private int length;
 	private ByteWriteStream writer = null;
 	private ByteReadStream reader = null;
 
-	StreamBytes(byte[] bytes, int maxCapacity) {
+	StreamBytes(byte[] bytes, int length, int maxCapacity) {
 		this.maxCapacity = maxCapacity;
+		this.length = length;
 		this.bytes = bytes;
 	}
 
@@ -101,10 +105,11 @@ public class StreamBytes {
 	public ReadStream reader() {
 		if (writer != null) {
 			bytes = writer.getBytes(true);
+			length = writer.position();
 			writer = null;
 		}
 		if (reader == null) {
-			reader = new ByteReadStream(bytes);
+			reader = new ByteReadStream(bytes, 0, length);
 		}
 		return reader;
 	}
@@ -120,7 +125,7 @@ public class StreamBytes {
 	 */
 
 	public byte[] bytes() {
-		return writer == null ? bytes.clone() : writer.getBytes(false);
+		return writer == null ? Arrays.copyOf(bytes, length) : writer.getBytes(false);
 	}
 
 	/**
