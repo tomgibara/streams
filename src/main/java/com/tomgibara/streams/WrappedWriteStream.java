@@ -23,17 +23,15 @@ import java.nio.ByteBuffer;
  *
  * @author Tom Gibara
  *
- * @param <S>
- *            the type of {@link WriteStream} being wrapped
  */
 
-public class WrappedWriteStream<S extends WriteStream> implements WriteStream {
+public class WrappedWriteStream implements WriteStream {
 
 	/**
 	 * The stream that is being wrapped.
 	 */
 
-	protected final S wrapped;
+	protected final WriteStream wrapped;
 
 	/**
 	 * Creates a new stream that wraps an existing {@link WriteStream}.
@@ -42,7 +40,7 @@ public class WrappedWriteStream<S extends WriteStream> implements WriteStream {
 	 *            the {@link WriteStream} to which all calls should be delegated.
 	 */
 
-	public WrappedWriteStream(S wrapped) {
+	public WrappedWriteStream(WriteStream wrapped) {
 		if (wrapped == null) throw new IllegalArgumentException("null wrapped");
 		this.wrapped = wrapped;
 	}

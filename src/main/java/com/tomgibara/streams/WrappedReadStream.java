@@ -23,17 +23,15 @@ import java.nio.ByteBuffer;
  *
  * @author Tom Gibara
  *
- * @param <S>
- *            the type of {@link ReadStream} being wrapped
  */
 
-public class WrappedReadStream<S extends ReadStream> implements ReadStream {
+public class WrappedReadStream implements ReadStream {
 
 	/**
 	 * The stream that is being wrapped.
 	 */
 
-	protected final S wrapped;
+	protected final ReadStream wrapped;
 
 	/**
 	 * Creates a new stream that wraps an existing {@link ReadStream}.
@@ -42,7 +40,7 @@ public class WrappedReadStream<S extends ReadStream> implements ReadStream {
 	 *            the {@link ReadStream} to which all calls should be delegated.
 	 */
 
-	public WrappedReadStream(S wrapped) {
+	public WrappedReadStream(ReadStream wrapped) {
 		if (wrapped == null) throw new IllegalArgumentException("null wrapped");
 		this.wrapped = wrapped;
 	}
