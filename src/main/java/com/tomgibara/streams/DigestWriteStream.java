@@ -24,7 +24,7 @@ import java.security.MessageDigest;
  * @author Tom Gibara
  */
 
-final class DigestWriteStream implements WriteStream {
+public final class DigestWriteStream implements WriteStream {
 
 	private final MessageDigest digest;
 
@@ -37,6 +37,10 @@ final class DigestWriteStream implements WriteStream {
 
 	DigestWriteStream(MessageDigest digest) {
 		this.digest = digest;
+	}
+
+	public MessageDigest getDigest() {
+		return digest;
 	}
 
 	@Override

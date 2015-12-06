@@ -238,7 +238,7 @@ public final class Streams {
 	 *            digests the resulting byte stream
 	 */
 
-	public static WriteStream streamDigest(MessageDigest digest) {
+	public static DigestWriteStream streamDigest(MessageDigest digest) {
 		if (digest == null) throw new IllegalArgumentException("null digest");
 		return new DigestWriteStream(digest);
 	}
