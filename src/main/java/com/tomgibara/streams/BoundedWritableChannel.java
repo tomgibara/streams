@@ -44,6 +44,7 @@ class BoundedWritableChannel implements WritableByteChannel {
 
 	@Override
 	public int write(ByteBuffer src) throws IOException {
+		if (length == 0) return -1;
 		int remaining = src.remaining();
 		// happy case - we can read as much as we want
 		if (remaining < length) {

@@ -44,6 +44,7 @@ class BoundedReadableChannel implements ReadableByteChannel {
 	
 	@Override
 	public int read(ByteBuffer dst) throws IOException {
+		if (length == 0) return -1;
 		int remaining = dst.remaining();
 		// happy case - we can read as much as we want
 		if (remaining < length) {
