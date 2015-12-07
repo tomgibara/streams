@@ -229,20 +229,6 @@ public final class Streams {
 		return new OutputWriteStream(out);
 	}
 
-	
-	/**
-	 * Creates a new stream which writes values to the supplied digest. Closing
-	 * this stream has no effect.
-	 *
-	 * @param digest
-	 *            digests the resulting byte stream
-	 */
-
-	public static DigestWriteStream streamDigest(MessageDigest digest) {
-		if (digest == null) throw new IllegalArgumentException("null digest");
-		return new DigestWriteStream(digest);
-	}
-
 	private Streams() { }
 
 }
