@@ -75,6 +75,23 @@ public class StreamBytes {
 	}
 
 	/**
+	 * <p>
+	 * The number of bytes that are stored in the byte array that underlies this
+	 * object. Calling this method will cause any attached writer to be closed.
+	 * 
+	 * <p>
+	 * The initial value of this field is dependent on the parameters passed to
+	 * the <code>bytes</code> factory methods in {@link Streams}.
+	 * 
+	 * @return the number of bytes.
+	 */
+
+	public int length() {
+		detachWriter();
+		return length;
+	}
+
+	/**
 	 * Attaches a writer to the object. If there is already an attached writer,
 	 * the existing writer is returned. If a reader is attached to the object
 	 * when this method is called, the reader is closed and immediately detached
@@ -83,10 +100,7 @@ public class StreamBytes {
 	 * @return the writer attached to this object
 	 */
 	public WriteStream writer() {
-		if (reader != null) {
-			reader.close(); //TODO should this do something?
-			reader = null;
-		}
+		detachReader();
 		if (writer == null) {
 			writer = new ByteWriteStream(bytes, maxCapacity);
 		}
@@ -103,11 +117,7 @@ public class StreamBytes {
 	 */
 	
 	public ReadStream reader() {
-		if (writer != null) {
-			bytes = writer.getBytes(true);
-			length = writer.position();
-			writer = null;
-		}
+		detachWriter();
 		if (reader == null) {
 			reader = new ByteReadStream(bytes, 0, length);
 		}
@@ -148,5 +158,20 @@ public class StreamBytes {
 
 	public byte[] directBytes() {
 		return writer == null ? bytes : writer.getBytes(true);
+	}
+	
+	private void detachWriter() {
+		if (writer != null) {
+			bytes = writer.getBytes(true);
+			length = writer.position();
+			writer = null;
+		}
+	}
+	
+	private void detachReader() {
+		if (reader != null) {
+			reader.close(); //TODO should this do something?
+			reader = null;
+		}
 	}
 }
