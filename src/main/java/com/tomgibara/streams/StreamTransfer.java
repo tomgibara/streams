@@ -30,6 +30,8 @@ import java.nio.ByteBuffer;
  * 
  * @author Tom Gibara
  *
+ * @see ReadStream#to(WriteStream)
+ * @see WriteStream#from(ReadStream)
  */
 public final class StreamTransfer {
 
@@ -58,48 +60,20 @@ public final class StreamTransfer {
 	private final WriteStream target;
 	private final ByteBuffer buffer;
 
-	/**
-	 * Creates a new object for transferring data between the specified source
-	 * stream to the specified target stream, using a buffer of a specfied size.
-	 * Supplying a zero buffer size disables buffering. This constructor takes
-	 * care of choosing the best buffering allocation strategy for the supplied
-	 * streams based on their indicated preferences. Note that if neither the
-	 * source nor the target supports buffering, then no buffer will be
-	 * allocated irrespective of the value supplied for <code>bufferSize</code>.
-	 * 
-	 * @param source
-	 *            the stream supplying byte data
-	 * @param target
-	 *            the stream receiving byte data
-	 * @param bufferSize
-	 *            the size of the desired buffer or zero to disable buffering
-	 */
-	public StreamTransfer(ReadStream source, WriteStream target, int bufferSize) {
-		if (source == null) throw new IllegalArgumentException("null source");
-		if (target == null) throw new IllegalArgumentException("null target");
+	StreamTransfer(ReadStream source, WriteStream target) {
+		this.source = source;
+		this.target = target;
+		buffer = buffer(source.getBuffering(), target.getBuffering(), Streams.BUFFER_SIZE);
+	}
+
+	StreamTransfer(ReadStream source, WriteStream target, int bufferSize) {
 		if (bufferSize < 0) throw new IllegalArgumentException("negative bufferSize");
 		this.source = source;
 		this.target = target;
 		buffer = buffer(source.getBuffering(), target.getBuffering(), bufferSize);
 	}
 
-	/**
-	 * Creates a new object for transferring data between the specified source
-	 * stream to the specified target stream, using a buffer of a specfied size.
-	 * Supplying a null or empty buffer disables buffering. Note that if neither
-	 * the source nor the target supports buffering, then buffer will remain
-	 * unused.
-	 * 
-	 * @param source
-	 *            the stream supplying byte data
-	 * @param target
-	 *            the stream receiving byte data
-	 * @param buffer
-	 *            a buffer that may be used for the transfer
-	 */
-	public StreamTransfer(ReadStream source, WriteStream target, ByteBuffer buffer) {
-		if (source == null) throw new IllegalArgumentException("null source");
-		if (target == null) throw new IllegalArgumentException("null target");
+	StreamTransfer(ReadStream source, WriteStream target, ByteBuffer buffer) {
 		if (buffer != null && buffer.isReadOnly()) throw new IllegalArgumentException("buffer read-only");
 		this.source = source;
 		this.target = target;

@@ -22,6 +22,8 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * <p>
@@ -40,6 +42,24 @@ public final class Streams {
 
 	private static final int DEFAULT_INITIAL_CAPACITY = 32;
 	private static final int DEFAULT_MAXIMUM_CAPACITY = Integer.MAX_VALUE;
+
+	private static final String BUFFER_SIZE_PROPERTY = "com.tomgibara.streams.bufferSize";
+	private static final int DEFAULT_BUFFER_SIZE = 8192;
+
+	static final int BUFFER_SIZE = bufferSize();
+
+	private static int bufferSize() {
+		PrivilegedAction<String> action = () -> { return System.getProperty(BUFFER_SIZE_PROPERTY); };
+		String str = AccessController.doPrivileged(action);
+		if (str != null) try {
+			int bufferSize = Integer.parseInt(str);
+			if (bufferSize > 0) return bufferSize;
+			/* fall through */
+		} catch (NumberFormatException e) {
+			/* fall through */
+		}
+		return DEFAULT_BUFFER_SIZE;
+	}
 
 	private static byte[] array(int capacity) {
 		if (capacity < 0) throw new IllegalArgumentException("capacity non-positive");

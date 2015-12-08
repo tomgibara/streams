@@ -336,6 +336,62 @@ public interface ReadStream extends CloseableStream {
 	}
 
 	/**
+	 * Creates a new object for transferring data to the specified target
+	 * stream. This constructor takes care of choosing the best buffering
+	 * allocation strategy for the supplied streams based on their indicated
+	 * preferences. Note that if neither the source nor the target supports
+	 * buffering, then no buffer will be allocated, otherwise a buffer will be
+	 * allocated at a default size chosen by the implementation.
+	 * 
+	 * @param target
+	 *            the stream receiving byte data
+	 * @return an object for transferring data between the streams
+	 */
+
+	default StreamTransfer to(WriteStream target) {
+		if (target == null) throw new IllegalArgumentException("null target");
+		return new StreamTransfer(this, target);
+	}
+
+	/**
+	 * Creates a new object for transferring data to the specified target
+	 * stream, using a buffer of a specified size. Supplying a zero buffer-size
+	 * disables buffering. This constructor takes care of choosing the best
+	 * buffering allocation strategy for the supplied streams based on their
+	 * indicated preferences. Note that if neither the source nor the target
+	 * supports buffering, then no buffer will be allocated irrespective of the
+	 * value supplied for <code>bufferSize</code>.
+	 * 
+	 * @param target
+	 *            the stream receiving byte data
+	 * @param bufferSize
+	 *            the size of the desired buffer or zero to disable buffering
+	 * @return an object for transferring data between the streams
+	 */
+
+	default StreamTransfer to(WriteStream target, int bufferSize) {
+		if (target == null) throw new IllegalArgumentException("null target");
+		return new StreamTransfer(this, target, bufferSize);
+	}
+
+	/**
+	 * Creates a new object for transferring data to the specified target
+	 * stream, using a supplied buffer. Supplying a null or empty buffer
+	 * disables buffering. Note that if neither the source nor the target
+	 * supports buffering, then buffer will remain unused.
+	 * 
+	 * @param target
+	 *            the stream receiving byte data
+	 * @param buffer
+	 *            a buffer that may be used for the transfer
+	 */
+
+	default StreamTransfer to(WriteStream target, ByteBuffer buffer) {
+		if (target == null) throw new IllegalArgumentException("null target");
+		return new StreamTransfer(this, target, buffer);
+	}
+
+	/**
 	 * Attaches a deserializer to the stream to allow object values to be
 	 * produced from the primitive values returned by this stream.
 	 * 

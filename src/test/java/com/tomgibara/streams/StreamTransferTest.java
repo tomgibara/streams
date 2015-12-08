@@ -76,7 +76,7 @@ public class StreamTransferTest {
 				ReadStream src = new ByteReadStream(srcBytes);
 				ByteArrayChannel channel = new ByteArrayChannel(dstBytes);
 				WriteStream dst = new ChannelWriteStream(channel);
-				StreamTransfer transfer = new StreamTransfer(src, dst, size);
+				StreamTransfer transfer = src.to(dst, size);
 				long transferred = length < 0 ? transfer.transferFully() : transfer.transfer(length);
 				assertEquals(channel.position(), transferred);
 				assertArrayEquals(Arrays.copyOf(srcBytes, (int) transferred), Arrays.copyOf(dstBytes, (int) transferred));
@@ -86,7 +86,7 @@ public class StreamTransferTest {
 	
 	private void test(ReadStream in, Producer<byte[]> inToBytes, WriteStream out, Producer<byte[]> outToBytes, long length, ByteBuffer buffer) {
 		// do the transfer
-		StreamTransfer transfer = new StreamTransfer(in, out, buffer);
+		StreamTransfer transfer = in.to(out, buffer);
 		long transferred = length < 0 ? transfer.transferFully() : transfer.transfer(length);
 		// check the result
 		byte[] inBytes = inToBytes.produce();
