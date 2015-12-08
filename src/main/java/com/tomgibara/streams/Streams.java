@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.security.MessageDigest;
 
 /**
  * <p>
