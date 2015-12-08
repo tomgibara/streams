@@ -42,6 +42,8 @@ abstract class FuzzStreamTest extends TestCase {
 
 	abstract ReadStream newReader(WriteStream writer);
 
+	boolean closeHonored() {return true; }
+	
 	@Test
 	public void testFuzz() {
 		Random r = new Random(0L);
@@ -306,4 +308,100 @@ abstract class FuzzStreamTest extends TestCase {
 		in.read(b);
 		assertTrue(b.hasRemaining());
 	}
+	
+	public void testClosedReportClosed() {
+		WriteStream w = newWriter();
+		w.writeBytes(new byte[] {0,1,2});
+		ReadStream r = newReader(w);
+		ReadStream s = r.closedWith(StreamCloser.reportClosed());
+		if (closeHonored()) {
+			assertEquals((byte) 0, s.readByte());
+			s.close();
+			try {
+				s.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+			assertEquals((byte) 1, r.readByte());
+			r.close();
+			try {
+				r.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+		} else {
+			assertEquals((byte) 0, s.readByte());
+			s.close();
+			try {
+				s.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+			assertEquals((byte) 1, r.readByte());
+			r.close();
+			assertEquals((byte) 2, r.readByte());
+		}
+	}
+
+	public void testClosedDoNothing() {
+		WriteStream w = newWriter();
+		w.writeBytes(new byte[] {0,1,2});
+		ReadStream r = newReader(w);
+		ReadStream s = r.closedWith(StreamCloser.doNothing());
+		if (closeHonored()) {
+			assertEquals((byte) 0, s.readByte());
+			s.close();
+			assertEquals((byte) 1, s.readByte());
+			r.close();
+			try {
+				r.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+		} else {
+			assertEquals((byte) 0, s.readByte());
+			s.close();
+			assertEquals((byte) 1, s.readByte());
+			r.close();
+			assertEquals((byte) 2, r.readByte());
+		}
+	}
+
+	public void testCloseStream() {
+		WriteStream w = newWriter();
+		w.writeBytes(new byte[] {0,1,2});
+		ReadStream r = newReader(w);
+		ReadStream s = r.closedWith(StreamCloser.closeStream());
+		if (closeHonored()) {
+			assertEquals((byte) 0, s.readByte());
+			s.close();
+			try {
+				s.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+			try {
+				r.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+		} else {
+			assertEquals((byte) 0, s.readByte());
+			s.close();
+			try {
+				s.readByte();
+				fail();
+			} catch (StreamException e) {
+				/* expected */
+			}
+			assertEquals((byte) 1, r.readByte());
+		}
+	}
+
 }

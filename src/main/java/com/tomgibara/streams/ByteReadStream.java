@@ -61,7 +61,7 @@ final class ByteReadStream implements ReadStream {
 	 *            the number of bytes that should be streamed.
 	 */
 
-	public ByteReadStream(byte[] bytes, int off, int len) {
+	ByteReadStream(byte[] bytes, int off, int len) {
 		if (bytes == null) throw new IllegalArgumentException("null bytes");
 		if (off < 0) throw new IllegalArgumentException("negative off");
 		int length = bytes.length;
@@ -74,8 +74,8 @@ final class ByteReadStream implements ReadStream {
 		this.limit = limit;
 	}
 
-	public int position() {
-		return position;
+	int position() {
+		return position < 0 ? -1 - position : position;
 	}
 
 	@Override
@@ -168,13 +168,19 @@ final class ByteReadStream implements ReadStream {
 	
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
+		if (position < 0) return;
 		int length = Math.min(buffer.remaining(), limit - position);
 		buffer.put(bytes, position, length);
 		position += length;
 	}
 	
+	@Override
+	public void close() {
+		if (position >= 0) position = -1 - position;
+	}
+	
 	private void requireBytes(int count) {
-		if (position + count > limit) EndOfStreamException.raise();
+		if (position < 0 || position + count > limit) EndOfStreamException.raise();
 	}
 
 }

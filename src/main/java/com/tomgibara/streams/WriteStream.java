@@ -316,6 +316,21 @@ public interface WriteStream extends CloseableStream {
 	}
 	
 	/**
+	 * A writer that guards the close method of this writer with the specified
+	 * closer implementation.
+	 * 
+	 * @param closer
+	 *            provides the logic to be performed on stream closure
+	 * 
+	 * @return a stream that supplies bytes to this writer
+	 */
+
+	default WriteStream closedWith(StreamCloser closer) {
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		return new ClosedWriteStream(this, closer);
+	}
+
+	/**
 	 * Returns an <code>OutputStream</code> that draws from the same stream of
 	 * bytes.
 	 * 

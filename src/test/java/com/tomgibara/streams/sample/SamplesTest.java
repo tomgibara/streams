@@ -34,6 +34,7 @@ import com.tomgibara.fundament.Producer;
 import com.tomgibara.streams.ByteArrayChannel;
 import com.tomgibara.streams.ReadStream;
 import com.tomgibara.streams.StreamBytes;
+import com.tomgibara.streams.StreamCloser;
 import com.tomgibara.streams.Streams;
 import com.tomgibara.streams.WriteStream;
 
@@ -45,8 +46,8 @@ public class SamplesTest {
 	private static WritableByteChannel someWritableChannel = new ByteArrayChannel(new byte[1000]);
 	private static ByteBuffer buffer = ByteBuffer.allocate(1000);
 	private static byte[] bytes = new byte[1000];
-	private static ReadStream someReader = Streams.bytes(new byte[2000]).readStream();
-	private static WriteStream someWriter = Streams.bytes().writeStream();
+	private static ReadStream someReader = Streams.bytes(new byte[2000]).readStream().closedWith(StreamCloser.doNothing());
+	private static WriteStream someWriter = Streams.bytes().writeStream().closedWith(StreamCloser.doNothing());
 	
 	@Test
 	public void samples() {

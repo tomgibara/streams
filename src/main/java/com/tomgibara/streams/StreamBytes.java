@@ -170,7 +170,7 @@ public class StreamBytes {
 	
 	private void detachReader() {
 		if (reader != null) {
-			reader.close(); //TODO should this do something?
+			reader.close();
 			reader = null;
 		}
 	}

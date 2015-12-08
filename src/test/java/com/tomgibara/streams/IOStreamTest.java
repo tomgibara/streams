@@ -40,4 +40,8 @@ public class IOStreamTest extends FuzzStreamTest {
 		return new InputReadStream(in);
 	}
 
+	@Override
+	boolean closeHonored() {
+		return false;
+	}
 }

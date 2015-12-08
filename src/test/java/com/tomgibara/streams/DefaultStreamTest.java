@@ -35,10 +35,17 @@ public class DefaultStreamTest extends FuzzStreamTest {
 	private static final class TestWriteStream implements WriteStream {
 
 		final List<Byte> list = new ArrayList<Byte>();
+		boolean closed = false;
 
 		@Override
 		public void writeByte(byte v) {
+			if (closed) EndOfStreamException.raise();
 			list.add(v);
+		}
+		
+		@Override
+		public void close() {
+			closed = true;
 		}
 
 	}
@@ -46,6 +53,7 @@ public class DefaultStreamTest extends FuzzStreamTest {
 	private static final class TestReadStream implements ReadStream {
 
 		final Iterator<Byte> iter;
+		boolean closed = false;
 
 		TestReadStream(TestWriteStream s) {
 			iter = s.list.iterator();
@@ -53,8 +61,13 @@ public class DefaultStreamTest extends FuzzStreamTest {
 
 		@Override
 		public byte readByte() {
-			if (!iter.hasNext()) EndOfStreamException.raise();
+			if (closed || !iter.hasNext()) EndOfStreamException.raise();
 			return iter.next();
+		}
+
+		@Override
+		public void close() {
+			closed = true;
 		}
 
 	}

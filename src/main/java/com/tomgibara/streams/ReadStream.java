@@ -312,7 +312,22 @@ public interface ReadStream extends CloseableStream {
 	default ReadStream bounded(long length) {
 		return new BoundedReadStream(this, length);
 	}
-	
+
+	/**
+	 * A reader that guards the close method of this reader with the specified
+	 * closer implementation.
+	 * 
+	 * @param closer
+	 *            provides the logic to be performed on stream closure
+	 * 
+	 * @return a stream returning the same bytes as this reader
+	 */
+
+	default ReadStream closedWith(StreamCloser closer) {
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		return new ClosedReadStream(this, closer);
+	}
+
 	/**
 	 * Returns an <code>InputStream</code> that draws from the same stream of
 	 * bytes.
