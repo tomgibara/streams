@@ -21,7 +21,10 @@ import static org.junit.Assert.assertArrayEquals;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -283,4 +286,24 @@ abstract class FuzzStreamTest extends TestCase {
 		}
 	}
 
+	public void testAsChannel() throws IOException {
+		WriteStream w = newWriter();
+		WritableByteChannel out = w.asChannel();
+		byte[] moo = {'m', 'o', 'o'};
+		out.write(ByteBuffer.wrap(moo));
+		ReadStream r = newReader(w);
+		ReadableByteChannel in = r.asChannel();
+		ByteBuffer b = ByteBuffer.allocate(1);
+		in.read(b);
+		assertEquals(b.get(0), 'm');
+		b.clear();
+		in.read(b);
+		assertEquals(b.get(0), 'o');
+		b.clear();
+		in.read(b);
+		assertEquals(b.get(0), 'o');
+		b.clear();
+		in.read(b);
+		assertTrue(b.hasRemaining());
+	}
 }
