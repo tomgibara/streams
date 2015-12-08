@@ -45,8 +45,8 @@ public class SamplesTest {
 	private static WritableByteChannel someWritableChannel = new ByteArrayChannel(new byte[1000]);
 	private static ByteBuffer buffer = ByteBuffer.allocate(1000);
 	private static byte[] bytes = new byte[1000];
-	private static ReadStream someReader = Streams.bytes(new byte[2000]).reader();
-	private static WriteStream someWriter = Streams.bytes().writer();
+	private static ReadStream someReader = Streams.bytes(new byte[2000]).readStream();
+	private static WriteStream someWriter = Streams.bytes().writeStream();
 	
 	@Test
 	public void samples() {
@@ -90,11 +90,11 @@ public class SamplesTest {
 		}
 
 		// access a byte array through a ReadStream
-		Streams.bytes(bytes).reader();
+		Streams.bytes(bytes).readStream();
 		
 		{ // accumulate bytes with a WriteStream
 			StreamBytes bs = Streams.bytes();
-			WriteStream w = bs.writer();
+			WriteStream w = bs.writeStream();
 			w.writeDouble(0.35);
 			w.close();
 			byte[] bytes = bs.bytes();
@@ -103,19 +103,19 @@ public class SamplesTest {
 		
 		{ // accumulate byte data with a WriteStream and read it back
 			StreamBytes bs = Streams.bytes();
-			WriteStream w = bs.writer();
+			WriteStream w = bs.writeStream();
 			w.writeChar('ζ'); // u03b6
-			ReadStream r = bs.reader(); // closes the writer
+			ReadStream r = bs.readStream(); // closes the writer
 			r.readByte(); // 03
 			r.readByte(); // b6
 			r.close();
 		}
 
 		// expose a write stream as an output stream
-		Streams.bytes().writer().asOutputStream();
+		Streams.bytes().writeStream().asOutputStream();
 
 		// limit the number bytes that can be read from a stream
-		Streams.bytes(128).writer().bounded(64); // write only 64 bytes
+		Streams.bytes(128).writeStream().bounded(64); // write only 64 bytes
 		
 		// limit the number of bytes that can be read an input stream
 		Streams.streamInput(someInput).bounded(1024).asInputStream(); // 1k only

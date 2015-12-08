@@ -49,7 +49,7 @@ public class ByteStreamTest extends FuzzStreamTest {
 
 	public void testMaximumCapacity() {
 		StreamBytes bytes = Streams.bytes(0, 5);
-		WriteStream writer = bytes.writer();
+		WriteStream writer = bytes.writeStream();
 		writer.writeByte((byte) 0);
 		writer.writeByte((byte) 0);
 		writer.writeByte((byte) 0);

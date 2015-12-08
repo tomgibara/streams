@@ -30,15 +30,15 @@ import java.util.Arrays;
  * 
  * <ul>
  * <li>Initializing via {@link Streams#bytes(byte[],int)}, calling
- * {@link #reader()} and reading the data via its <em>read</em> methods.
- * <li>Initializing via {@link Streams#bytes()}, calling {@link #writer()},
+ * {@link #readStream()} and reading the data via its <em>read</em> methods.
+ * <li>Initializing via {@link Streams#bytes()}, calling {@link #writeStream()},
  * accumulating byte data via its <em>write</em> methods, and retrieving the
  * data via the {@link #bytes()} method.
- * <li>Initializing via {@link Streams#bytes()}, calling {@link #writer()},
+ * <li>Initializing via {@link Streams#bytes()}, calling {@link #writeStream()},
  * accumulating byte data via its <em>write</em> methods, calling
- * {@link #reader()} and retrieving the data via its <em>read</em> methods.
+ * {@link #readStream()} and retrieving the data via its <em>read</em> methods.
  * <li>Initializing via {@link Streams#bytes(int, int)} and alternating calls to
- * {@link #writer()} and {@link #reader()} to provide a reusable buffer for
+ * {@link #writeStream()} and {@link #readStream()} to provide a reusable buffer for
  * proxying structured byte data.
  * 
  * @author Tom Gibara
@@ -99,7 +99,7 @@ public class StreamBytes {
 	 * 
 	 * @return the writer attached to this object
 	 */
-	public WriteStream writer() {
+	public WriteStream writeStream() {
 		detachReader();
 		if (writer == null) {
 			writer = new ByteWriteStream(bytes, maxCapacity);
@@ -116,7 +116,7 @@ public class StreamBytes {
 	 * @return the reader attached to this object
 	 */
 	
-	public ReadStream reader() {
+	public ReadStream readStream() {
 		detachWriter();
 		if (reader == null) {
 			reader = new ByteReadStream(bytes, 0, length);
@@ -128,7 +128,7 @@ public class StreamBytes {
 	 * <p>
 	 * Returns the bytes accumulated by this object. A copy of the internal data
 	 * store of the last writer opened on this object is returned. If no writer
-	 * has yet been opened via the {@link #writer()} method, a copy of the
+	 * has yet been opened via the {@link #writeStream()} method, a copy of the
 	 * initial byte array is returned.
 	 * 
 	 * @return the byte data stored by this object
@@ -144,7 +144,7 @@ public class StreamBytes {
 	 * writer (if necessary) and returns the byte array which backed it.
 	 * Subsequent attempts to write to the writer will fail with an
 	 * {@link EndOfStreamException} as per the {@link #close()} method, though
-	 * the {@link #writer()} method may be called to obtain a new writer that
+	 * the {@link #writeStream()} method may be called to obtain a new writer that
 	 * will reuse the direct byte array, avoiding allocation of a new buffer.
 	 * 
 	 * <p>
