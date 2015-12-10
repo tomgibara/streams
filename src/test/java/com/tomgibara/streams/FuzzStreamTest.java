@@ -404,4 +404,17 @@ abstract class FuzzStreamTest extends TestCase {
 		}
 	}
 
+	public void testIOStreamsClosure() throws IOException {
+		WriteStream w = newWriter();
+		OutputStream out = w.closedWith(StreamCloser.doNothing()).asOutputStream();
+		out.write(0);
+		out.close();
+		out.write(1);
+		ReadStream r = newReader(w);
+		InputStream in = r.closedWith(StreamCloser.doNothing()).asInputStream();
+		assertEquals(0, in.read());
+		in.close();
+		assertEquals(1, in.read());
+		assertEquals(-1, in.read());
+	}
 }
