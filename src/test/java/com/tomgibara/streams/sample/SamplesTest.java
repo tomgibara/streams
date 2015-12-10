@@ -52,15 +52,16 @@ public class SamplesTest {
 	@Test
 	public void samples() {
 		
+		/** EXAMPLES OF USING STREAMS AS A SANE I/O API **/
+		
 		// read and write all types of primitives
 		try (ReadStream r = someReader) {
 			r.readBoolean();
 			r.readByte();
 			r.readFloat();
-			// etc.
-			// support for bytes ...
+			// ... and all other primitives
+			// support for byte arrays and strings
 			r.readBytes(bytes);
-			// ... and strings
 			String str = r.readChars();
 		}
 		
@@ -84,42 +85,51 @@ public class SamplesTest {
 			// etc.
 		}
 
-		// use a WritableByteChannel as a ReadStream
+		// use a WritableByteChannel as a WriteStream
 		try (WriteStream r = Streams.streamWritable(someWritableChannel)) {
 			r.drainBuffer(buffer);
 			// etc.
 		}
 
-		// access a byte array through a ReadStream
+		// read a byte array through a ReadStream
 		Streams.bytes(bytes).readStream();
 		
-		{ // accumulate bytes with a WriteStream
-			StreamBytes bs = Streams.bytes();
-			WriteStream w = bs.writeStream();
+		// accumulate bytes with a WriteStream
+		StreamBytes bs = Streams.bytes();
+		try (WriteStream w = bs.writeStream()) {
 			w.writeDouble(0.35);
-			w.close();
-			byte[] bytes = bs.bytes();
-			// use the bytes here
 		}
+		byte[] bytes = bs.bytes();
+		// use the bytes here
 		
-		{ // accumulate byte data with a WriteStream and read it back
-			StreamBytes bs = Streams.bytes();
-			WriteStream w = bs.writeStream();
-			w.writeChar('ζ'); // u03b6
-			ReadStream r = bs.readStream(); // closes the writer
-			r.readByte(); // 03
-			r.readByte(); // b6
-			r.close();
-		}
-
-		// expose a write stream as an output stream
-		Streams.bytes().writeStream().asOutputStream();
+		// accumulate byte data with a WriteStream...
+		bs = Streams.bytes();
+		WriteStream w = bs.writeStream();
+		w.writeChar('ζ'); // u03b6
+		
+		// ... and read it back with a ReadStream
+		ReadStream r = bs.readStream(); // this automatically closes the writer
+		r.readByte(); // 0x03
+		r.readByte(); // 0xb6
+		r.close();
 
 		// limit the number bytes that can be read from a stream
 		Streams.bytes(128).writeStream().bounded(64); // write only 64 bytes
+
+		// wrap a stream to control its behaviour when closed
+		someWriter.closedWith(StreamCloser.reportClosed());
+		// close() on this stream will leave the wrapped stream open
 		
+		/** EXAMPLES OF USING STREAMS AS UTILITY METHODS FOR JAVA I/O **/
+		
+		// expose a write stream as an output stream
+		Streams.bytes().writeStream().asOutputStream();
+
 		// limit the number of bytes that can be read an input stream
 		Streams.streamInput(someInput).bounded(1024).asInputStream(); // 1k only
+		
+		// create an 'unclosable' input stream
+		Streams.streamInput(someInput).closedWith(StreamCloser.doNothing()).asInputStream();
 
 		// convert an input stream into a channel...
 		Streams.streamInput(someInput).asChannel();
@@ -127,20 +137,22 @@ public class SamplesTest {
 		// ... and vice versa
 		Streams.streamReadable(someReadableChannel).asInputStream();
 		
+		/** EXAMPLES OF USING STREAMS WITH OTHER ABSTRACTIONS **/
+		
 		// create a stream using a lambda
 		List<Byte> values = new ArrayList<Byte>();
-		try (WriteStream r = v -> values.add(v)) {
+		try (WriteStream rs = v -> values.add(v)) {
 			// the stream has all the supporting methods, eg.
-			r.bounded(10);
-			r.drainBuffer(buffer);
+			rs.bounded(10);
+			rs.drainBuffer(buffer);
 		}
 
 		// use a lightweight serialization API to read & write non-primitive values
-		Producer<Point> prd = someReader.readWith(r -> new Point(r.readInt(), r.readInt()));
+		Producer<Point> prd = someReader.readWith(s -> new Point(s.readInt(), s.readInt()));
 		Point pt1 = prd.produce();
 		Point pt2 = prd.produce();
 		// etc.
-		Consumer<Point> con = someWriter.writeWith((p,w) -> {w.writeInt(p.x); w.writeInt(p.y);});
+		Consumer<Point> con = someWriter.writeWith((p,s) -> {s.writeInt(p.x); s.writeInt(p.y);});
 		con.consume(pt1);
 		con.consume(pt2);
 	}
