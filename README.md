@@ -134,26 +134,24 @@ con.consume(pt2);
 Usage
 -----
 
-### Version 1.x
-
 The streams library is available from the Maven central repository:
 
 > Group ID:    `com.tomgibara.streams`
 > Artifact ID: `streams`
-> Version:     `1.1.0`
+> Version:     `2.0.0`
 
 The Maven dependency being:
 
     <dependency>
       <groupId>com.tomgibara.streams</groupId>
       <artifactId>streams</artifactId>
-      <version>1.1.0</version>
+      <version>2.0.0</version>
     </dependency>
 
 Release History
 ---------------
 
-**tbd** Version 2.0.0
+**2015.12.10** Version 2.0.0
  * Evolution of the library into a comprehensive API
 
 **2015.07.27** Version 1.1.0
