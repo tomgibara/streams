@@ -30,6 +30,10 @@ public class StreamException extends RuntimeException {
 
 	private static final long serialVersionUID = -1150629438483125099L;
 
+	static void raiseClosed() {
+		throw new StreamException("stream closed");
+	}
+
 	public StreamException() { }
 
 	public StreamException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

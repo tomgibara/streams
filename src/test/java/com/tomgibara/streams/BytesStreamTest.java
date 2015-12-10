@@ -41,7 +41,7 @@ public class BytesStreamTest extends FuzzStreamTest {
 			try {
 				writer.writeByte((byte) 0);
 				fail();
-			} catch (EndOfStreamException e) {
+			} catch (StreamException e) {
 				/* expected */
 			}
 		}

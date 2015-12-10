@@ -171,7 +171,7 @@ final class BytesWriteStream implements WriteStream {
 	}
 	
 	private void ensureFurtherCapacity(int n) {
-		if (isClosed()) EndOfStreamException.raise();
+		if (isClosed()) StreamException.raiseClosed();
 		int required = position + n;
 		// checks overflow
 		if (required < 0) EndOfStreamException.raise();

@@ -125,7 +125,6 @@ class ClosedReadStream implements ReadStream {
 	}
 
 	private void checkClosed() {
-		//TODO should throw a regular exception?
-		if (closed) EndOfStreamException.raise();
+		if (closed) StreamException.raiseClosed();
 	}
 }

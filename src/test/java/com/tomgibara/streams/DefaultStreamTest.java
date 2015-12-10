@@ -39,7 +39,7 @@ public class DefaultStreamTest extends FuzzStreamTest {
 
 		@Override
 		public void writeByte(byte v) {
-			if (closed) EndOfStreamException.raise();
+			if (closed) StreamException.raiseClosed();
 			list.add(v);
 		}
 		
@@ -61,7 +61,8 @@ public class DefaultStreamTest extends FuzzStreamTest {
 
 		@Override
 		public byte readByte() {
-			if (closed || !iter.hasNext()) EndOfStreamException.raise();
+			if (closed) StreamException.raiseClosed();
+			if (!iter.hasNext()) EndOfStreamException.raise();
 			return iter.next();
 		}
 

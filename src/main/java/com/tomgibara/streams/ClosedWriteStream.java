@@ -125,7 +125,6 @@ class ClosedWriteStream implements WriteStream {
 	}
 
 	private void checkClosed() {
-		//TODO should throw a regular exception?
-		if (closed) EndOfStreamException.raise();
+		if (closed) StreamException.raiseClosed();
 	}
 }
