@@ -33,6 +33,7 @@ import java.nio.ByteBuffer;
  * @see ReadStream#to(WriteStream)
  * @see WriteStream#from(ReadStream)
  */
+
 public final class StreamTransfer {
 
 	private static StreamBuffering combine(StreamBuffering src, StreamBuffering dst) {
@@ -87,7 +88,8 @@ public final class StreamTransfer {
 	 *         {@link StreamBuffering#PREFER_ANY})
 	 */
 
-	public StreamBuffering buffering() {
+	// not necessarily ready for public consumption
+	StreamBuffering buffering() {
 		if (buffer == null) return UNSUPPORTED;
 		return buffer.isDirect() ? PREFER_DIRECT : PREFER_INDIRECT;
 	}

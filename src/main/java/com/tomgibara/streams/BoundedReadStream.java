@@ -19,7 +19,6 @@ package com.tomgibara.streams;
 import java.io.InputStream;
 import java.nio.channels.ReadableByteChannel;
 
-//TODO optimize further?
 class BoundedReadStream implements ReadStream {
 
 	private final ReadStream stream;

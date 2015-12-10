@@ -20,12 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-//TODO provide skip method on streams?
 class ReadInputStream extends InputStream {
 
 	private final ReadStream stream;
 	
-	public ReadInputStream(ReadStream stream) {
+	ReadInputStream(ReadStream stream) {
 		this.stream = stream;
 	}
 	

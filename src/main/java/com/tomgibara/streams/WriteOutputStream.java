@@ -23,7 +23,7 @@ class WriteOutputStream extends OutputStream {
 
 	private final WriteStream stream;
 	
-	public WriteOutputStream(WriteStream stream) {
+	WriteOutputStream(WriteStream stream) {
 		this.stream = stream;
 	}
 	
