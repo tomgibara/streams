@@ -403,7 +403,7 @@ public interface WriteStream extends CloseableStream {
 	 * @return an object for transferring data between the streams
 	 */
 
-	default StreamTransfer to(ReadStream source, ByteBuffer buffer) {
+	default StreamTransfer from(ReadStream source, ByteBuffer buffer) {
 		if (source == null) throw new IllegalArgumentException("null source");
 		return new StreamTransfer(source, this, buffer);
 	}
