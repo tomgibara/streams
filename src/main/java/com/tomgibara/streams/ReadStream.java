@@ -280,7 +280,6 @@ public interface ReadStream extends CloseableStream {
 	 * 
 	 * @param buffer
 	 *            the buffer to contain the read bytes
-	 * @return the number of bytes read
 	 * @throws StreamException
 	 *             if the bytes could not be read
 	 */
@@ -399,6 +398,7 @@ public interface ReadStream extends CloseableStream {
 	 *            the stream receiving byte data
 	 * @param buffer
 	 *            a buffer that may be used for the transfer
+	 * @return an object for transferring data between the streams
 	 */
 
 	default StreamTransfer to(WriteStream target, ByteBuffer buffer) {

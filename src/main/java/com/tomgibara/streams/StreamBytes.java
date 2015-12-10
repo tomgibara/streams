@@ -40,6 +40,7 @@ import java.util.Arrays;
  * <li>Initializing via {@link Streams#bytes(int, int)} and alternating calls to
  * {@link #writeStream()} and {@link #readStream()} to provide a reusable buffer for
  * proxying structured byte data.
+ * </ul>
  * 
  * @author Tom Gibara
  * 
@@ -143,9 +144,9 @@ public class StreamBytes {
 	 * Returns current underlying byte array. Calling this method closes the
 	 * writer (if necessary) and returns the byte array which backed it.
 	 * Subsequent attempts to write to the writer will fail with an
-	 * {@link EndOfStreamException} as per the {@link #close()} method, though
-	 * the {@link #writeStream()} method may be called to obtain a new writer that
-	 * will reuse the direct byte array, avoiding allocation of a new buffer.
+	 * {@link StreamException}, though the {@link #writeStream()} method
+	 * may be called to obtain a new writer that will reuse the direct byte
+	 * array, avoiding allocation of a new buffer.
 	 * 
 	 * <p>
 	 * Note that the length of an uncopied byte array may exceed the number of

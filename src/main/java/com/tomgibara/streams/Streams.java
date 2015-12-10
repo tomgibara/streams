@@ -169,13 +169,14 @@ public final class Streams {
 	 * Any {@link IOException} encountered by this class is wrapped as
 	 * {@link StreamException} and rethrown. Any end-of-stream condition is
 	 * signalled with an {@link EndOfStreamException} except when encountered
-	 * during a call to {@link #fillBuffer(ByteBuffer)}, in that case, an EOS
-	 * condition is identified by <code>buffer.hasRemaining()</code> returning
-	 * true. Note that modifying the channel while accessing it via a stream is
-	 * likely to produce inconsistencies.
+	 * during a call to {@link ReadStream#fillBuffer(ByteBuffer)}, in that case,
+	 * an EOS condition is identified by <code>buffer.hasRemaining()</code>
+	 * returning true. Note that modifying the channel while accessing it via a
+	 * stream is likely to produce inconsistencies.
 	 * 
 	 * @param channel
 	 *            a byte channel
+	 * @return a stream over the supplied channel
 	 *
 	 * @see EndOfStreamException#EOS
 	 */
@@ -194,13 +195,15 @@ public final class Streams {
 	 * Any {@link IOException} encountered by the stream is wrapped as a
 	 * {@link StreamException} and rethrown. Any end-of-stream condition is
 	 * signalled with an {@link EndOfStreamException} except when encountered
-	 * during a call to {@link #fillBuffer(ByteBuffer)}, in that case, an EOS
-	 * condition is identified by <code>buffer.hasRemaining()</code> returning
-	 * true. Note that modifying the channel while accessing it via a stream is
-	 * likely to produce inconsistencies.
+	 * during a call to {@link WriteStream#drainBuffer(ByteBuffer)}, in that
+	 * case, an EOS condition is identified by
+	 * <code>buffer.hasRemaining()</code> returning true. Note that modifying
+	 * the channel while accessing it via a stream is likely to produce
+	 * inconsistencies.
 	 * 
 	 * @param channel
 	 *            a byte channel
+	 * @return a stream over the supplied channel
 	 *
 	 * @see EndOfStreamException#EOS
 	 */
@@ -222,6 +225,7 @@ public final class Streams {
 	 *
 	 * @param in
 	 *            an input stream from which bytes should be read
+	 * @return a stream over the supplied <code>InputStream</code>
 	 *
 	 * @see EndOfStreamException#EOS
 	 */
@@ -241,6 +245,7 @@ public final class Streams {
 	 *
 	 * @param out
 	 *            an output stream to which bytes should be written
+	 * @return a stream over the supplied <code>OutputStream</code>
 	 */
 
 	public static WriteStream streamOutput(OutputStream out) {

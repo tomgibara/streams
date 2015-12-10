@@ -282,7 +282,6 @@ public interface WriteStream extends CloseableStream {
 	 * 
 	 * @param buffer
 	 *            the buffer containing bytes to be written
-	 * @return the number of bytes written
 	 * @throws StreamException
 	 *             if the bytes could not be written
 	 */
@@ -401,6 +400,7 @@ public interface WriteStream extends CloseableStream {
 	 *            the stream supplying byte data
 	 * @param buffer
 	 *            a buffer that may be used for the transfer
+	 * @return an object for transferring data between the streams
 	 */
 
 	default StreamTransfer to(ReadStream source, ByteBuffer buffer) {

@@ -71,6 +71,7 @@ public interface StreamCloser {
 	 * @return true if the overlying stream should report itself as closed,
 	 *         false otherwise
 	 * @throws StreamException
+	 *             if an error occurred closing the stream
 	 */
 
 	boolean close(CloseableStream stream) throws StreamException;
