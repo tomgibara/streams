@@ -112,10 +112,10 @@ final class OutputWriteStream implements WriteStream {
 	public WriteStream bounded(long length) {
 		return new OutputWriteStream(new BoundedOutputStream(out, length));
 	}
-	
+
 	/**
 	 * Returns the underlying output stream
-	 * 
+	 *
 	 * @return the output stream
 	 */
 
@@ -123,7 +123,7 @@ final class OutputWriteStream implements WriteStream {
 	public OutputStream asOutputStream() {
 		return out;
 	}
-	
+
 	/**
 	 * Closes the underlying {@link OutputStream}.
 	 */

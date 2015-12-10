@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
  * Transfers data from a {@link ReadStream} to a {@link WriteStream}. Instances
  * of this class are generally short lived objects that are used once to affect
  * the the transfer of bytes from a source stream to a target stream.
- * 
+ *
  * @author Tom Gibara
  *
  * @see ReadStream#to(WriteStream)
@@ -45,7 +45,7 @@ public final class StreamTransfer {
 		default: throw new IllegalStateException("Unexpected buffering type: " + src);
 		}
 	}
-	
+
 	private static ByteBuffer buffer(StreamBuffering src, StreamBuffering dst, int bufferSize) {
 		if (bufferSize == 0) return null;
 		StreamBuffering buffering = combine(src, dst);
@@ -56,7 +56,7 @@ public final class StreamTransfer {
 		default: throw new IllegalStateException("Unexpected buffer type: " + buffering);
 		}
 	}
-	
+
 	private final ReadStream source;
 	private final WriteStream target;
 	private final ByteBuffer buffer;
@@ -83,7 +83,7 @@ public final class StreamTransfer {
 
 	/**
 	 * The buffering strategy in operation for this transfer.
-	 * 
+	 *
 	 * @return the specific buffering used (ie. never
 	 *         {@link StreamBuffering#PREFER_ANY})
 	 */
@@ -98,7 +98,7 @@ public final class StreamTransfer {
 	 * Transfers the specified number of bytes from the source to the target.
 	 * Fewer bytes may be transferred if an end-of-stream condition occurs in
 	 * either the source or the target.
-	 * 
+	 *
 	 * @param count
 	 *            the number of bytes to be transferred
 	 * @return the actual number of bytes transferred
@@ -108,18 +108,18 @@ public final class StreamTransfer {
 		if (count < 0L) throw new IllegalArgumentException("negative count");
 		return buffer == null ? transferNoBuffer(count) : transferBuffered(count);
 	}
-	
+
 	/**
 	 * Transfers the bytes from the source to the target until one or possibly
 	 * both streams are exhausted.
-	 * 
+	 *
 	 * @return the number of bytes transferred
 	 */
 
 	public long transferFully() {
 		return buffer == null ? transferNoBuffer() : transferBuffered();
 	}
-	
+
 	private long transferNoBuffer() {
 		long count = 0L;
 		try {

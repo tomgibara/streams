@@ -42,7 +42,7 @@ public class DefaultStreamTest extends FuzzStreamTest {
 			if (closed) StreamException.raiseClosed();
 			list.add(v);
 		}
-		
+
 		@Override
 		public void close() {
 			closed = true;

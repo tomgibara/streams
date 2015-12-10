@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
 public class ChannelStreamTest extends FuzzStreamTest {
 
 	private final WeakHashMap<ChannelWriteStream, ByteArrayChannel> channels = new WeakHashMap<>();
-	
+
 	@Override
 	WriteStream newWriter() {
 		ByteArrayChannel channel = new ByteArrayChannel(MAX_WRITES * MAX_LEN * 2);

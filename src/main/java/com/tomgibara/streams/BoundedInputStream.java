@@ -30,7 +30,7 @@ class BoundedInputStream extends InputStream {
 		this.stream = stream;
 		this.remaining = length;
 	}
-	
+
 	@Override
 	public int read() throws IOException {
 		if (remaining <= 0L) return -1;

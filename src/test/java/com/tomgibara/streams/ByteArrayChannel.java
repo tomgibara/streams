@@ -28,20 +28,20 @@ public class ByteArrayChannel implements SeekableByteChannel, ReadableByteChanne
 	private boolean open = true;
 	private int position = 0;
 	private byte[] bytes;
-	
+
 	public ByteArrayChannel(int size) {
 		this.bytes = new byte[size];
 	}
-	
+
 	public ByteArrayChannel(byte[] bytes) {
 		if (bytes == null) throw new IllegalArgumentException("null bytes");
 		this.bytes = bytes;
 	}
-	
+
 	public byte[] getBytes() {
 		return bytes;
 	}
-	
+
 	@Override
 	public boolean isOpen() {
 		return open;

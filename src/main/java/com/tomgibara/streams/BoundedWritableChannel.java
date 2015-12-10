@@ -24,14 +24,14 @@ class BoundedWritableChannel implements WritableByteChannel {
 
 	private final WritableByteChannel channel;
 	private long length;
-	
+
 	BoundedWritableChannel(WritableByteChannel channel, long length) {
 		if (channel == null) throw new IllegalArgumentException("null channel");
 		if (length < 0L) throw new IllegalArgumentException("negative length");
 		this.channel = channel;
 		this.length = length;
 	}
-	
+
 	@Override
 	public boolean isOpen() {
 		return channel.isOpen();

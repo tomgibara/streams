@@ -127,10 +127,10 @@ final class InputReadStream implements ReadStream {
 	public ReadStream bounded(long length) {
 		return new InputReadStream(new BoundedInputStream(in, length));
 	}
-	
+
 	/**
 	 * Returns the underlying input stream.
-	 * 
+	 *
 	 * @return the input stream
 	 */
 
@@ -138,7 +138,7 @@ final class InputReadStream implements ReadStream {
 	public InputStream asInputStream() {
 		return in;
 	}
-	
+
 	/**
 	 * Closes the underlying {@link InputStream}.
 	 */

@@ -23,11 +23,11 @@ import java.nio.ByteBuffer;
 class ReadInputStream extends InputStream {
 
 	private final ReadStream stream;
-	
+
 	ReadInputStream(ReadStream stream) {
 		this.stream = stream;
 	}
-	
+
 	@Override
 	public int read() throws IOException {
 		try {
@@ -38,12 +38,12 @@ class ReadInputStream extends InputStream {
 			throw new IOException(e);
 		}
 	}
-	
+
 	@Override
 	public int read(byte[] b) throws IOException {
 		return read(ByteBuffer.wrap(b));
 	}
-	
+
 	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
 		return read(ByteBuffer.wrap(b, off, len));

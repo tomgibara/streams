@@ -29,7 +29,7 @@ public interface StreamDeserializer<T> {
 
 	/**
 	 * Called to deserialize a stream into an object instance.
-	 * 
+	 *
 	 * @param stream
 	 *            the stream from which the object should be deserialized
 	 * @return the deserialized object

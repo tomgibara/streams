@@ -20,7 +20,7 @@ package com.tomgibara.streams;
  * Indicates a streams preferred buffering strategy. In the descriptions below,
  * <code>direct</code> refers to the direct allocation strategy that can be used
  * to create <code>ByteBuffer</code> instances.
- * 
+ *
  * @author Tom Gibara
  *
  * @see ReadStream#getBuffering()
@@ -48,6 +48,6 @@ public enum StreamBuffering {
 	 * Indicates that a stream operates most efficiently with non-direct (ie. heap allocated) buffering.
 	 */
 	PREFER_INDIRECT,
-	
-	
+
+
 }

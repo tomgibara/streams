@@ -27,12 +27,12 @@ import com.tomgibara.fundament.Producer;
  * An abstraction for reading basic Java types into a byte based stream.
  * Attempting to read from an exhausted stream will raise an
  * {@link EndOfStreamException}.
- * 
+ *
  * <p>
  * Due to the presence of default implementations, the only method required for
  * a concrete implementation is the {@link #readByte()} method. In the default
  * implementations all values are read big-endian.
- * 
+ *
  * @author Tom Gibara
  *
  */
@@ -107,7 +107,7 @@ public interface ReadStream extends CloseableStream {
 	/**
 	 * <p>
 	 * Reads a single boolean from the underlying stream.
-	 * 
+	 *
 	 * <p>
 	 * In the default implementation a zero value is returned a false and any
 	 * non-zero value as true.
@@ -159,7 +159,7 @@ public interface ReadStream extends CloseableStream {
 	 *
 	 * <p>
 	 * The float is read as per {@link Float#intBitsToFloat(int)}.
-	 * 
+	 *
 	 * @return the float read
 	 * @throws StreamException
 	 *             if the float couldn't be read
@@ -263,27 +263,27 @@ public interface ReadStream extends CloseableStream {
 	/**
 	 * Indicates the preferred buffering strategy for this stream
 	 * implementation.
-	 * 
+	 *
 	 * @return the preferred buffering strategy
 	 */
 
 	default StreamBuffering getBuffering() {
 		return StreamBuffering.UNSUPPORTED;
 	}
-	
+
 	/**
 	 * Fills the buffer with bytes read from the stream. Bytes will be written
 	 * starting from <i>position</i> and continuing until <i>limit</i> is
 	 * reached. If an 'end-of-stream' condition occurs, no
 	 * {@link EndOfStreamException} is raised, instead the buffer is returned
 	 * without reaching its limit.
-	 * 
+	 *
 	 * @param buffer
 	 *            the buffer to contain the read bytes
 	 * @throws StreamException
 	 *             if the bytes could not be read
 	 */
-	
+
 	default void fillBuffer(ByteBuffer buffer) throws StreamException {
 		try {
 			while (buffer.hasRemaining()) {
@@ -294,14 +294,14 @@ public interface ReadStream extends CloseableStream {
 			return;
 		}
 	}
-	
+
 	// convenience methods
-	
+
 	/**
 	 * A reader that draws from the same stream of bytes, but which will not
 	 * permit more than the specified number of bytes to be read without
 	 * reporting an end-of-stream condition.
-	 * 
+	 *
 	 * @param length
 	 *            the greatest number of bytes that the returned stream may
 	 *            return
@@ -315,10 +315,10 @@ public interface ReadStream extends CloseableStream {
 	/**
 	 * A reader that guards the close method of this reader with the specified
 	 * closer implementation.
-	 * 
+	 *
 	 * @param closer
 	 *            provides the logic to be performed on stream closure
-	 * 
+	 *
 	 * @return a stream returning the same bytes as this reader
 	 */
 
@@ -330,18 +330,18 @@ public interface ReadStream extends CloseableStream {
 	/**
 	 * Returns an <code>InputStream</code> that draws from the same stream of
 	 * bytes.
-	 * 
+	 *
 	 * @return the stream as an <code>InputStream</code>
 	 */
 
 	default InputStream asInputStream() {
 		return new ReadInputStream(this);
 	}
-	
+
 	/**
 	 * Returns a <code>ReadableByteChannel</code> that draws from the same
 	 * stream of bytes.
-	 * 
+	 *
 	 * @return the stream as an <code>ReadableByteChannel</code>
 	 */
 
@@ -356,7 +356,7 @@ public interface ReadStream extends CloseableStream {
 	 * preferences. Note that if neither the source nor the target supports
 	 * buffering, then no buffer will be allocated, otherwise a buffer will be
 	 * allocated at a default size chosen by the implementation.
-	 * 
+	 *
 	 * @param target
 	 *            the stream receiving byte data
 	 * @return an object for transferring data between the streams
@@ -375,7 +375,7 @@ public interface ReadStream extends CloseableStream {
 	 * indicated preferences. Note that if neither the source nor the target
 	 * supports buffering, then no buffer will be allocated irrespective of the
 	 * value supplied for <code>bufferSize</code>.
-	 * 
+	 *
 	 * @param target
 	 *            the stream receiving byte data
 	 * @param bufferSize
@@ -393,7 +393,7 @@ public interface ReadStream extends CloseableStream {
 	 * stream, using a supplied buffer. Supplying a null or empty buffer
 	 * disables buffering. Note that if neither the source nor the target
 	 * supports buffering, then buffer will remain unused.
-	 * 
+	 *
 	 * @param target
 	 *            the stream receiving byte data
 	 * @param buffer
@@ -409,7 +409,7 @@ public interface ReadStream extends CloseableStream {
 	/**
 	 * Attaches a deserializer to the stream to allow object values to be
 	 * produced from the primitive values returned by this stream.
-	 * 
+	 *
 	 * @param deserializer
 	 *            converts byte data into objects
 	 * @param <T>
@@ -420,7 +420,7 @@ public interface ReadStream extends CloseableStream {
 	default <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {
 		return () -> deserializer.deserialize(this);
 	}
-	
+
 	// closeable
 
 	default void close() {

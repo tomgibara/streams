@@ -24,24 +24,24 @@ class BoundedReadableChannel implements ReadableByteChannel {
 
 	private final ReadableByteChannel channel;
 	private long length;
-	
+
 	BoundedReadableChannel(ReadableByteChannel channel, long length) {
 		if (channel == null) throw new IllegalArgumentException("null channel");
 		if (length < 0L) throw new IllegalArgumentException("negative length");
 		this.channel = channel;
 		this.length = length;
 	}
-	
+
 	@Override
 	public boolean isOpen() {
 		return channel.isOpen();
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		channel.close();
 	}
-	
+
 	@Override
 	public int read(ByteBuffer dst) throws IOException {
 		if (length == 0) return -1;

@@ -28,12 +28,12 @@ import java.security.PrivilegedAction;
 /**
  * <p>
  * Main entry point for the streams API.
- * 
+ *
  * <p>
  * The class provides static methods for creating {@link ReadStream} and
  * {@link WriteStream} instances, together with methods to create
  * {@link StreamBytes}.
- * 
+ *
  * @author Tom Gibara
  *
  */
@@ -69,7 +69,7 @@ public final class Streams {
 	/**
 	 * Creates a new {@link StreamBytes} to accumulate bytes written via a
 	 * {@link WriteStream}.
-	 * 
+	 *
 	 * @return new bytes with default initial capacity and an unlimited maximum
 	 *         capacity
 	 */
@@ -81,7 +81,7 @@ public final class Streams {
 	/**
 	 * Creates a new {@link StreamBytes} to accumulate bytes written via a
 	 * {@link WriteStream}.
-	 * 
+	 *
 	 * @param initialCapacity
 	 *            the initial capacity of the byte store
 	 * @return new bytes with the specified initial capacity and an unlimited
@@ -95,7 +95,7 @@ public final class Streams {
 	/**
 	 * Creates a new {@link StreamBytes} to accumulate bytes written via a
 	 * {@link WriteStream}.
-	 * 
+	 *
 	 * @param initialCapacity
 	 *            the initial capacity of the byte store
 	 * @param maximumCapacity
@@ -108,13 +108,13 @@ public final class Streams {
 		if (initialCapacity > maximumCapacity) throw new IllegalArgumentException("initialCapacity exceeds maximumCapacity");
 		return new StreamBytes(array(initialCapacity), 0, maximumCapacity);
 	}
-	
+
 	/**
 	 * Creates a new {@link StreamBytes} to expose bytes through a
 	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}. If
 	 * a reader is attached to the returned object before a writer is attached,
 	 * all bytes in the array will be readable.
-	 * 
+	 *
 	 * @param bytes
 	 *            a byte array containing the data to be read/overwritten
 	 * @return new bytes with an unlimited maximum capacity
@@ -127,7 +127,7 @@ public final class Streams {
 	/**
 	 * Creates a new {@link StreamBytes} to expose bytes through a
 	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
-	 * 
+	 *
 	 * @param bytes
 	 *            a byte array containing the data to be read/overwritten
 	 * @param length
@@ -143,7 +143,7 @@ public final class Streams {
 	/**
 	 * Creates a new {@link StreamBytes} to expose bytes through a
 	 * {@link ReadStream} or accumulate bytes through a {@link WriteStream}.
-	 * 
+	 *
 	 * @param bytes
 	 *            a byte array containing the data to be read/overwritten
 	 * @param length
@@ -164,7 +164,7 @@ public final class Streams {
 	 * <p>
 	 * Creates a stream that reads from the supplied channel. Bytes will be read
 	 * starting from the current channel position.
-	 * 
+	 *
 	 * <p>
 	 * Any {@link IOException} encountered by this class is wrapped as
 	 * {@link StreamException} and rethrown. Any end-of-stream condition is
@@ -173,7 +173,7 @@ public final class Streams {
 	 * an EOS condition is identified by <code>buffer.hasRemaining()</code>
 	 * returning true. Note that modifying the channel while accessing it via a
 	 * stream is likely to produce inconsistencies.
-	 * 
+	 *
 	 * @param channel
 	 *            a byte channel
 	 * @return a stream over the supplied channel
@@ -185,7 +185,7 @@ public final class Streams {
 		if (channel == null) throw new IllegalArgumentException("null channel");
 		return new ChannelReadStream(channel);
 	}
-	
+
 	/**
 	 * <p>
 	 * Creates a stream that writes to the supplied channel. Bytes will be
@@ -200,7 +200,7 @@ public final class Streams {
 	 * <code>buffer.hasRemaining()</code> returning true. Note that modifying
 	 * the channel while accessing it via a stream is likely to produce
 	 * inconsistencies.
-	 * 
+	 *
 	 * @param channel
 	 *            a byte channel
 	 * @return a stream over the supplied channel
@@ -217,7 +217,7 @@ public final class Streams {
 	 * <p>
 	 * Creates a new stream which obtains bytes data from an underlying
 	 * {@link InputStream}
-	 * 
+	 *
 	 * <p>
 	 * Any {@link IOException} encountered by this class is wrapped as
 	 * {@link StreamException} and rethrown. Any end-of-stream condition is

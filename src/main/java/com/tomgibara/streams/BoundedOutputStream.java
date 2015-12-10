@@ -23,7 +23,7 @@ class BoundedOutputStream extends OutputStream {
 
 	private final OutputStream stream;
 	private long remaining;
-	
+
 	BoundedOutputStream(OutputStream stream, long length) {
 		if (stream == null) throw new IllegalArgumentException("null stream");
 		if (length < 0L) throw new IllegalArgumentException("negative length");
@@ -64,7 +64,7 @@ class BoundedOutputStream extends OutputStream {
 	public void flush() throws IOException {
 		stream.flush();
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		stream.close();

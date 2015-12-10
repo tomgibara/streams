@@ -23,11 +23,11 @@ import java.nio.channels.WritableByteChannel;
 class WritableStreamChannel implements WritableByteChannel {
 
 	private final WriteStream stream;
-	
+
 	WritableStreamChannel(WriteStream stream) {
 		this.stream = stream;
 	}
-	
+
 	@Override
 	public boolean isOpen() {
 		return true;

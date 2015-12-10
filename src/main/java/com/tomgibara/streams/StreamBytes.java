@@ -23,11 +23,11 @@ import java.util.Arrays;
  * Instances of this class can accumulate a byte array via an attached
  * {@link WriteStream} and/or stream a byte array via an attached
  * {@link ReadStream}.
- * 
+ *
  * <p>
  * The class is designed to support a variety of modes of operation, examples
  * include:
- * 
+ *
  * <ul>
  * <li>Initializing via {@link Streams#bytes(byte[],int)}, calling
  * {@link #readStream()} and reading the data via its <em>read</em> methods.
@@ -41,9 +41,9 @@ import java.util.Arrays;
  * {@link #writeStream()} and {@link #readStream()} to provide a reusable buffer for
  * proxying structured byte data.
  * </ul>
- * 
+ *
  * @author Tom Gibara
- * 
+ *
  * @see Streams
  * @see ReadStream
  * @see WriteStream
@@ -67,7 +67,7 @@ public class StreamBytes {
 	/**
 	 * The maximum capacity permitted for writers attached to this object. When
 	 * unconstrained this method will report the maximum possible array size.
-	 * 
+	 *
 	 * @return the maximum capacity in bytes
 	 */
 
@@ -79,11 +79,11 @@ public class StreamBytes {
 	 * <p>
 	 * The number of bytes that are stored in the byte array that underlies this
 	 * object. Calling this method will cause any attached writer to be closed.
-	 * 
+	 *
 	 * <p>
 	 * The initial value of this field is dependent on the parameters passed to
 	 * the <code>bytes</code> factory methods in {@link Streams}.
-	 * 
+	 *
 	 * @return the number of bytes.
 	 */
 
@@ -97,7 +97,7 @@ public class StreamBytes {
 	 * the existing writer is returned. If a reader is attached to the object
 	 * when this method is called, the reader is closed and immediately detached
 	 * before a writer is created.
-	 * 
+	 *
 	 * @return the writer attached to this object
 	 */
 	public WriteStream writeStream() {
@@ -107,16 +107,16 @@ public class StreamBytes {
 		}
 		return writer;
 	}
-	
+
 	/**
 	 * Attaches a reader to the object. If there is already any attached reader,
 	 * the existing reader is returned. If a writer is attached to the object
 	 * when this method is called, the writer is closed and immediately detached
 	 * before the reader is created.
-	 * 
+	 *
 	 * @return the reader attached to this object
 	 */
-	
+
 	public ReadStream readStream() {
 		detachWriter();
 		if (reader == null) {
@@ -131,7 +131,7 @@ public class StreamBytes {
 	 * store of the last writer opened on this object is returned. If no writer
 	 * has yet been opened via the {@link #writeStream()} method, a copy of the
 	 * initial byte array is returned.
-	 * 
+	 *
 	 * @return the byte data stored by this object
 	 */
 
@@ -147,20 +147,20 @@ public class StreamBytes {
 	 * {@link StreamException}, though the {@link #writeStream()} method
 	 * may be called to obtain a new writer that will reuse the direct byte
 	 * array, avoiding allocation of a new buffer.
-	 * 
+	 *
 	 * <p>
 	 * Note that the length of an uncopied byte array may exceed the number of
 	 * bytes written, for this reason direct retrieval of the byte storage is
 	 * best reserved for situations where the initial capacity specified and not
 	 * exceeded.
-	 * 
+	 *
 	 * @return the byte data stored by this object
 	 */
 
 	public byte[] directBytes() {
 		return writer == null ? bytes : writer.getBytes(true);
 	}
-	
+
 	private void detachWriter() {
 		if (writer != null) {
 			bytes = writer.getBytes(true);
@@ -168,7 +168,7 @@ public class StreamBytes {
 			writer = null;
 		}
 	}
-	
+
 	private void detachReader() {
 		if (reader != null) {
 			reader.close();

@@ -23,11 +23,11 @@ import java.nio.channels.ReadableByteChannel;
 class ReadableStreamChannel implements ReadableByteChannel {
 
 	private final ReadStream stream;
-	
+
 	ReadableStreamChannel(ReadStream stream) {
 		this.stream = stream;
 	}
-	
+
 	@Override
 	public boolean isOpen() {
 		return true;

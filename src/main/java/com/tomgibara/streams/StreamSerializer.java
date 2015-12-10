@@ -29,7 +29,7 @@ public interface StreamSerializer<T> {
 
 	/**
 	 * Called to serialize an object instance to a stream.
-	 * 
+	 *
 	 * @param value
 	 *            the object to be serialized
 	 * @param stream

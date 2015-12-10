@@ -22,7 +22,7 @@ package com.tomgibara.streams;
  * {@link WriteStream#closedWith(StreamCloser)} methods to control the behaviour
  * of streams when closed. A number of standard implementations are available
  * via static methods on this class.
- * 
+ *
  * @author Tom Gibara
  *
  */
@@ -32,7 +32,7 @@ public interface StreamCloser {
 
 	/**
 	 * Closes the underlying stream and reports the stream as closed.
-	 * 
+	 *
 	 * @return a standard closer for closing the underlying stream
 	 */
 
@@ -43,7 +43,7 @@ public interface StreamCloser {
 	/**
 	 * Leaves the underlying stream open and continues to report the stream as
 	 * open.
-	 * 
+	 *
 	 * @return a standard closer for making closing a no-op.
 	 */
 
@@ -53,7 +53,7 @@ public interface StreamCloser {
 
 	/**
 	 * Leaves the underlying stream open but reports the stream as closed.
-	 * 
+	 *
 	 * @return a standard closer for protecting the underlying stream from
 	 *         closing
 	 */
@@ -65,7 +65,7 @@ public interface StreamCloser {
 	/**
 	 * Called when closing a stream that wraps an underlying stream. The method
 	 * guaranteed to only be called once per stream.
-	 * 
+	 *
 	 * @param stream
 	 *            the underlying stream
 	 * @return true if the overlying stream should report itself as closed,

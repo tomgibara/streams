@@ -37,13 +37,13 @@ abstract class FuzzStreamTest extends TestCase {
 
 	static final int MAX_WRITES = 100;
 	static final int MAX_LEN = 50;
-	
+
 	abstract WriteStream newWriter();
 
 	abstract ReadStream newReader(WriteStream writer);
 
 	boolean closeHonored() {return true; }
-	
+
 	@Test
 	public void testFuzz() {
 		Random r = new Random(0L);
@@ -197,7 +197,7 @@ abstract class FuzzStreamTest extends TestCase {
 			testAsInputStream(r.nextInt(256), r.nextBoolean(), r.nextBoolean());
 		}
 	}
-	
+
 	private void testAsInputStream(int offset, boolean skipWithArray, boolean readWithArray) throws IOException {
 		WriteStream w = newWriter();
 		for (int i = 0; i < 256; i++) {
@@ -245,7 +245,7 @@ abstract class FuzzStreamTest extends TestCase {
 			testAsOutputStream(r.nextInt(256));
 		}
 	}
-	
+
 	private void testAsOutputStream(int offset) throws IOException {
 		WriteStream w = newWriter();
 
@@ -308,7 +308,7 @@ abstract class FuzzStreamTest extends TestCase {
 		in.read(b);
 		assertTrue(b.hasRemaining());
 	}
-	
+
 	public void testClosedReportClosed() {
 		WriteStream w = newWriter();
 		w.writeBytes(new byte[] {0,1,2});

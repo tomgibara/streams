@@ -31,7 +31,7 @@ import java.nio.channels.ReadableByteChannel;
  * <code>buffer.hasRemaining()</code> returning true. Note that modifying the
  * channel while accessing it via a stream is likely to produce inconsistencies.
  * .
- * 
+ *
  * @author Tom Gibara
  *
  * @see EndOfStreamException#EOS
@@ -45,7 +45,7 @@ final class ChannelReadStream implements ReadStream {
 	/**
 	 * Creates a stream that reads from the supplied channel. Bytes will be read
 	 * starting from the current channel position.
-	 * 
+	 *
 	 * @param channel
 	 *            a byte channel
 	 */
@@ -53,42 +53,42 @@ final class ChannelReadStream implements ReadStream {
 	ChannelReadStream(ReadableByteChannel channel) {
 		this.channel = channel;
 	}
-	
+
 	@Override
 	public byte readByte() throws StreamException {
 		return read(buffer, 7).get();
 	}
-	
+
 	@Override
 	public void readBytes(byte[] bs) throws StreamException {
 		fillBuffer(ByteBuffer.wrap(bs));
 	}
-	
+
 	@Override
 	public void readBytes(byte[] bs, int off, int len) throws StreamException {
 		fillBuffer(ByteBuffer.wrap(bs, off, len));
 	}
-	
+
 	@Override
 	public int readInt() throws StreamException {
 		return read(buffer, 4).getInt();
 	}
-	
+
 	@Override
 	public boolean readBoolean() throws StreamException {
 		return read(buffer, 7).get() != 0;
 	}
-	
+
 	@Override
 	public short readShort() throws StreamException {
 		return read(buffer, 6).getShort();
 	}
-	
+
 	@Override
 	public long readLong() throws StreamException {
 		return read(buffer, 0).getLong();
 	}
-	
+
 	@Override
 	public float readFloat() throws StreamException {
 		return read(buffer, 4).getFloat();
@@ -98,17 +98,17 @@ final class ChannelReadStream implements ReadStream {
 	public double readDouble() throws StreamException {
 		return read(buffer, 0).getDouble();
 	}
-	
+
 	@Override
 	public char readChar() throws StreamException {
 		return read(buffer, 6).getChar();
 	}
-	
+
 	@Override
 	public StreamBuffering getBuffering() {
 		return StreamBuffering.PREFER_DIRECT;
 	}
-	
+
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		try {
@@ -120,14 +120,14 @@ final class ChannelReadStream implements ReadStream {
 			throw new StreamException(e);
 		}
 	}
-	
+
 	/**
 	 * Creates a stream which reads from the underlying channel. Bytes will be
 	 * read starting from the current channel position. No more than
 	 * <i>length</i> bytes may be read from the stream. An 'end of stream'
 	 * condition occurs when either the channel is exhausted or when reading
 	 * from the channel would exceed the specified length.
-	 * 
+	 *
 	 * @param length
 	 *            the maximum number of bytes that may be read from the channel
 	 */
@@ -146,14 +146,14 @@ final class ChannelReadStream implements ReadStream {
 	public InputStream asInputStream() {
 		return Channels.newInputStream(channel);
 	}
-	
+
 	/**
 	 * Closes the underlying channel.
-	 * 
+	 *
 	 * @throws StreamException
 	 *             if an {@link IOException} occurs while closing the channel
 	 */
-	
+
 	@Override
 	public void close() {
 		try {
@@ -162,7 +162,7 @@ final class ChannelReadStream implements ReadStream {
 			throw new StreamException();
 		}
 	}
-	
+
 	private ByteBuffer read(ByteBuffer buffer, int position) {
 		buffer.position(position);
 		fillBuffer(buffer);

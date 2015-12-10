@@ -30,7 +30,7 @@ public class BytesStreamTest extends FuzzStreamTest {
 	ReadStream newReader(WriteStream writer) {
 		return new BytesReadStream(((BytesWriteStream) writer).getBytes(false));
 	}
-	
+
 	public void testGetUncopiedBytes() {
 		try (BytesWriteStream writer = new BytesWriteStream(new byte[8], Integer.MAX_VALUE)) {
 			writer.writeLong(-1L);

@@ -32,7 +32,7 @@ import com.tomgibara.fundament.Producer;
 public class StreamTransferTest {
 
 	private final static int MAX_LEN = 3000;
-	
+
 	@Test
 	public void testTransfer() {
 		Random r = new Random(0L);
@@ -83,7 +83,7 @@ public class StreamTransferTest {
 			}
 		}
 	}
-	
+
 	private void test(ReadStream in, Producer<byte[]> inToBytes, WriteStream out, Producer<byte[]> outToBytes, long length, ByteBuffer buffer) {
 		// do the transfer
 		StreamTransfer transfer = in.to(out, buffer);
@@ -100,5 +100,5 @@ public class StreamTransferTest {
 			assertArrayEquals(Arrays.copyOf(inBytes, expLen), outBytes);
 		}
 	}
-	
+
 }

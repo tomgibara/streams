@@ -165,7 +165,7 @@ final class BytesReadStream implements ReadStream {
 	public StreamBuffering getBuffering() {
 		return StreamBuffering.PREFER_ANY;
 	}
-	
+
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		if (position < 0) return;
@@ -173,12 +173,12 @@ final class BytesReadStream implements ReadStream {
 		buffer.put(bytes, position, length);
 		position += length;
 	}
-	
+
 	@Override
 	public void close() {
 		if (position >= 0) position = -1 - position;
 	}
-	
+
 	private void requireBytes(int count) {
 		if (position < 0) StreamException.raiseClosed();
 		if (position + count > limit) EndOfStreamException.raise();

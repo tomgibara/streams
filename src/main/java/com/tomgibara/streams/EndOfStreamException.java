@@ -32,7 +32,7 @@ import java.security.PrivilegedAction;
  * doing so, users of the library may enjoy much faster performance when
  * end-of-stream conditions are encountered by setting the system property
  * <code>com.tomgibara.streams.eosShared</code> to the value <code>"true"</code>.
- * 
+ *
  * <p>When this is done, a single shared {@link EndOfStreamException} instance
  * will be used, gaining a significant improvement in performance for
  * applications that encounter them often, but at the loss of stacktraces.
@@ -48,26 +48,26 @@ public class EndOfStreamException extends StreamException {
 	private static final long serialVersionUID = 5128955277305418544L;
 
 	private static final String SHARED_PROPERTY = "com.tomgibara.streams.eosShared";
-	
+
 	private static final EndOfStreamException EOS = isShared() ? new EndOfStreamException("EOS", null, false, false) : null;
 
 	private static boolean isShared() {
 		PrivilegedAction<Boolean> action = () -> { return Boolean.valueOf(System.getProperty(SHARED_PROPERTY)); };
 		return AccessController.doPrivileged(action);
 	}
-	
+
 	/**
 	 * <p>
 	 * Raises an {@link EndOfStreamException}. This method may return a shared
 	 * instance of the exception that provides better performance for streams
 	 * that need to indicate an end-of-stream condition.
-	 * 
+	 *
 	 * <p>
 	 * Enabling shared-instance end-of-stream reporting for the library is done
 	 * by setting the system property
 	 * <code>com.tomgibara.streams.eosShared</code> to the value
 	 * <code>"true"</code>.
-	 * 
+	 *
 	 * @throws EndOfStreamException always
 	 */
 
@@ -75,7 +75,7 @@ public class EndOfStreamException extends StreamException {
 		if (EOS != null) throw EOS;
 		throw new EndOfStreamException();
 	}
-	
+
 	public EndOfStreamException() { }
 
 	public EndOfStreamException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

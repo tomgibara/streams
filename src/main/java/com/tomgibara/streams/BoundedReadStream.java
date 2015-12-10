@@ -30,7 +30,7 @@ class BoundedReadStream implements ReadStream {
 		this.stream = stream;
 		this.remaining = remaining;
 	}
-	
+
 	@Override
 	public byte readByte() throws StreamException {
 		if (remaining <= 0) EndOfStreamException.raise();
@@ -47,14 +47,14 @@ class BoundedReadStream implements ReadStream {
 
 	@Override
 	public InputStream asInputStream() {
-		return new BoundedInputStream(stream.asInputStream(), remaining); 
+		return new BoundedInputStream(stream.asInputStream(), remaining);
 	}
-	
+
 	@Override
 	public ReadableByteChannel asChannel() {
 		return new BoundedReadableChannel(stream.asChannel(), remaining);
 	}
-	
+
 	@Override
 	public void close() {
 		stream.close();

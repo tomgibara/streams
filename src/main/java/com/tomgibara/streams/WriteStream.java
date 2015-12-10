@@ -266,26 +266,26 @@ public interface WriteStream extends CloseableStream {
 	/**
 	 * Indicates the preferred buffering strategy for this stream
 	 * implementation.
-	 * 
+	 *
 	 * @return the preferred buffering strategy
 	 */
 
 	default StreamBuffering getBuffering() {
 		return StreamBuffering.UNSUPPORTED;
 	}
-	
+
 	/**
 	 * Writes bytes to the stream from a buffer. Bytes will be read starting at
 	 * <i>position</i> and continuing until <i>limit</i> is reached. If an
 	 * 'end-of-stream' condition occurs, no {@link EndOfStreamException} is
 	 * raised, instead the buffer is returned without reaching its limit.
-	 * 
+	 *
 	 * @param buffer
 	 *            the buffer containing bytes to be written
 	 * @throws StreamException
 	 *             if the bytes could not be written
 	 */
-	
+
 	default void drainBuffer(ByteBuffer buffer) throws StreamException {
 		try {
 			for (int i = buffer.remaining(); i > 0; i--) {
@@ -303,7 +303,7 @@ public interface WriteStream extends CloseableStream {
 	 * A writer that contributes to the same stream of bytes, but which will not
 	 * permit more than the specified number of bytes to be written without
 	 * reporting an end-of-stream condition.
-	 * 
+	 *
 	 * @param length
 	 *            the greatest number of bytes that the returned stream may
 	 *            contribute
@@ -313,14 +313,14 @@ public interface WriteStream extends CloseableStream {
 	default WriteStream bounded(long length) {
 		return new BoundedWriteStream(this, length);
 	}
-	
+
 	/**
 	 * A writer that guards the close method of this writer with the specified
 	 * closer implementation.
-	 * 
+	 *
 	 * @param closer
 	 *            provides the logic to be performed on stream closure
-	 * 
+	 *
 	 * @return a stream that supplies bytes to this writer
 	 */
 
@@ -332,7 +332,7 @@ public interface WriteStream extends CloseableStream {
 	/**
 	 * Returns an <code>OutputStream</code> that draws from the same stream of
 	 * bytes.
-	 * 
+	 *
 	 * @return the stream as an <code>OutputStream</code>
 	 */
 
@@ -343,7 +343,7 @@ public interface WriteStream extends CloseableStream {
 	/**
 	 * Returns a <code>WritableByteChannel</code> that draws from the same
 	 * stream of bytes.
-	 * 
+	 *
 	 * @return the stream as an <code>WritableByteChannel</code>
 	 */
 
@@ -358,7 +358,7 @@ public interface WriteStream extends CloseableStream {
 	 * preferences. Note that if neither the source nor the target supports
 	 * buffering, then no buffer will be allocated, otherwise a buffer will be
 	 * allocated at a default size chosen by the implementation.
-	 * 
+	 *
 	 * @param source
 	 *            the stream supplying byte data
 	 * @return an object for transferring data between the streams
@@ -377,7 +377,7 @@ public interface WriteStream extends CloseableStream {
 	 * indicated preferences. Note that if neither the source nor the target
 	 * supports buffering, then no buffer will be allocated irrespective of the
 	 * value supplied for <code>bufferSize</code>.
-	 * 
+	 *
 	 * @param source
 	 *            the stream supplying byte data
 	 * @param bufferSize
@@ -395,7 +395,7 @@ public interface WriteStream extends CloseableStream {
 	 * stream, using a supplied buffer. Supplying a null or empty buffer
 	 * disables buffering. Note that if neither the source nor the target
 	 * supports buffering, then buffer will remain unused.
-	 * 
+	 *
 	 * @param source
 	 *            the stream supplying byte data
 	 * @param buffer
@@ -411,7 +411,7 @@ public interface WriteStream extends CloseableStream {
 	/**
 	 * Attaches a serializer to the stream to allow object values to be written
 	 * as primitive values to this stream.
-	 * 
+	 *
 	 * @param serializer
 	 *            converts byte data into objects
 	 * @param <T>
@@ -424,7 +424,7 @@ public interface WriteStream extends CloseableStream {
 	}
 
 	// closeable
-	
+
 	@Override
 	default void close() {
 		/* do nothing */

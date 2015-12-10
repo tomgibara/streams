@@ -114,7 +114,7 @@ public class WrappedWriteStream implements WriteStream {
 	public void writeChars(CharSequence cs) throws StreamException {
 		wrapped.writeChars(cs);
 	}
-	
+
 	@Override
 	public void drainBuffer(ByteBuffer buffer) throws StreamException {
 		wrapped.drainBuffer(buffer);

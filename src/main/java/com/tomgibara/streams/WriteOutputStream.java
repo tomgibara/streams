@@ -22,11 +22,11 @@ import java.io.OutputStream;
 class WriteOutputStream extends OutputStream {
 
 	private final WriteStream stream;
-	
+
 	WriteOutputStream(WriteStream stream) {
 		this.stream = stream;
 	}
-	
+
 	@Override
 	public void write(int b) throws IOException {
 		try {
@@ -44,7 +44,7 @@ class WriteOutputStream extends OutputStream {
 			throw new IOException(e);
 		}
 	}
-	
+
 	@Override
 	public void write(byte[] b, int off, int len) throws IOException {
 		try {

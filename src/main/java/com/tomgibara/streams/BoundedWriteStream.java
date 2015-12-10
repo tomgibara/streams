@@ -23,14 +23,14 @@ class BoundedWriteStream implements WriteStream {
 
 	private final WriteStream stream;
 	private long remaining;
-	
+
 	BoundedWriteStream(WriteStream stream, long remaining) {
 		if (stream == null) throw new IllegalArgumentException("null stream");
 		if (remaining < 0L) throw new IllegalArgumentException("negative remaining");
 		this.stream = stream;
 		this.remaining = remaining;
 	}
-	
+
 	@Override
 	public void writeByte(byte v) throws StreamException {
 		if (remaining <= 0) EndOfStreamException.raise();

@@ -116,7 +116,7 @@ final class BytesWriteStream implements WriteStream {
 		bytes[position++] = (byte) (v >>  8);
 		bytes[position++] = (byte) (v      );
 	}
-	
+
 	@Override
 	public void drainBuffer(ByteBuffer buffer) throws StreamException {
 		int length = buffer.remaining();
@@ -130,7 +130,7 @@ final class BytesWriteStream implements WriteStream {
 	 * fail with an {@link EndOfStreamException} as per the {@link #close()}
 	 * method.
 	 */
-	
+
 	@Override
 	public void close() {
 		position = -1 - position;
@@ -143,7 +143,7 @@ final class BytesWriteStream implements WriteStream {
 	 * and returns the byte array which backed the writer. Subsequent attempts
 	 * to write to the writer will fail with an {@link EndOfStreamException} as
 	 * per the {@link #close()} method.
-	 * 
+	 *
 	 * <p>
 	 * Note that the length of an uncopied byte array may exceed the number of
 	 * bytes written, for this reason direct retrieval of the byte storage is
@@ -165,11 +165,11 @@ final class BytesWriteStream implements WriteStream {
 	int position() {
 		return position < 0 ? -1 - position : position;
 	}
-	
+
 	private boolean isClosed() {
 		return position < 0;
 	}
-	
+
 	private void ensureFurtherCapacity(int n) {
 		if (isClosed()) StreamException.raiseClosed();
 		int required = position + n;

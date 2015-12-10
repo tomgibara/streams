@@ -118,7 +118,7 @@ class ClosedReadStream implements ReadStream {
 	public StreamBuffering getBuffering() {
 		return stream.getBuffering();
 	}
-	
+
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		if (!closed) stream.fillBuffer(buffer);

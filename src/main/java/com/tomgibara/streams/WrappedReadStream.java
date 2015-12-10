@@ -119,7 +119,7 @@ public class WrappedReadStream implements ReadStream {
 	public StreamBuffering getBuffering() {
 		return wrapped.getBuffering();
 	}
-	
+
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		wrapped.fillBuffer(buffer);
