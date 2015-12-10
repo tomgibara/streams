@@ -63,4 +63,50 @@ public class BytesStreamTest extends FuzzStreamTest {
 		}
 	}
 
+	public void testBytesReading() {
+		try (ReadStream r = Streams.bytes(new byte[] {'a', 'b', 'c', 'd', 'e'}, 4).readStream()) {
+			assertEquals('a', r.readByte());
+			assertEquals('b', r.readByte());
+			assertEquals('c', r.readByte());
+			assertEquals('d', r.readByte());
+			try {
+				r.readByte();
+				fail();
+			} catch (EndOfStreamException e) {
+				/* expected */
+			}
+		}
+	}
+
+	public void testBytesFlipping() {
+		StreamBytes bytes = Streams.bytes(0, 100);
+		for (int i = 0; i < 10; i++) {
+			WriteStream w = bytes.writeStream();
+			byte[] check = new byte[i * 10];
+			for (int j = 0; j < check.length; j++) {
+				byte v = (byte)(i + j);
+				check[j] = v;
+				w.writeByte(v);
+			}
+			Assert.assertArrayEquals(check, bytes.bytes());
+			ReadStream r = bytes.readStream();
+			for (int j = 0; j < check.length; j++) {
+				assertEquals(check[j], r.readByte());
+			}
+			try {
+				r.readByte();
+				fail();
+			} catch (EndOfStreamException e) {
+				/* expected */
+			}
+		}
+		byte[] full = new byte[100];
+		WriteStream w = bytes.writeStream();
+		w.writeBytes(full);
+		try {
+			w.writeByte((byte) 0);
+		} catch (EndOfStreamException e) {
+			/* expected */
+		}
+	}
 }
