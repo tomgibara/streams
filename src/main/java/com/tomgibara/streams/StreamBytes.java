@@ -54,8 +54,8 @@ public class StreamBytes {
 	private final int maxCapacity;
 	private byte[] bytes;
 	private int length;
-	private ByteWriteStream writer = null;
-	private ByteReadStream reader = null;
+	private BytesWriteStream writer = null;
+	private BytesReadStream reader = null;
 
 	StreamBytes(byte[] bytes, int length, int maxCapacity) {
 		this.maxCapacity = maxCapacity;
@@ -102,7 +102,7 @@ public class StreamBytes {
 	public WriteStream writeStream() {
 		detachReader();
 		if (writer == null) {
-			writer = new ByteWriteStream(bytes, maxCapacity);
+			writer = new BytesWriteStream(bytes, maxCapacity);
 		}
 		return writer;
 	}
@@ -119,7 +119,7 @@ public class StreamBytes {
 	public ReadStream readStream() {
 		detachWriter();
 		if (reader == null) {
-			reader = new ByteReadStream(bytes, 0, length);
+			reader = new BytesReadStream(bytes, 0, length);
 		}
 		return reader;
 	}

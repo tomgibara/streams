@@ -21,18 +21,18 @@ import java.util.Arrays;
 import org.junit.Assert;
 
 
-public class ByteStreamTest extends FuzzStreamTest {
+public class BytesStreamTest extends FuzzStreamTest {
 
 	@Override
-	WriteStream newWriter() { return new ByteWriteStream(new byte[32], Integer.MAX_VALUE); }
+	WriteStream newWriter() { return new BytesWriteStream(new byte[32], Integer.MAX_VALUE); }
 
 	@Override
 	ReadStream newReader(WriteStream writer) {
-		return new ByteReadStream(((ByteWriteStream) writer).getBytes(false));
+		return new BytesReadStream(((BytesWriteStream) writer).getBytes(false));
 	}
 	
 	public void testGetUncopiedBytes() {
-		try (ByteWriteStream writer = new ByteWriteStream(new byte[8], Integer.MAX_VALUE)) {
+		try (BytesWriteStream writer = new BytesWriteStream(new byte[8], Integer.MAX_VALUE)) {
 			writer.writeLong(-1L);
 			byte[] bytes = writer.getBytes(true);
 			byte[] expected = new byte[8];

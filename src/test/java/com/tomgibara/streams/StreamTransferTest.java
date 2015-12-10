@@ -47,8 +47,8 @@ public class StreamTransferTest {
 				buffer = null;
 			}
 
-			ByteReadStream br = new ByteReadStream(srcBytes);
-			ByteWriteStream bw = new ByteWriteStream(new byte[32], Integer.MAX_VALUE);
+			BytesReadStream br = new BytesReadStream(srcBytes);
+			BytesWriteStream bw = new BytesWriteStream(new byte[32], Integer.MAX_VALUE);
 			test(br, () -> srcBytes, bw, () -> bw.getBytes(false), length, buffer);
 
 			InputReadStream sr = new InputReadStream(new ByteArrayInputStream(srcBytes));
@@ -73,7 +73,7 @@ public class StreamTransferTest {
 
 			for (int j = 0; j < 10; j++) {
 				int size = j * MAX_LEN / 10;
-				ReadStream src = new ByteReadStream(srcBytes);
+				ReadStream src = new BytesReadStream(srcBytes);
 				ByteArrayChannel channel = new ByteArrayChannel(dstBytes);
 				WriteStream dst = new ChannelWriteStream(channel);
 				StreamTransfer transfer = src.to(dst, size);

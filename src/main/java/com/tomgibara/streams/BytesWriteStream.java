@@ -27,7 +27,7 @@ import java.util.Arrays;
  *
  */
 
-final class ByteWriteStream implements WriteStream {
+final class BytesWriteStream implements WriteStream {
 
 	private static final int MIN_CAPACITY_INCR = 32;
 	private static final int MAX_CAPACITY_INCR = 1024 * 1024;
@@ -36,7 +36,7 @@ final class ByteWriteStream implements WriteStream {
 	private final int maxCapacity;
 	private int position;
 
-	ByteWriteStream(byte[] bytes, int maxCapacity) {
+	BytesWriteStream(byte[] bytes, int maxCapacity) {
 		// invariant: maxCapacity >= bytes.length
 		this.bytes = bytes;
 		this.maxCapacity = maxCapacity;
