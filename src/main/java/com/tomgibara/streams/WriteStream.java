@@ -424,6 +424,19 @@ public interface WriteStream extends CloseableStream {
 		return v -> serializer.serialize(v, this);
 	}
 
+	/**
+	 * Wraps the stream in a new {@link WriteStream} that echoes all calls made
+	 * via the {@link WriteStream} interface to a specified
+	 * <code>PrintWriter</code>. Optionally, an identity can be specified to
+	 * distinguishing the output of multiple debugging streams.
+	 * 
+	 * @param writer
+	 *            the writer to which method calls should be logged
+	 * @param identity
+	 *            an identifier for the debug instance, may be null
+	 * @return a stream that wraps this stream with logging
+	 */
+
 	default WriteStream debug(PrintWriter writer, String identity) {
 		if (writer == null) throw new IllegalArgumentException("null writer");
 		return new DebugWriteStream(this, writer, identity);
