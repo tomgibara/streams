@@ -17,6 +17,7 @@
 package com.tomgibara.streams;
 
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
@@ -419,6 +420,11 @@ public interface ReadStream extends CloseableStream {
 
 	default <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {
 		return () -> deserializer.deserialize(this);
+	}
+
+	default ReadStream debug(PrintWriter writer, String identity) {
+		if (writer == null) throw new IllegalArgumentException("null writer");
+		return new DebugReadStream(this, writer, identity);
 	}
 
 	// closeable
