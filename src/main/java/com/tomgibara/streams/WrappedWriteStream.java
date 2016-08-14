@@ -116,6 +116,11 @@ public class WrappedWriteStream implements WriteStream {
 	}
 
 	@Override
+	public StreamBuffering getBuffering() {
+		return wrapped.getBuffering();
+	}
+
+	@Override
 	public void drainBuffer(ByteBuffer buffer) throws StreamException {
 		wrapped.drainBuffer(buffer);
 	}
