@@ -328,6 +328,18 @@ public interface ReadStream extends CloseableStream {
 		return new ClosedReadStream(this, closer);
 	}
 
+	default ReadStream andThen(StreamCloser closer, ReadStream stream) {
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		return new SeqReadStream(closer, this, stream);
+	}
+
+	default ReadStream butFirst(ReadStream stream, StreamCloser closer) {
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		return new SeqReadStream(closer, stream, this);
+	}
+
 	/**
 	 * Returns an <code>InputStream</code> that draws from the same stream of
 	 * bytes.
