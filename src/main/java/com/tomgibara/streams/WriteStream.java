@@ -17,6 +17,7 @@
 package com.tomgibara.streams;
 
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
@@ -421,6 +422,11 @@ public interface WriteStream extends CloseableStream {
 
 	default <T> Consumer<T> writeWith(StreamSerializer<T> serializer) {
 		return v -> serializer.serialize(v, this);
+	}
+
+	default WriteStream debug(PrintWriter writer, String identity) {
+		if (writer == null) throw new IllegalArgumentException("null writer");
+		return new DebugWriteStream(this, writer, identity);
 	}
 
 	// closeable
