@@ -64,6 +64,7 @@ class ReadInputStream extends InputStream {
 		} catch (StreamException e) {
 			throw new IOException(e);
 		}
-		return buffer.position();
+		int position = buffer.position();
+		return position == 0 ? -1 : position;
 	}
 }
