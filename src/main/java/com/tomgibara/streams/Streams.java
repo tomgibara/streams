@@ -24,6 +24,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Objects;
 
 /**
  * <p>
@@ -65,6 +66,25 @@ public final class Streams {
 		if (capacity < 0) throw new IllegalArgumentException("capacity non-positive");
 		return new byte[capacity];
 	}
+
+	// methods below are to report arguments in debug streams
+
+	static String debugString(byte[] bytes) {
+		return bytes == null ? "null" : "bytes[" + bytes.length + "]";
+	}
+
+	static String debugString(char[] chars) {
+		return chars == null ? "null" : "chars[" + chars.length + "]";
+	}
+
+	static String debugString(ByteBuffer buffer) {
+		return String.valueOf(buffer);
+	}
+
+	static String debugString(Object obj) {
+		return obj == null ? "null" : obj.getClass().getTypeName() + '#' + System.identityHashCode(obj);
+	}
+
 
 	/**
 	 * Creates a new {@link StreamBytes} to accumulate bytes written via a

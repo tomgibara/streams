@@ -1,5 +1,7 @@
 package com.tomgibara.streams;
 
+import static com.tomgibara.streams.Streams.debugString;
+
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
@@ -28,21 +30,21 @@ class DebugReadStream extends WrappedReadStream {
 	@Override
 	public byte readByte() throws StreamException {
 		writeIdentity();
-		writer.println("close()");
+		writer.println("readByte()");
 		return super.readByte();
 	}
 
 	@Override
 	public void readBytes(byte[] bs) throws StreamException {
 		writeIdentity();
-		writer.println(bs == null ? "readBytes(null)" : "readBytes(byte[" + bs.length + "])");
+		writer.println("readBytes(" + debugString(bs) + ")");
 		super.readBytes(bs);
 	}
 
 	@Override
 	public void readBytes(byte[] bs, int off, int len) throws StreamException {
 		writeIdentity();
-		writer.println(bs == null ? "readBytes(null,"+off+""+len+")" : "readBytes(byte[" + bs.length + "],"+off+""+len+")");
+		writer.println("readBytes(" + debugString(bs) + "," + off + ", " + len + ")");
 		super.readBytes(bs, off, len);
 	}
 
@@ -98,14 +100,14 @@ class DebugReadStream extends WrappedReadStream {
 	@Override
 	public void readChars(char[] cs) throws StreamException {
 		writeIdentity();
-		writer.println(cs == null ? "readChars(null)" : "readChars(char["+cs.length+"])");
+		writer.println("readChars(" + debugString(cs) + ")");
 		super.readChars(cs);
 	}
 
 	@Override
 	public void readChars(char[] cs, int off, int len) throws StreamException {
 		writeIdentity();
-		writer.println(cs == null ? "readChars(null,"+off+""+len+")" : "readChars(char[" + cs.length + "],"+off+""+len+")");
+		writer.println("readChars(" + debugString(cs) + ", " + off + ", " + len + ")");
 		super.readChars(cs, off, len);
 	}
 
@@ -126,7 +128,7 @@ class DebugReadStream extends WrappedReadStream {
 	@Override
 	public void fillBuffer(ByteBuffer buffer) throws StreamException {
 		writeIdentity();
-		writer.println(buffer == null ? "fillBuffer(null)" : "fillBuffer(" + buffer + ")");
+		writer.println("fillBuffer(" + debugString(buffer) + ")");
 		super.fillBuffer(buffer);
 	}
 
@@ -140,7 +142,7 @@ class DebugReadStream extends WrappedReadStream {
 	@Override
 	public ReadStream closedWith(StreamCloser closer) {
 		writeIdentity();
-		writer.println(closer == null ? "closedWith(null)" : "closedWith(StreamCloser)");
+		writer.println("closedWith(" + debugString(closer) + ")");
 		return super.closedWith(closer);
 	}
 
@@ -161,32 +163,32 @@ class DebugReadStream extends WrappedReadStream {
 	@Override
 	public StreamTransfer to(WriteStream target) {
 		writeIdentity();
-		writer.println(target == null ? "to(null)" : "to(WriteStream)");
+		writer.println("to(" + debugString(target) + ")");
 		return super.to(target);
 	}
 
 	@Override
 	public StreamTransfer to(WriteStream target, ByteBuffer buffer) {
 		writeIdentity();
-		writer.println(target == null ? "to(null)" : "to(WriteStream)");
+		writer.println("to(" + debugString(target) + ", " + debugString(buffer) + ")");
 		return super.to(target, buffer);
 	}
 
 	@Override
 	public StreamTransfer to(WriteStream target, int bufferSize) {
 		writeIdentity();
-		writer.println(target == null ? "to(null," + bufferSize + ")" : "to(WriteStream," + bufferSize + ")");
+		writer.println("to(" + debugString(target) + "," + bufferSize + ")");
 		return super.to(target, bufferSize);
 	}
 
 	@Override
 	public <T> Producer<T> readWith(StreamDeserializer<T> deserializer) {
 		writeIdentity();
-		writer.println(deserializer == null ? "readWith(null)" : "readWith(StreamDeserializer)");
+		writer.println("readWith(" + debugString(deserializer) + ")");
 		return super.readWith(deserializer);
 	}
 
 	private void writeIdentity() {
-		if (identity != null) writer.write(identity);
+		if (identity != null) writer.print(identity);
 	}
 }
