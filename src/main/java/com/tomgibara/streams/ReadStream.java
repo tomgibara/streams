@@ -445,12 +445,12 @@ public interface ReadStream extends CloseableStream {
 	 * via the {@link ReadStream} interface to a specified
 	 * <code>PrintWriter</code>. Optionally, an identity can be specified to
 	 * distinguishing the output of multiple debugging streams.
-	 * 
+	 *
 	 * <p>
 	 * This method is intended to provide a convenient means of analyzing the
 	 * low-level usage of streams for the purpose of analyzing performance
 	 * and/or debugging.
-	 * 
+	 *
 	 * @param writer
 	 *            the writer to which method calls should be logged
 	 * @param identity
