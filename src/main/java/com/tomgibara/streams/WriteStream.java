@@ -330,6 +330,18 @@ public interface WriteStream extends CloseableStream {
 		return new ClosedWriteStream(this, closer);
 	}
 
+	default WriteStream andThen(StreamCloser closer, WriteStream stream) {
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		return new SeqWriteStream(closer, this, stream);
+	}
+
+	default WriteStream butFirst(WriteStream stream, StreamCloser closer) {
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		return new SeqWriteStream(closer, stream, this);
+	}
+
 	/**
 	 * Returns an <code>OutputStream</code> that draws from the same stream of
 	 * bytes.
