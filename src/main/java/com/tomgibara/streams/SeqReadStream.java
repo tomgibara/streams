@@ -22,12 +22,14 @@ final class SeqReadStream implements ReadStream {
 
 	private final StreamCloser closer;
 	private final ReadStream[] streams;
+	private final StreamBuffering buffering;
 	private ReadStream stream;
 	private int index = 0;
 
 	SeqReadStream(StreamCloser closer, ReadStream... streams) {
 		this.closer = closer;
 		this.streams = streams;
+		buffering = StreamBuffering.recommended(streams);
 		stream = streams.length == 0 ? null : streams[0];
 	}
 
@@ -75,6 +77,11 @@ final class SeqReadStream implements ReadStream {
 			streams[streams.length - 1].close();
 			index = -1;
 		}
+	}
+
+	@Override
+	public StreamBuffering getBuffering() {
+		return buffering;
 	}
 
 	private void advance() {

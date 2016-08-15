@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import java.util.Arrays;
+
 /**
  * Indicates a streams preferred buffering strategy. In the descriptions below,
  * <code>direct</code> refers to the direct allocation strategy that can be used
@@ -47,7 +49,19 @@ public enum StreamBuffering {
 	/**
 	 * Indicates that a stream operates most efficiently with non-direct (ie. heap allocated) buffering.
 	 */
-	PREFER_INDIRECT,
+	PREFER_INDIRECT;
 
+	static StreamBuffering combine(StreamBuffering a, StreamBuffering b) {
+		if (a == b) return a;
+		if (a == UNSUPPORTED) return b;
+		if (b == UNSUPPORTED) return a;
+		if (a == PREFER_ANY) return b;
+		if (b == PREFER_ANY) return a;
+		return PREFER_ANY;
+	}
+
+	static StreamBuffering recommended(CloseableStream... streams) {
+		return Arrays.stream(streams).map(s -> s.getBuffering()).reduce(StreamBuffering::combine).get();
+	}
 
 }

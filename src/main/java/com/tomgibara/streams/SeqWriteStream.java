@@ -22,12 +22,14 @@ final class SeqWriteStream implements WriteStream {
 
 	private final StreamCloser closer;
 	private final WriteStream[] streams;
+	private final StreamBuffering buffering;
 	private WriteStream stream;
 	private int index = 0;
 
 	SeqWriteStream(StreamCloser closer, WriteStream... streams) {
 		this.closer = closer;
 		this.streams = streams;
+		buffering = StreamBuffering.recommended(streams);
 		stream = streams.length == 0 ? null : streams[0];
 	}
 
@@ -75,6 +77,11 @@ final class SeqWriteStream implements WriteStream {
 			streams[streams.length - 1].close();
 			index = -1;
 		}
+	}
+
+	@Override
+	public StreamBuffering getBuffering() {
+		return buffering;
 	}
 
 	private void advance() {
