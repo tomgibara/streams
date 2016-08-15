@@ -265,17 +265,6 @@ public interface WriteStream extends CloseableStream {
 	}
 
 	/**
-	 * Indicates the preferred buffering strategy for this stream
-	 * implementation.
-	 *
-	 * @return the preferred buffering strategy
-	 */
-
-	default StreamBuffering getBuffering() {
-		return StreamBuffering.UNSUPPORTED;
-	}
-
-	/**
 	 * Writes bytes to the stream from a buffer. Bytes will be read starting at
 	 * <i>position</i> and continuing until <i>limit</i> is reached. If an
 	 * 'end-of-stream' condition occurs, no {@link EndOfStreamException} is

@@ -27,6 +27,17 @@ package com.tomgibara.streams;
 public interface CloseableStream extends AutoCloseable {
 
 	/**
+	 * Indicates the preferred buffering strategy for this stream
+	 * implementation.
+	 *
+	 * @return the preferred buffering strategy
+	 */
+
+	default StreamBuffering getBuffering() {
+		return StreamBuffering.UNSUPPORTED;
+	}
+
+	/**
 	 * Closes a {@link ReadStream} or {@link WriteStream}. The effect of calling
 	 * this method will vary between implementations, though the method may
 	 * generally be assumed to be idempotent.

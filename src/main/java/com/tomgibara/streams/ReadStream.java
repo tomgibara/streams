@@ -262,17 +262,6 @@ public interface ReadStream extends CloseableStream {
 	}
 
 	/**
-	 * Indicates the preferred buffering strategy for this stream
-	 * implementation.
-	 *
-	 * @return the preferred buffering strategy
-	 */
-
-	default StreamBuffering getBuffering() {
-		return StreamBuffering.UNSUPPORTED;
-	}
-
-	/**
 	 * Fills the buffer with bytes read from the stream. Bytes will be written
 	 * starting from <i>position</i> and continuing until <i>limit</i> is
 	 * reached. If an 'end-of-stream' condition occurs, no
