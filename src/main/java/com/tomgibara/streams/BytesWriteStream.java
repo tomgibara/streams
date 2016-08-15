@@ -119,8 +119,7 @@ final class BytesWriteStream implements WriteStream {
 
 	@Override
 	public void drainBuffer(ByteBuffer buffer) throws StreamException {
-		int length = buffer.remaining();
-		ensureFurtherCapacity(length);
+		int length = attemptFurtherCapacity( buffer.remaining() );
 		buffer.get(bytes, position, length);
 		position += length;
 	}
@@ -184,7 +183,22 @@ final class BytesWriteStream implements WriteStream {
 			if (c > maxCapacity) c = maxCapacity;
 			bytes = Arrays.copyOf(bytes, c);
 		}
-
 	}
 
+	private int attemptFurtherCapacity(int n) {
+		if (isClosed()) StreamException.raiseClosed();
+		int required = position + n;
+		// checks overflow
+		if (required < 0) required = Integer.MAX_VALUE;
+		if (required > maxCapacity) required = maxCapacity;
+		if (required > bytes.length) {
+			int c = bytes.length;
+			c += c < MIN_CAPACITY_INCR ? MIN_CAPACITY_INCR : c;
+			if (c - bytes.length > MAX_CAPACITY_INCR) c = bytes.length + MAX_CAPACITY_INCR;
+			if (c < required) c = required;
+			if (c > maxCapacity) c = maxCapacity;
+			bytes = Arrays.copyOf(bytes, c);
+		}
+		return required - position;
+	}
 }
