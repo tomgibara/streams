@@ -328,11 +328,110 @@ public interface ReadStream extends CloseableStream {
 		return new ClosedReadStream(this, closer);
 	}
 
+	/**
+	 * <p>
+	 * A stream that exhausts this stream before returning data from a second
+	 * stream. Between exhausting this stream and returning data from the
+	 * supplied secondary stream, this stream is closed.
+	 *
+	 * <p>
+	 * The secondary stream is closed with the explicit closure of the returned
+	 * stream. If the returned stream is closed before this stream is exhausted
+	 * then both streams are closed.
+	 *
+	 * @param stream
+	 *            a stream from which data should be read once this stream is
+	 *            exhausted
+	 * @return a stream that concatenates the output of this stream with another
+	 *
+	 * @see #andThen(StreamCloser, ReadStream)
+	 */
+
+	default ReadStream andThen(ReadStream stream) {
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		return new SeqReadStream(StreamCloser.closeStream(), this, stream);
+	}
+
+	/**
+	 * <p>
+	 * A stream that exhausts this stream before returning data from a second
+	 * stream. Between exhausting this stream and returning data from the
+	 * supplied secondary stream, the supplied stream may operated on by the
+	 * supplied {@link StreamCloser}.
+	 *
+	 * <p>
+	 * The supplied {@link StreamCloser} is only applied to this stream; the
+	 * secondary stream is closed on closure of the returned stream. If the
+	 * returned stream is closed before this stream is exhausted then the
+	 * supplied {@link StreamCloser} is applied to this stream before the
+	 * secondary stream is closed.
+	 *
+	 * @param closer
+	 *            logic to be performed on this stream before returning data
+	 *            from the secondary stream
+	 * @param stream
+	 *            a stream from which data should be read once this stream is
+	 *            exhausted
+	 * @return a stream that concatenates the output of this stream with another
+	 *
+	 * @see #andThen(ReadStream)
+	 */
+
 	default ReadStream andThen(StreamCloser closer, ReadStream stream) {
 		if (closer == null) throw new IllegalArgumentException("null closer");
 		if (stream == null) throw new IllegalArgumentException("null stream");
 		return new SeqReadStream(closer, this, stream);
 	}
+
+	/**
+	 * <p>
+	 * A stream that exhausts another stream before returning data from this
+	 * one. Between exhausting that stream and returning data from this one, the
+	 * supplied stream is closed.
+	 *
+	 * <p>
+	 * This stream is closed with the explicit closure of the returned stream.
+	 * If the returned stream is closed before the supplied stream is exhausted
+	 * then both streams are closed.
+	 *
+	 * @param stream
+	 *            a stream from which data should be read to exhaustion before
+	 *            this stream is read
+	 * @return a stream that concatenates the output of another stream with this
+	 *         one
+	 *
+	 * @see #butFirst(ReadStream, StreamCloser)
+	 */
+
+	default ReadStream butFirst(ReadStream stream) {
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		return new SeqReadStream(StreamCloser.closeStream(), stream, this);
+	}
+
+	/**
+	 * <p>
+	 * A stream that exhausts another stream before returning data from this
+	 * one. Between exhausting that stream and returning data from this one, the
+	 * supplied stream may operated on by the supplied {@link StreamCloser}.
+	 *
+	 * <p>
+	 * The supplied {@link StreamCloser} is only applied to the supplied stream;
+	 * this stream is closed on closure of the returned stream. If the returned
+	 * stream is closed before the supplied stream is exhausted then the
+	 * supplied {@link StreamCloser} is applied to it stream before the this
+	 * stream is closed.
+	 *
+	 * @param stream
+	 *            a stream from which data should be read to exhaustion before
+	 *            this stream is read
+	 * @param closer
+	 *            logic to be performed on the supplied stream before returning
+	 *            data from this one
+	 * @return a stream that concatenates the output of another stream with this
+	 *         one
+	 *
+	 * @see #butFirst(ReadStream)
+	 */
 
 	default ReadStream butFirst(ReadStream stream, StreamCloser closer) {
 		if (stream == null) throw new IllegalArgumentException("null stream");

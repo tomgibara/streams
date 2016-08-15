@@ -330,11 +330,111 @@ public interface WriteStream extends CloseableStream {
 		return new ClosedWriteStream(this, closer);
 	}
 
+	/**
+	 * <p>
+	 * A stream that fills this stream before writing data to a second stream.
+	 * Between filling this stream and writing data to the supplied secondary
+	 * stream, this stream is closed.
+	 *
+	 * <p>
+	 * The secondary stream is closed with the explicit closure of the returned
+	 * stream. If the returned stream is closed before this stream is full then
+	 * both streams are closed.
+	 *
+	 * @param closer
+	 *            logic to be performed on this stream before writing data to
+	 *            the secondary stream
+	 * @param stream
+	 *            a stream to which data should be written once this stream is
+	 *            full
+	 * @return a stream that splits its writing across this stream and another
+	 *
+	 * @see #andThen(StreamCloser, WriteStream)
+	 */
+
+	default WriteStream andThen(WriteStream stream) {
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		return new SeqWriteStream(StreamCloser.closeStream(), this, stream);
+	}
+
+	/**
+	 * <p>
+	 * A stream that fills this stream before writing data to a second stream.
+	 * Between filling this stream and writing data to the supplied secondary
+	 * stream, the supplied stream may operated on by the supplied
+	 * {@link StreamCloser}.
+	 *
+	 * <p>
+	 * The supplied {@link StreamCloser} is only applied to this stream; the
+	 * secondary stream is closed on closure of the returned stream. If the
+	 * returned stream is closed before this stream is full then the supplied
+	 * {@link StreamCloser} is applied to this stream before the secondary
+	 * stream is closed.
+	 *
+	 * @param closer
+	 *            logic to be performed on this stream before writing data to
+	 *            the secondary stream
+	 * @param stream
+	 *            a stream to which data should be written once this stream is
+	 *            full
+	 * @return a stream that splits its writing across this stream and another
+	 *
+	 * @see #andThen(WriteStream)
+	 */
+
 	default WriteStream andThen(StreamCloser closer, WriteStream stream) {
 		if (closer == null) throw new IllegalArgumentException("null closer");
 		if (stream == null) throw new IllegalArgumentException("null stream");
 		return new SeqWriteStream(closer, this, stream);
 	}
+
+	/**
+	 * <p>
+	 * A stream that fills another stream before writing data to this one.
+	 * Between filling that stream and writing data to this one, the supplied
+	 * stream is closed.
+	 *
+	 * <p>
+	 * This stream is closed with the explicit closure of the returned stream.
+	 * If the returned stream is closed before the supplied stream is full then
+	 * both streams are closed.
+	 *
+	 * @param stream
+	 *            a stream to which data should be written before this stream is
+	 *            written to
+	 * @return a stream that splits its writing across another stream and this
+	 *
+	 * @see #butFirst(WriteStream, StreamCloser)
+	 */
+
+	default WriteStream butFirst(WriteStream stream) {
+		if (stream == null) throw new IllegalArgumentException("null stream");
+		return new SeqWriteStream(StreamCloser.closeStream(), stream, this);
+	}
+
+	/**
+	 * <p>
+	 * A stream that fills another stream before writing data to this one.
+	 * Between filling that stream and writing data to this one, the supplied
+	 * stream may operated on by the supplied {@link StreamCloser}.
+	 *
+	 * <p>
+	 * The supplied {@link StreamCloser} is only applied to the supplied stream;
+	 * this stream is closed on closure of the returned stream. If the returned
+	 * stream is closed before the supplied stream is full then the supplied
+	 * {@link StreamCloser} is applied to it stream before the this stream is
+	 * closed.
+	 *
+	 * @param stream
+	 *            a stream to which data should be written before this stream is
+	 *            written to
+	 * @param closer
+	 *            logic to be performed on the supplied stream before writing
+	 *            data to this one
+	 * @return a stream that splits its writing across another stream and this
+	 *
+	 * @see #butFirst(WriteStream)
+	 */
 
 	default WriteStream butFirst(WriteStream stream, StreamCloser closer) {
 		if (stream == null) throw new IllegalArgumentException("null stream");
