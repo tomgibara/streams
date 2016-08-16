@@ -24,7 +24,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.Objects;
 
 /**
  * <p>
@@ -293,6 +292,28 @@ public final class Streams {
 	public static WriteStream streamOutput(OutputStream out) {
 		if (out == null) throw new IllegalArgumentException("null out");
 		return new OutputWriteStream(out);
+	}
+
+	/**
+	 * An empty stream for which all attempts to read yield an
+	 * {@link EndOfStreamException}.
+	 *
+	 * @return an empty {@link ReadStream}
+	 */
+
+	public static ReadStream streamFromEmpty() {
+		return EmptyReadStream.INSTANCE;
+	}
+
+	/**
+	 * An empty stream for which all attempts to write yield an
+	 * {@link EndOfStreamException}.
+	 *
+	 * @return an empty {@link WriteStream}
+	 */
+
+	public static WriteStream streamToEmpty() {
+		return EmptyWriteStream.INSTANCE;
 	}
 
 	private Streams() { }

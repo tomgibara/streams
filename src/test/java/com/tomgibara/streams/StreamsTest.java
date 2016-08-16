@@ -42,4 +42,26 @@ public class StreamsTest {
 		buffer.buffer().flip();
 		Assert.assertEquals(str, buffer.readStream().readChars());
 	}
+
+	@Test
+	public void testStreamFromEmpty() {
+		ReadStream s = Streams.streamFromEmpty();
+		try {
+			s.readByte();
+			Assert.fail();
+		} catch (EndOfStreamException e) {
+			/* expected */
+		}
+	}
+
+	@Test
+	public void testStreamToEmpty() {
+		WriteStream s = Streams.streamToEmpty();
+		try {
+			s.writeByte((byte) 0);
+			Assert.fail();
+		} catch (EndOfStreamException e) {
+			/* expected */
+		}
+	}
 }
