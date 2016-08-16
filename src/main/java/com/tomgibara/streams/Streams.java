@@ -182,6 +182,28 @@ public final class Streams {
 
 	/**
 	 * <p>
+	 * Creates a new {@link StreamBuffer} to expose the supplied
+	 * <code>ByteBuffer</code> via a paired {@link ReadStream} and
+	 * {@link WriteStream}.
+	 *
+	 * <p>
+	 * It is strongly recommended that the supplied {@link ByteBuffer} uses big
+	 * endian byte order (<code>ByteOrder.BIG_ENDIAN</code>) for compatibility
+	 * with the other stream implementations provided by this library.
+	 *
+	 * @param buffer
+	 *            the buffer to be exposed
+	 * @return a new pair of streams backed by the supplied buffer
+	 */
+
+	public static StreamBuffer streamBuffer(ByteBuffer buffer) {
+		if (buffer == null) throw new IllegalArgumentException("null buffer");
+		if (buffer.isReadOnly()) throw new IllegalArgumentException("read-only buffer");
+		return new StreamBuffer(buffer);
+	}
+
+	/**
+	 * <p>
 	 * Creates a stream that reads from the supplied channel. Bytes will be read
 	 * starting from the current channel position.
 	 *
