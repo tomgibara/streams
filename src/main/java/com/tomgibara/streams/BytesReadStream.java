@@ -43,7 +43,6 @@ final class BytesReadStream implements ReadStream {
 	 */
 
 	BytesReadStream(byte[] bytes) {
-		if (bytes == null) throw new IllegalArgumentException("null bytes");
 		this.bytes = bytes;
 		this.limit = bytes.length;
 		this.position = 0;
