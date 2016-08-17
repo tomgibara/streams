@@ -337,9 +337,6 @@ public interface WriteStream extends CloseableStream {
 	 * stream. If the returned stream is closed before this stream is full then
 	 * both streams are closed.
 	 *
-	 * @param closer
-	 *            logic to be performed on this stream before writing data to
-	 *            the secondary stream
 	 * @param stream
 	 *            a stream to which data should be written once this stream is
 	 *            full
