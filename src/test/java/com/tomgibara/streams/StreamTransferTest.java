@@ -28,6 +28,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import com.tomgibara.fundament.Producer;
+import com.tomgibara.streams.StreamTransfer.Result;
 
 public class StreamTransferTest {
 
@@ -77,17 +78,36 @@ public class StreamTransferTest {
 				ByteArrayChannel channel = new ByteArrayChannel(dstBytes);
 				WriteStream dst = new ChannelWriteStream(channel);
 				StreamTransfer transfer = src.to(dst, size);
-				long transferred = length < 0 ? transfer.transferFully() : transfer.transfer(length);
+				Result result = length < 0 ? transfer.transferFully() : transfer.transfer(length);
+				long transferred = result.bytesTransfered();
 				assertEquals(channel.position(), transferred);
 				assertArrayEquals(Arrays.copyOf(srcBytes, (int) transferred), Arrays.copyOf(dstBytes, (int) transferred));
 			}
 		}
 	}
 
+	@Test
+	public void testResidualWrite() {
+		byte[] srcBytes = new byte[100];
+		Arrays.fill(srcBytes, (byte) 1);
+		byte[] dstBytes = new byte[90];
+		ReadStream src = Streams.bytes(srcBytes).readStream();
+		WriteStream dst = Streams.bytes(dstBytes, 0, 90).writeStream();
+		Result result = dst.from(src, 40).transferFully();
+		assertEquals(90L, result.bytesTransfered());
+		byte[] rem = new byte[100 - 90];
+		ReadStream res = result.residualStream();
+		res.readBytes(rem);
+		for (int i = 0; i < rem.length; i++) {
+			assertEquals(rem[i], (byte) 1);
+		}
+	}
+
 	private void test(ReadStream in, Producer<byte[]> inToBytes, WriteStream out, Producer<byte[]> outToBytes, long length, ByteBuffer buffer) {
 		// do the transfer
 		StreamTransfer transfer = in.to(out, buffer);
-		long transferred = length < 0 ? transfer.transferFully() : transfer.transfer(length);
+		Result result = length < 0 ? transfer.transferFully() : transfer.transfer(length);
+		long transferred = result.bytesTransfered();
 		// check the result
 		byte[] inBytes = inToBytes.produce();
 		byte[] outBytes = outToBytes.produce();
