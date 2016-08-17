@@ -33,20 +33,27 @@ import com.tomgibara.fundament.Consumer;
  * {@link #writeByte(byte)} method. In the default implementations all values
  * are written big-endian.
  *
- * @author Tom Gibara
+ * <p>
+ * Unless otherwise indicated, attempting to write beyond the capacity of the
+ * stream will raise an {@link EndOfStreamException}.
  *
+ * @author Tom Gibara
+ * @see EndOfStreamException
  */
 
 @FunctionalInterface
 public interface WriteStream extends CloseableStream {
 
 	/**
-	 * Writes a single byte to the stream.
+	 * Writes a single byte to the stream. Calling this method on a full stream
+	 * will raise an {@link EndOfStreamException}.
 	 *
 	 * @param v
 	 *            a byte
 	 * @throws StreamException
 	 *             if an error occurs writing the byte
+	 * @throws EndOfStreamException
+	 *             if the stream cannot accommodate any more bytes
 	 */
 
 	void writeByte(byte v) throws StreamException;

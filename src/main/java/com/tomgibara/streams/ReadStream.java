@@ -34,19 +34,26 @@ import com.tomgibara.fundament.Producer;
  * a concrete implementation is the {@link #readByte()} method. In the default
  * implementations all values are read big-endian.
  *
- * @author Tom Gibara
+ * <p>
+ * Unless otherwise indicated, attempting to write beyond the capacity of the
+ * stream will raise an {@link EndOfStreamException}.
  *
+ * @author Tom Gibara
+ * @see EndOfStreamException
  */
 
 @FunctionalInterface
 public interface ReadStream extends CloseableStream {
 
 	/**
-	 * Reads a single byte from the underlying stream.
+	 * Reads a single byte from the underlying stream. Calling this method on an
+	 * exhausted stream will raise an {@link EndOfStreamException}.
 	 *
 	 * @return the byte read
 	 * @throws StreamException
 	 *             if the byte couldn't be read
+	 * @throws EndOfStreamException
+	 *             if the stream contains no more bytes
 	 */
 
 	byte readByte() throws StreamException;
