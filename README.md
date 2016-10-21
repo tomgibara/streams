@@ -1,20 +1,29 @@
 Streams
 =======
 
-This streams library for Java provides robust unification of the `InputStream`, `OutputStream`, `ByteChannel` and `ByteBuffer` abstractions under a comprehensive API. It's implementation is rooted in an earlier, more modest library that aimed only to provide a better byte stream API.
+This streams library for Java provides robust unification of the
+`InputStream`, `OutputStream`, `ByteChannel` and `ByteBuffer`
+abstractions under a comprehensive API. It's implementation is rooted in an
+earlier, more modest library that aimed only to provide a better byte stream
+API.
 
 Overview
 --------
 
-The core abstraction of this package are the twin interfaces `ReadStream` and `WriteStream`. These provide methods for reading and writing primitive Java primitives together with a number other methods for manipulating the streams.
+The core abstraction of this package are the twin interfaces `ReadStream` and
+`WriteStream`. These provide methods for reading and writing primitive Java
+primitives together with a number other methods for manipulating the streams.
 
-The entry point for the package is the `Streams` class which contains static methods for:
+The entry point for the package is the `Streams` class which contains static
+methods for:
 
  * creating `StreamBytes` to read and write byte-arrays using streams.
  * creating `ReadStream` instances that wrap `InputStream` and `ReadableByteChannel` objects
  * creating `WriteStream` instances that wrap `OutputStream` and `WritableByteChannel` objects
 
-See the examples below to discover the range of methods available on streams; full Javadocs are available.
+See the examples below to discover the range of methods available on streams;
+full Javadocs are available. The Javadocs may be browsed online via
+[javadoc.io](http://www.javadoc.io/doc/com.tomgibara.streams/streams)
 
 Examples
 --------
@@ -108,6 +117,15 @@ Streams.streamInput(someInput).asChannel();
 
 // ... and vice versa
 Streams.streamReadable(someReadableChannel).asInputStream();
+
+// concatenate two input streams...
+Streams.streamInput(someInput).andThen(Streams.streamInput(someOtherInput));
+
+// ... or two output streams
+Streams.streamOutput(someOutput).andThen(Streams.streamOutput(someOtherOutput));
+
+// transfer data from an input stream to an output stream
+Streams.streamInput(someInput).to(Streams.streamOutput(someOutput)).transferFully();
 ```
 
 ### Examples of using streams with other abstractions
@@ -138,20 +156,29 @@ The streams library is available from the Maven central repository:
 
 > Group ID:    `com.tomgibara.streams`
 > Artifact ID: `streams`
-> Version:     `2.0.0`
+> Version:     `3.0.0`
 
 The Maven dependency being:
 
     <dependency>
       <groupId>com.tomgibara.streams</groupId>
       <artifactId>streams</artifactId>
-      <version>2.0.0</version>
+      <version>3.0.0</version>
     </dependency>
 
 Release History
 ---------------
 
+**2016.10.21** Version 3.0.0
+
+ * Corrected InputStream implementation to return -1 on EOS.
+ * Exposed a new debug() method on ReadStream and WriteStream.
+ * Added andThen() and butFirst() methods for sequencing streams.
+ * Added convenient empty streams via streamFromEmpty() and streamToEmpty().
+ * Changed signature of to/from methods to return a new StreamTransfer type.
+
 **2015.12.10** Version 2.0.0
+
  * Evolution of the library into a comprehensive API
 
 **2015.07.27** Version 1.1.0

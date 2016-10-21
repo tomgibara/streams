@@ -41,7 +41,9 @@ import com.tomgibara.streams.WriteStream;
 public class SamplesTest {
 
 	private static InputStream someInput = new ByteArrayInputStream(new byte[100]);
+	private static InputStream someOtherInput = new ByteArrayInputStream(new byte[100]);
 	private static OutputStream someOutput = new ByteArrayOutputStream();
+	private static OutputStream someOtherOutput = new ByteArrayOutputStream();
 	private static ReadableByteChannel someReadableChannel = new ByteArrayChannel(new byte[1000]);
 	private static WritableByteChannel someWritableChannel = new ByteArrayChannel(new byte[1000]);
 	private static ByteBuffer buffer = ByteBuffer.allocate(1000);
@@ -136,6 +138,15 @@ public class SamplesTest {
 
 		// ... and vice versa
 		Streams.streamReadable(someReadableChannel).asInputStream();
+
+		// concatenate two input streams...
+		Streams.streamInput(someInput).andThen(Streams.streamInput(someOtherInput));
+
+		// ... or two output streams
+		Streams.streamOutput(someOutput).andThen(Streams.streamOutput(someOtherOutput));
+
+		// transfer data from an input stream to an output stream
+		Streams.streamInput(someInput).to(Streams.streamOutput(someOutput)).transferFully();
 
 		/** EXAMPLES OF USING STREAMS WITH OTHER ABSTRACTIONS **/
 
