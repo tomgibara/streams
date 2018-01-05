@@ -135,6 +135,11 @@ final class BytesWriteStream implements WriteStream {
 		position = -1 - position;
 	}
 
+	@Override
+	public StreamBuffering getBuffering() {
+		return StreamBuffering.PREFER_ANY;
+	}
+
 	/**
 	 * <p>
 	 * The byte data recorded by the stream. Supplying false returns a copy of

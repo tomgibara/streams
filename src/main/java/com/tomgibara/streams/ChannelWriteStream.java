@@ -158,6 +158,11 @@ final class ChannelWriteStream implements WriteStream {
 		}
 	}
 
+	@Override
+	public StreamBuffering getBuffering() {
+		return StreamBuffering.PREFER_DIRECT;
+	}
+
 	private void write(ByteBuffer buffer) {
 		buffer.flip();
 		drainBuffer(buffer);

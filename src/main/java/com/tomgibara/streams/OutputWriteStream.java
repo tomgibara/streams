@@ -137,4 +137,9 @@ final class OutputWriteStream implements WriteStream {
 		}
 	}
 
+	@Override
+	public StreamBuffering getBuffering() {
+		return StreamBuffering.PREFER_INDIRECT;
+	}
+
 }

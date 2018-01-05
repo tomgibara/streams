@@ -152,6 +152,11 @@ final class InputReadStream implements ReadStream {
 		}
 	}
 
+	@Override
+	public StreamBuffering getBuffering() {
+		return StreamBuffering.PREFER_INDIRECT;
+	}
+
 	private void readFully(byte[] bs, int off, int len) throws IOException {
 		while (len > 0) {
 			int r = in.read(bs, off, len);

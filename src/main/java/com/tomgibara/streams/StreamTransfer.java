@@ -38,21 +38,22 @@ public final class StreamTransfer {
 
 	private static StreamBuffering combine(StreamBuffering src, StreamBuffering dst) {
 		switch (src) {
-		case UNSUPPORTED: return dst;
-		case PREFER_ANY: return dst == UNSUPPORTED || dst == PREFER_ANY ? PREFER_DIRECT : dst;
-		case PREFER_DIRECT: return dst == PREFER_INDIRECT ? PREFER_INDIRECT : PREFER_DIRECT;
+		case UNSUPPORTED:     return dst;
+		case PREFER_ANY:      return dst == UNSUPPORTED || dst == PREFER_ANY ? PREFER_DIRECT : dst;
+		case PREFER_DIRECT:   return dst == PREFER_INDIRECT ? PREFER_INDIRECT : PREFER_DIRECT;
 		case PREFER_INDIRECT: return src;
 		default: throw new IllegalStateException("Unexpected buffering type: " + src);
 		}
 	}
 
 	private static ByteBuffer buffer(StreamBuffering src, StreamBuffering dst, int bufferSize) {
-		if (bufferSize == 0) return null;
+		if (bufferSize == 0)  return null;
 		StreamBuffering buffering = combine(src, dst);
 		switch (buffering) {
-		case UNSUPPORTED: return null;
-		case PREFER_DIRECT: return ByteBuffer.allocateDirect(bufferSize);
+		case UNSUPPORTED:     return null;
+		case PREFER_DIRECT:   return ByteBuffer.allocateDirect(bufferSize);
 		case PREFER_INDIRECT: return ByteBuffer.allocate(bufferSize);
+		case PREFER_ANY:      return ByteBuffer.allocateDirect(bufferSize);
 		default: throw new IllegalStateException("Unexpected buffer type: " + buffering);
 		}
 	}

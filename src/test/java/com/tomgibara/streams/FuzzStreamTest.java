@@ -35,7 +35,7 @@ import org.junit.Test;
 
 abstract class FuzzStreamTest extends TestCase {
 
-	static final int MAX_WRITES = 100;
+	static final int MAX_WRITES = 1000;
 	static final int MAX_LEN = 50;
 
 	abstract WriteStream newWriter();
@@ -417,4 +417,25 @@ abstract class FuzzStreamTest extends TestCase {
 		assertEquals(1, in.read());
 		assertEquals(-1, in.read());
 	}
+
+	public void testBuffering() {
+		// ensure more than one buffer is used, and also that a partial buffer is used
+		int size = Streams.BUFFER_SIZE * 2 + Streams.BUFFER_SIZE / 2;
+		WriteStream w = newWriter();
+		try {
+			try (BufferOnlyReadStream source = new BufferOnlyReadStream(size)) {
+				source.to(w).transferFully();
+			}
+
+			ReadStream r = newReader(w);
+			try (BufferOnlyWriteStream sink = new BufferOnlyWriteStream(size)) {
+				sink.from(r).transferFully();
+			}
+		} catch (IllegalStateException e) {
+			if (w.getBuffering() != StreamBuffering.UNSUPPORTED) {
+				throw e; // rethrow exception
+			}
+		}
+	}
+
 }
