@@ -55,6 +55,12 @@ class ClosedReadStream implements ReadStream {
 	}
 
 	@Override
+	public int tryReadBytes(byte[] bs, int off, int len) throws StreamException {
+		checkClosed();
+		return stream.tryReadBytes(bs, off, len);
+	}
+
+	@Override
 	public int readInt() throws StreamException {
 		checkClosed();
 		return stream.readInt();

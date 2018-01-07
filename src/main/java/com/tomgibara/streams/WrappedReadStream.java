@@ -66,6 +66,11 @@ public class WrappedReadStream implements ReadStream {
 	}
 
 	@Override
+	public int tryReadBytes(byte[] bs, int off, int len) throws StreamException {
+		return wrapped.tryReadBytes(bs, off, len);
+	}
+
+	@Override
 	public int readInt() throws StreamException {
 		return wrapped.readInt();
 	}

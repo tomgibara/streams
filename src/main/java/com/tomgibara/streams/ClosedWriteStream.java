@@ -55,6 +55,12 @@ class ClosedWriteStream implements WriteStream {
 	}
 
 	@Override
+	public int tryWriteBytes(byte[] bs, int off, int len) throws StreamException {
+		checkClosed();
+		return stream.tryWriteBytes(bs, off, len);
+	}
+
+	@Override
 	public void writeInt(int v) throws StreamException {
 		checkClosed();
 		stream.writeInt(v);

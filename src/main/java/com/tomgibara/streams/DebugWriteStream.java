@@ -59,6 +59,13 @@ final class DebugWriteStream extends WrappedWriteStream {
 	}
 
 	@Override
+	public int tryWriteBytes(byte[] bs, int off, int len) throws StreamException {
+		writeIdentity();
+		writer.println("tryWriteBytes(" +debugString(bs) + ", " + off + ", " + len + ")");
+		return super.tryWriteBytes(bs, off, len);
+	}
+
+	@Override
 	public void writeInt(int v) {
 		writeIdentity();
 		writer.println("writeInt(" + v + ")");

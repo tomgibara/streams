@@ -65,6 +65,13 @@ class DebugReadStream extends WrappedReadStream {
 	}
 
 	@Override
+	public int tryReadBytes(byte[] bs, int off, int len) throws StreamException {
+		writeIdentity();
+		writer.println("tryReadBytes(" + debugString(bs) + "," + off + ", " + len + ")");
+		return super.tryReadBytes(bs, off, len);
+	}
+
+	@Override
 	public int readInt() throws StreamException {
 		writeIdentity();
 		writer.println("readInt()");
