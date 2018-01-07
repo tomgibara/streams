@@ -35,7 +35,7 @@ public class BufferOnlyReadStream implements ReadStream {
 
 	@Override
 	public void readBytes(byte[] bs, int off, int len) {
-		if (len > remaining) EndOfStreamException.raise();
+		if (len > remaining) throw EndOfStreamException.instance();
 		Arrays.fill(bs, off, off + len, (byte) 0);
 		remaining -= len;
 	}

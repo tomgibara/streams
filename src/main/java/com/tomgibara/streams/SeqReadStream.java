@@ -42,22 +42,21 @@ final class SeqReadStream implements ReadStream {
 				advance();
 			}
 		}
-		EndOfStreamException.raise();
-		throw new IllegalStateException();
+		throw EndOfStreamException.instance();
 	}
 
 	@Override
 	public void readBytes(byte[] bs) {
 		ByteBuffer buffer = ByteBuffer.wrap(bs);
 		fillBuffer(buffer);
-		if (buffer.hasRemaining()) EndOfStreamException.raise();
+		if (buffer.hasRemaining()) throw EndOfStreamException.instance();
 	}
 
 	@Override
 	public void readBytes(byte[] bs, int off, int len) {
 		ByteBuffer buffer = ByteBuffer.wrap(bs, off, len);
 		fillBuffer(buffer);
-		if (buffer.hasRemaining()) EndOfStreamException.raise();
+		if (buffer.hasRemaining()) throw EndOfStreamException.instance();
 	}
 
 	@Override
@@ -67,7 +66,7 @@ final class SeqReadStream implements ReadStream {
 			if (!buffer.hasRemaining()) return;
 			advance();
 		}
-		EndOfStreamException.raise();
+		throw EndOfStreamException.instance();
 	}
 
 	@Override

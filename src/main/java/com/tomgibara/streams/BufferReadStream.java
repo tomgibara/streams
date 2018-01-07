@@ -28,43 +28,43 @@ final class BufferReadStream implements ReadStream {
 
 	@Override
 	public byte readByte() {
-		if (!buffer.hasRemaining()) EndOfStreamException.raise();
+		if (!buffer.hasRemaining()) throw EndOfStreamException.instance();
 		return buffer.get();
 	}
 
 	@Override
 	public short readShort() {
-		if (buffer.remaining() < 2) EndOfStreamException.raise();
+		if (buffer.remaining() < 2) throw EndOfStreamException.instance();
 		return buffer.getShort();
 	}
 
 	@Override
 	public int readInt() {
-		if (buffer.remaining() < 4) EndOfStreamException.raise();
+		if (buffer.remaining() < 4) throw EndOfStreamException.instance();
 		return buffer.getInt();
 	}
 
 	@Override
 	public long readLong() {
-		if (buffer.remaining() < 8) EndOfStreamException.raise();
+		if (buffer.remaining() < 8) throw EndOfStreamException.instance();
 		return buffer.getLong();
 	}
 
 	@Override
 	public float readFloat() {
-		if (buffer.remaining() < 4) EndOfStreamException.raise();
+		if (buffer.remaining() < 4) throw EndOfStreamException.instance();
 		return buffer.getFloat();
 	}
 
 	@Override
 	public double readDouble() {
-		if (buffer.remaining() < 8) EndOfStreamException.raise();
+		if (buffer.remaining() < 8) throw EndOfStreamException.instance();
 		return buffer.getDouble();
 	}
 
 	@Override
 	public char readChar() {
-		if (buffer.remaining() < 2) EndOfStreamException.raise();
+		if (buffer.remaining() < 2) throw EndOfStreamException.instance();
 		return buffer.getChar();
 	}
 
@@ -76,7 +76,7 @@ final class BufferReadStream implements ReadStream {
 	@Override
 	public void readBytes(byte[] bs, int off, int len) {
 		if (bs == null) throw new IllegalArgumentException("null bs");
-		if (buffer.remaining() < len) EndOfStreamException.raise();
+		if (buffer.remaining() < len) throw EndOfStreamException.instance();
 		buffer.get(bs, off, len);
 	}
 

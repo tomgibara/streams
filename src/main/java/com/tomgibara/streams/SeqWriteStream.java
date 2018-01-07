@@ -43,21 +43,21 @@ final class SeqWriteStream implements WriteStream {
 				advance();
 			}
 		}
-		EndOfStreamException.raise();
+		throw EndOfStreamException.instance();
 	}
 
 	@Override
 	public void writeBytes(byte[] bs) {
 		ByteBuffer buffer = ByteBuffer.wrap(bs);
 		drainBuffer(buffer);
-		if (buffer.hasRemaining()) EndOfStreamException.raise();
+		if (buffer.hasRemaining()) throw EndOfStreamException.instance();
 	}
 
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) {
 		ByteBuffer buffer = ByteBuffer.wrap(bs, off, len);
 		drainBuffer(buffer);
-		if (buffer.hasRemaining()) EndOfStreamException.raise();
+		if (buffer.hasRemaining()) throw EndOfStreamException.instance();
 	}
 
 	@Override
@@ -67,7 +67,7 @@ final class SeqWriteStream implements WriteStream {
 			if (!buffer.hasRemaining()) return;
 			advance();
 		}
-		EndOfStreamException.raise();
+		throw EndOfStreamException.instance();
 	}
 
 	@Override

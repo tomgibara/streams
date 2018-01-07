@@ -62,7 +62,7 @@ public class DefaultStreamTest extends FuzzStreamTest {
 		@Override
 		public byte readByte() {
 			if (closed) StreamException.raiseClosed();
-			if (!iter.hasNext()) EndOfStreamException.raise();
+			if (!iter.hasNext()) throw EndOfStreamException.instance();
 			return iter.next();
 		}
 

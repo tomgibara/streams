@@ -178,9 +178,9 @@ final class BytesWriteStream implements WriteStream {
 		if (isClosed()) StreamException.raiseClosed();
 		int required = position + n;
 		// checks overflow
-		if (required < 0) EndOfStreamException.raise();
+		if (required < 0) throw EndOfStreamException.instance();
 		if (required > bytes.length) {
-			if (required > maxCapacity) EndOfStreamException.raise();
+			if (required > maxCapacity) throw EndOfStreamException.instance();
 			int c = bytes.length;
 			c += c < MIN_CAPACITY_INCR ? MIN_CAPACITY_INCR : c;
 			if (c - bytes.length > MAX_CAPACITY_INCR) c = bytes.length + MAX_CAPACITY_INCR;

@@ -24,6 +24,6 @@ final class EmptyWriteStream implements WriteStream {
 
 	@Override
 	public void writeByte(byte v) throws StreamException {
-		EndOfStreamException.raise();
+		throw EndOfStreamException.instance();
 	}
 }

@@ -29,7 +29,7 @@ final class SingleReadStream implements ReadStream {
 
 	@Override
 	public byte readByte() {
-		if (read) EndOfStreamException.raise();
+		if (read) throw EndOfStreamException.instance();
 		read = true;
 		return value;
 	}
@@ -38,7 +38,7 @@ final class SingleReadStream implements ReadStream {
 	public void readBytes(byte[] bs) {
 		if (bs == null) throw new IllegalArgumentException("null bs");
 		if (bs.length == 0) return;
-		if (read || bs.length != 1) EndOfStreamException.raise();
+		if (read || bs.length != 1) throw EndOfStreamException.instance();
 		bs[0] = value;
 		read = true;
 	}
@@ -50,7 +50,7 @@ final class SingleReadStream implements ReadStream {
 		if (len < 0) throw new IllegalArgumentException("negative len");
 		if (off + len > bs.length) throw new IllegalArgumentException("off + len exceeds length");
 		if (len == 0) return;
-		if (read || len != 1) EndOfStreamException.raise();
+		if (read || len != 1) throw EndOfStreamException.instance();
 		bs[off] = value;
 		read = true;
 	}

@@ -58,6 +58,25 @@ public class EndOfStreamException extends StreamException {
 
 	/**
 	 * <p>
+	 * Returns an {@link EndOfStreamException}. This method may return a shared
+	 * instance of the exception that provides better performance for streams
+	 * that need to indicate an end-of-stream condition.
+	 *
+	 * <p>
+	 * Enabling shared-instance end-of-stream reporting for the library is done
+	 * by setting the system property
+	 * <code>com.tomgibara.streams.eosShared</code> to the value
+	 * <code>"true"</code>.
+	 *
+	 * @return a (possibly cached) instance of the exception
+	 */
+
+	public static EndOfStreamException instance() {
+		return EOS == null ? new EndOfStreamException() : EOS;
+	}
+
+	/**
+	 * <p>
 	 * Raises an {@link EndOfStreamException}. This method may return a shared
 	 * instance of the exception that provides better performance for streams
 	 * that need to indicate an end-of-stream condition.
@@ -68,9 +87,13 @@ public class EndOfStreamException extends StreamException {
 	 * <code>com.tomgibara.streams.eosShared</code> to the value
 	 * <code>"true"</code>.
 	 *
-	 * @throws EndOfStreamException always
+	 * @deprecated
+	 * @throws EndOfStreamException
+	 *             always
+	 * @see EndOfStreamException#instance()
 	 */
 
+	@Deprecated
 	public static void raise() throws EndOfStreamException {
 		if (EOS != null) throw EOS;
 		throw new EndOfStreamException();

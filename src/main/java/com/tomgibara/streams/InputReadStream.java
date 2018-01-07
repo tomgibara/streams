@@ -52,7 +52,7 @@ final class InputReadStream implements ReadStream {
 	public byte readByte() {
 		try {
 			int r = in.read();
-			if (r < 0) EndOfStreamException.raise();
+			if (r < 0) throw EndOfStreamException.instance();
 			return (byte) r;
 		} catch (IOException e) {
 			throw new StreamException(e);
@@ -160,7 +160,7 @@ final class InputReadStream implements ReadStream {
 	private void readFully(byte[] bs, int off, int len) throws IOException {
 		while (len > 0) {
 			int r = in.read(bs, off, len);
-			if (r < 0) EndOfStreamException.raise();
+			if (r < 0) throw EndOfStreamException.instance();
 			off += r;
 			len -= r;
 		}

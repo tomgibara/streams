@@ -34,7 +34,7 @@ public class BufferOnlyWriteStream implements WriteStream {
 
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) throws StreamException {
-		if (len > remaining) EndOfStreamException.raise();
+		if (len > remaining) throw EndOfStreamException.instance();
 		remaining -= len;
 	}
 

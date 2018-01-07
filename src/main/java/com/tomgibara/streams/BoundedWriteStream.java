@@ -33,7 +33,7 @@ class BoundedWriteStream implements WriteStream {
 
 	@Override
 	public void writeByte(byte v) throws StreamException {
-		if (remaining <= 0) EndOfStreamException.raise();
+		if (remaining <= 0) throw EndOfStreamException.instance();
 		stream.writeByte(v);
 		remaining--;
 	}

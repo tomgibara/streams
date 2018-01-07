@@ -180,7 +180,7 @@ final class BytesReadStream implements ReadStream {
 
 	private void requireBytes(int count) {
 		if (position < 0) StreamException.raiseClosed();
-		if (position + count > limit) EndOfStreamException.raise();
+		if (position + count > limit) throw EndOfStreamException.instance();
 	}
 
 }

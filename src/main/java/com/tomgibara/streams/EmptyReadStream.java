@@ -24,7 +24,6 @@ final class EmptyReadStream implements ReadStream {
 
 	@Override
 	public byte readByte() {
-		EndOfStreamException.raise();
-		return -1; // not possible
+		throw EndOfStreamException.instance();
 	}
 }

@@ -168,7 +168,7 @@ final class ChannelWriteStream implements WriteStream {
 		drainBuffer(buffer);
 		boolean eos = buffer.hasRemaining();
 		buffer.clear();
-		if (eos) EndOfStreamException.raise();
+		if (eos) throw EndOfStreamException.instance();
 	}
 
 }

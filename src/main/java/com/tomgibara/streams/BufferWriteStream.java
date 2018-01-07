@@ -28,43 +28,43 @@ final class BufferWriteStream implements WriteStream {
 
 	@Override
 	public void writeByte(byte v) {
-		if (!buffer.hasRemaining()) EndOfStreamException.raise();
+		if (!buffer.hasRemaining()) throw EndOfStreamException.instance();
 		buffer.put(v);
 	}
 
 	@Override
 	public void writeShort(short v) {
-		if (buffer.remaining() < 2) EndOfStreamException.raise();
+		if (buffer.remaining() < 2) throw EndOfStreamException.instance();
 		buffer.putShort(v);
 	}
 
 	@Override
 	public void writeInt(int v) {
-		if (buffer.remaining() < 4) EndOfStreamException.raise();
+		if (buffer.remaining() < 4) throw EndOfStreamException.instance();
 		buffer.putInt(v);
 	}
 
 	@Override
 	public void writeLong(long v) {
-		if (buffer.remaining() < 8) EndOfStreamException.raise();
+		if (buffer.remaining() < 8) throw EndOfStreamException.instance();
 		buffer.putLong(v);
 	}
 
 	@Override
 	public void writeFloat(float v) throws StreamException {
-		if (buffer.remaining() < 4) EndOfStreamException.raise();
+		if (buffer.remaining() < 4) throw EndOfStreamException.instance();
 		buffer.putFloat(v);
 	}
 
 	@Override
 	public void writeDouble(double v) throws StreamException {
-		if (buffer.remaining() < 8) EndOfStreamException.raise();
+		if (buffer.remaining() < 8) throw EndOfStreamException.instance();
 		buffer.putDouble(v);
 	}
 
 	@Override
 	public void writeChar(char v) throws StreamException {
-		if (buffer.remaining() < 2) EndOfStreamException.raise();
+		if (buffer.remaining() < 2) throw EndOfStreamException.instance();
 		buffer.putChar(v);
 	}
 
@@ -76,14 +76,14 @@ final class BufferWriteStream implements WriteStream {
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) {
 		if (bs == null) throw new IllegalArgumentException("null bs");
-		if (buffer.remaining() < len) EndOfStreamException.raise();
+		if (buffer.remaining() < len) throw EndOfStreamException.instance();
 		buffer.put(bs, off, len);
 	}
 
 	@Override
 	public void drainBuffer(ByteBuffer buffer) throws StreamException {
 		if (buffer == null) throw new IllegalArgumentException("null buffer");
-		if (buffer.remaining() > this.buffer.remaining()) EndOfStreamException.raise();
+		if (buffer.remaining() > this.buffer.remaining()) throw EndOfStreamException.instance();
 		this.buffer.put(buffer);
 	}
 

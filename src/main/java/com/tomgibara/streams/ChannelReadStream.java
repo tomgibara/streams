@@ -166,7 +166,7 @@ final class ChannelReadStream implements ReadStream {
 	private ByteBuffer read(ByteBuffer buffer, int position) {
 		buffer.position(position);
 		fillBuffer(buffer);
-		if (buffer.hasRemaining()) EndOfStreamException.raise();
+		if (buffer.hasRemaining()) throw EndOfStreamException.instance();
 		buffer.position(position);
 		return buffer;
 	}
