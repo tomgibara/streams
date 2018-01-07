@@ -16,6 +16,8 @@
  */
 package com.tomgibara.streams;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -292,6 +294,53 @@ public final class Streams {
 	public static WriteStream streamOutput(OutputStream out) {
 		if (out == null) throw new IllegalArgumentException("null out");
 		return new OutputWriteStream(out);
+	}
+
+	/**
+	 * <p>
+	 * Creates a new stream which obtains bytes data from an underlying
+	 * {@link DataInput}.
+	 *
+	 * <p>
+	 * Any {@link IOException} encountered by this class is wrapped as
+	 * {@link StreamException} and rethrown. Any end-of-stream condition is
+	 * signalled with an {@link EndOfStreamException}.
+	 *
+	 * <p>
+	 * The close method will close the {@code DataInput} instance only if it
+	 * implements the {@code Closeable} interface.
+	 *
+	 * @param in
+	 *            a data-input from which
+	 * @return a stream over the supplied {@code DataInput}
+	 */
+
+	public static ReadStream streamDataInput(DataInput in) {
+		if (in == null) throw new IllegalArgumentException("null in");
+		return new DataReadStream(in);
+	}
+
+	/**
+	 * <p>
+	 * Creates a new stream which writes to an underlying {@link DataOutput}.
+	 *
+	 * <p>
+	 * Any {@link IOException} encountered by this class is wrapped as
+	 * {@link StreamException} and rethrown. Any end-of-stream condition is
+	 * signalled with an {@link EndOfStreamException}.
+	 *
+	 * <p>
+	 * The close method will close the {@code DataInput} instance only if it
+	 * implements the {@code Closeable} interface.
+	 *
+	 * @param out
+	 *            a data-output to which bytes should be written
+	 * @return a stream over the supplied {@code DataOutput}
+	 */
+
+	public static WriteStream streamDataOutput(DataOutput out) {
+		if (out == null) throw new IllegalArgumentException("null out");
+		return new DataWriteStream(out);
 	}
 
 	/**
