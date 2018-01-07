@@ -47,14 +47,14 @@ final class DebugWriteStream extends WrappedWriteStream {
 	@Override
 	public void writeBytes(byte[] bytes) {
 		writeIdentity();
-		writer.println("writeByte(" +debugString(bytes) + ")");
+		writer.println("writeBytes(" +debugString(bytes) + ")");
 		super.writeBytes(bytes);
 	}
 
 	@Override
 	public void writeBytes(byte[] bs, int off, int len) {
 		writeIdentity();
-		writer.println("writeByte(" +debugString(bs) + ", " + off + ", " + len + ")");
+		writer.println("writeBytes(" +debugString(bs) + ", " + off + ", " + len + ")");
 		super.writeBytes(bs, off, len);
 	}
 
