@@ -159,7 +159,7 @@ final class ChannelReadStream implements ReadStream {
 		try {
 			channel.close();
 		} catch (IOException e) {
-			throw new StreamException();
+			throw new StreamException(e);
 		}
 	}
 

@@ -154,7 +154,7 @@ final class ChannelWriteStream implements WriteStream {
 		try {
 			channel.close();
 		} catch (IOException e) {
-			throw new StreamException();
+			throw new StreamException(e);
 		}
 	}
 
