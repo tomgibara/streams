@@ -87,12 +87,48 @@ public interface ReadStream extends CloseableStream {
 	 *            the number of bytes to be read
 	 * @throws StreamException
 	 *             if the bytes could not be read
+	 * @see #tryReadBytes(byte[], int, int)
 	 */
 
 	default void readBytes(byte bs[], int off, int len) throws StreamException {
 		int lim = off + len;
 		for (int i = off; i < lim; i++) {
 			bs[i] = readByte();
+		}
+	}
+
+	/**
+	 * Attempts to read bytes into a byte array up to the end of the stream.
+	 * This method returns the number of bytes written into the supplied array.
+	 * If the end of the stream is encountered before all the bytes were read,
+	 * this number will be less than <code>len</code> and may be zero. In
+	 * contrast to other methods on this interface, this method does not raise
+	 * an {@link EndOfStreamException} when the stream is exhausted.
+	 *
+	 * @param bs
+	 *            the byte array into which bytes are read
+	 * @param off
+	 *            the index at which the first byte should be written
+	 * @param len
+	 *            the number of bytes to be read
+	 * @return the number of bytes read
+	 * @throws StreamException
+	 *             if the bytes could not be read
+	 * @see #readBytes(byte[], int, int)
+	 */
+
+	default int tryReadBytes(byte bs[], int off, int len) throws StreamException {
+		int i = off;
+		int lim = off + len;
+		try {
+			while (i < lim) {
+				bs[i] = readByte();
+				i++;
+			}
+			return len;
+		} catch (EndOfStreamException e) {
+			// swallowed - report how many bytes we've read
+			return i - off;
 		}
 	}
 
@@ -282,13 +318,22 @@ public interface ReadStream extends CloseableStream {
 	 */
 
 	default void fillBuffer(ByteBuffer buffer) throws StreamException {
-		try {
-			while (buffer.hasRemaining()) {
-				buffer.put(readByte());
+		if (!buffer.hasRemaining()) return; // nothing to do
+		if (buffer.hasArray()) {
+			int offset = buffer.arrayOffset();
+			byte[] array = buffer.array();
+			int remaining = buffer.remaining();
+			int read = tryReadBytes(array, offset, remaining);
+			buffer.position(buffer.position() + read);
+		} else {
+			try {
+				do {
+					buffer.put(readByte());
+				} while (buffer.hasRemaining());
+			} catch (EndOfStreamException e) {
+				// swallowed - unfilled buffer indicates EOS
+				return;
 			}
-		} catch (EndOfStreamException e) {
-			// swallowed - unfilled buffer indicates EOS
-			return;
 		}
 	}
 

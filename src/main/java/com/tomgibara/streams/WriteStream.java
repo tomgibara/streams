@@ -90,6 +90,40 @@ public interface WriteStream extends CloseableStream {
 	}
 
 	/**
+	 * Attempts to write a slice of bytes. This method returns the number of
+	 * bytes written to the stream. If the stream becomes 'full' before all the
+	 * bytes were written, this number will be less than <code>len</code> and
+	 * may be zero. In contrast to other methods on this interface, this method
+	 * does not raise an {@link EndOfStreamException} when the stream is full.
+	 *
+	 * @param bs
+	 *            a byte array
+	 * @param off
+	 *            the index from which the first byte written is read
+	 * @param len
+	 *            the number of bytes to be written
+	 * @return the number of bytes written
+	 * @throws StreamException
+	 *             if an error occurs writing the bytes
+	 * @see #writeBytes(byte[], int, int)
+	 */
+
+	default int tryWriteBytes(byte bs[], int off, int len) throws StreamException {
+		int i = off;
+		int lim = off + len;
+		try {
+			while (i < lim) {
+				writeByte(bs[i]);
+				i++;
+			}
+			return len;
+		} catch (EndOfStreamException e) {
+			// swallowed - report how many bytes we've read
+			return i - off;
+		}
+	}
+
+	/**
 	 * Writes a single int to the stream.
 	 *
 	 * @param v
@@ -284,13 +318,22 @@ public interface WriteStream extends CloseableStream {
 	 */
 
 	default void drainBuffer(ByteBuffer buffer) throws StreamException {
-		try {
-			for (int i = buffer.remaining(); i > 0; i--) {
-				writeByte(buffer.get());
+		if (!buffer.hasRemaining()) return; // nothing to do
+		if (buffer.hasArray()) {
+			int offset = buffer.arrayOffset();
+			byte[] array = buffer.array();
+			int remaining = buffer.remaining();
+			int written = tryWriteBytes(array, offset, remaining);
+			buffer.position(buffer.position() + written);
+		} else {
+			try {
+				for (int i = buffer.remaining(); i > 0; i--) {
+					writeByte(buffer.get());
+				}
+			} catch (EndOfStreamException e) {
+				// swallowed - unfilled buffer indicates EOS
+				return;
 			}
-		} catch (EndOfStreamException e) {
-			// swallowed - unfilled buffer indicates EOS
-			return;
 		}
 	}
 
