@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
 
 /**
  * Reads values from a {@link ReadableByteChannel}. Any {@link IOException}
@@ -41,6 +43,7 @@ final class ChannelReadStream implements ReadStream {
 
 	private final ReadableByteChannel channel;
 	private final ByteBuffer buffer = ByteBuffer.allocate(8);
+	private final SeekableByteChannel seeker;
 
 	/**
 	 * Creates a stream that reads from the supplied channel. Bytes will be read
@@ -52,6 +55,7 @@ final class ChannelReadStream implements ReadStream {
 
 	ChannelReadStream(ReadableByteChannel channel) {
 		this.channel = channel;
+		seeker = Streams.seekerForChannel(channel);
 	}
 
 	@Override
@@ -158,6 +162,17 @@ final class ChannelReadStream implements ReadStream {
 	public void close() {
 		try {
 			channel.close();
+		} catch (IOException e) {
+			throw new StreamException(e);
+		}
+	}
+
+	@Override
+	public long position() {
+		try {
+			return seeker.position();
+		} catch (ClosedChannelException e) {
+			return -1L;
 		} catch (IOException e) {
 			throw new StreamException(e);
 		}

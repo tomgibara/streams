@@ -24,7 +24,7 @@ package com.tomgibara.streams;
  *
  */
 
-public interface CloseableStream extends AutoCloseable {
+public interface CloseableStream extends PositionalStream, AutoCloseable {
 
 	/**
 	 * Indicates the preferred buffering strategy for this stream

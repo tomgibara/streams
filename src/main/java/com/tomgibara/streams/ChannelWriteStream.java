@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
@@ -41,6 +43,7 @@ final class ChannelWriteStream implements WriteStream {
 
 	private final WritableByteChannel channel;
 	private final ByteBuffer buffer = ByteBuffer.allocate(8);
+	private final SeekableByteChannel seeker;
 
 	/**
 	 * Creates a stream that writes to the supplied channel. Bytes will be
@@ -52,6 +55,7 @@ final class ChannelWriteStream implements WriteStream {
 
 	ChannelWriteStream(WritableByteChannel channel) {
 		this.channel = channel;
+		seeker = Streams.seekerForChannel(channel);
 	}
 
 	@Override
@@ -161,6 +165,17 @@ final class ChannelWriteStream implements WriteStream {
 	@Override
 	public StreamBuffering getBuffering() {
 		return StreamBuffering.PREFER_DIRECT;
+	}
+
+	@Override
+	public long position() {
+		try {
+			return seeker.position();
+		} catch (ClosedChannelException e) {
+			return -1L;
+		} catch (IOException e) {
+			throw new StreamException(e);
+		}
 	}
 
 	private void write(ByteBuffer buffer) {

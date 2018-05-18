@@ -166,7 +166,12 @@ final class BytesWriteStream implements WriteStream {
 		return bytes;
 	}
 
-	int position() {
+	@Override
+	public long position() {
+		return position < 0 ? -1 - position : position;
+	}
+
+	int intPosition() {
 		return position < 0 ? -1 - position : position;
 	}
 

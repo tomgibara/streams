@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -48,6 +50,17 @@ public final class Streams {
 	private static final String BUFFER_SIZE_PROPERTY = "com.tomgibara.streams.bufferSize";
 	private static final int DEFAULT_BUFFER_SIZE = 8192;
 
+	private static final SeekableByteChannel NULL_SEEKER = new SeekableByteChannel() {
+		@Override public boolean isOpen() { return false; }
+		@Override public void close() { }
+		@Override public int write(ByteBuffer src) { return 0; }
+		@Override public SeekableByteChannel truncate(long size) { return null; }
+		@Override public long size() { return 0; }
+		@Override public int read(ByteBuffer dst) { return 0; }
+		@Override public SeekableByteChannel position(long newPosition) { return null; }
+		@Override public long position() { return -1L; }
+	};
+
 	static final int BUFFER_SIZE = bufferSize();
 
 	private static int bufferSize() {
@@ -66,6 +79,10 @@ public final class Streams {
 	private static byte[] array(int capacity) {
 		if (capacity < 0) throw new IllegalArgumentException("capacity non-positive");
 		return new byte[capacity];
+	}
+
+	static SeekableByteChannel seekerForChannel(Channel channel) {
+		return channel instanceof SeekableByteChannel ? (SeekableByteChannel) channel : NULL_SEEKER;
 	}
 
 	// methods below are to report arguments in debug streams
@@ -217,6 +234,11 @@ public final class Streams {
 	 * returning true. Note that modifying the channel while accessing it via a
 	 * stream is likely to produce inconsistencies.
 	 *
+	 * <p>
+	 * The returned stream supports accessing the stream position via
+	 * {@link PositionalStream#position()} only over channels that are
+	 * implementations of {@code SeekableByteChannel}.
+	 *
 	 * @param channel
 	 *            a byte channel
 	 * @return a stream over the supplied channel
@@ -243,6 +265,11 @@ public final class Streams {
 	 * <code>buffer.hasRemaining()</code> returning true. Note that modifying
 	 * the channel while accessing it via a stream is likely to produce
 	 * inconsistencies.
+	 *
+	 * <p>
+	 * The returned stream supports accessing the stream position via
+	 * {@link PositionalStream#position()} only over channels that are
+	 * implementations of {@code SeekableByteChannel}.
 	 *
 	 * @param channel
 	 *            a byte channel

@@ -25,6 +25,7 @@ final class SeqReadStream implements ReadStream {
 	private final StreamBuffering buffering;
 	private ReadStream stream;
 	private int index = 0;
+	private long position = 0L;
 
 	SeqReadStream(StreamCloser closer, ReadStream... streams) {
 		this.closer = closer;
@@ -83,11 +84,22 @@ final class SeqReadStream implements ReadStream {
 		return buffering;
 	}
 
+	@Override
+	public long position() throws StreamException {
+		if (position < 0L || stream == null) return position;
+		long p = stream.position();
+		return p < 0L ? position = -1L : position + p;
+	}
+
 	private void advance() {
 		index ++;
 		if (index == streams.length) {
 			stream = null;
 		} else {
+			if (position >= 0) {
+				long p = stream.position();
+				position = p < 0L ? -1L : position + p;
+			}
 			closer.close(stream);
 			stream = streams[index];
 		}

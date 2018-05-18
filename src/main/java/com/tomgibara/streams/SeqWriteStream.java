@@ -25,6 +25,7 @@ final class SeqWriteStream implements WriteStream {
 	private final StreamBuffering buffering;
 	private WriteStream stream;
 	private int index = 0;
+	private long position = 0L;
 
 	SeqWriteStream(StreamCloser closer, WriteStream... streams) {
 		this.closer = closer;
@@ -84,11 +85,22 @@ final class SeqWriteStream implements WriteStream {
 		return buffering;
 	}
 
+	@Override
+	public long position() throws StreamException {
+		if (position < 0L || stream == null) return position;
+		long p = stream.position();
+		return p < 0L ? position = -1L : position + p;
+	}
+
 	private void advance() {
 		index ++;
 		if (index == streams.length) {
 			stream = null;
 		} else {
+			if (position >= 0) {
+				long p = stream.position();
+				position = p < 0L ? -1L : position + p;
+			}
 			closer.close(stream);
 			stream = streams[index];
 		}

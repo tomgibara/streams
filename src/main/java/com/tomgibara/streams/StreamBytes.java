@@ -38,9 +38,14 @@ import java.util.Arrays;
  * accumulating byte data via its <em>write</em> methods, calling
  * {@link #readStream()} and retrieving the data via its <em>read</em> methods.
  * <li>Initializing via {@link Streams#bytes(int, int)} and alternating calls to
- * {@link #writeStream()} and {@link #readStream()} to provide a reusable buffer for
- * proxying structured byte data.
+ * {@link #writeStream()} and {@link #readStream()} to provide a reusable buffer
+ * for proxying structured byte data.
  * </ul>
+ *
+ * <p>
+ * Note that the streams returned by {@link #readStream()} and
+ * {@link #writeStream()} both support accessing the stream position via
+ * {@link PositionalStream#position()}.
  *
  * @author Tom Gibara
  *
@@ -164,7 +169,7 @@ public class StreamBytes {
 	private void detachWriter() {
 		if (writer != null) {
 			bytes = writer.getBytes(true);
-			length = writer.position();
+			length = writer.intPosition();
 			writer = null;
 		}
 	}

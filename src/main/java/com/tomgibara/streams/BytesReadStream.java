@@ -73,7 +73,8 @@ final class BytesReadStream implements ReadStream {
 		this.limit = limit;
 	}
 
-	int position() {
+	@Override
+	public long position() {
 		return position < 0 ? -1 - position : position;
 	}
 

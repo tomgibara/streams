@@ -438,4 +438,20 @@ abstract class FuzzStreamTest extends TestCase {
 		}
 	}
 
+	public void testPosition() {
+		WriteStream w = newWriter();
+		if (w.position() < 0L) return; // position not supported
+		assertEquals(0L, w.position());
+		w.writeByte((byte) 1);
+		assertEquals(1L, w.position());
+		w.writeBytes(new byte[100]);
+		assertEquals(101L, w.position());
+		ReadStream r = newReader(w);
+		assertEquals(0L, r.position());
+		r.readByte();
+		assertEquals(1L, r.position());
+		r.readBytes(new byte[100]);
+		assertEquals(101L, r.position());
+
+	}
 }
