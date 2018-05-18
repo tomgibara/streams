@@ -109,4 +109,5 @@ public class BytesStreamTest extends FuzzStreamTest {
 			/* expected */
 		}
 	}
+
 }

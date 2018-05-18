@@ -61,7 +61,7 @@ public enum StreamBuffering {
 	}
 
 	static StreamBuffering recommended(CloseableStream... streams) {
-		return Arrays.stream(streams).map(s -> s.getBuffering()).reduce(StreamBuffering::combine).get();
+		return Arrays.stream(streams).map(s -> s.getBuffering()).reduce(StreamBuffering::combine).orElse(StreamBuffering.UNSUPPORTED);
 	}
 
 }

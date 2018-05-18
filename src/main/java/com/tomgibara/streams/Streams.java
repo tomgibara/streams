@@ -392,6 +392,127 @@ public final class Streams {
 		return EmptyWriteStream.INSTANCE;
 	}
 
+	/**
+	 * <p>
+	 * A stream that reads byte data from a fixed sequence of underlying
+	 * streams.
+	 *
+	 * <p>
+	 * This is a multi-stream analogue of {@link ReadStream#andThen(ReadStream)}
+	 * or {@link ReadStream#butFirst(ReadStream)} methods. Each stream is closed
+	 * after it has been exhausted, with the last stream being closed on an end
+	 * of stream condition.
+	 *
+	 * <p>
+	 * All unclosed streams are closed when {@link CloseableStream#close()} is
+	 * called.
+	 *
+	 * @param streams
+	 *            streams from which byte data is to be read
+	 * @return a stream that concatenates the byte data of multiple streams.
+	 */
+
+	public static ReadStream concatReadStreams(ReadStream... streams) {
+		if (streams == null) throw new IllegalArgumentException("null streams");
+		for (ReadStream stream : streams) {
+			if (stream == null) throw new IllegalArgumentException("null stream");
+		}
+		return new SeqReadStream(StreamCloser.closeStream(), streams);
+	}
+
+	/**
+	 * <p>
+	 * A stream that reads byte data from a fixed sequence of underlying
+	 * streams.
+	 *
+	 * <p>
+	 * This is a multi-stream analogue of
+	 * {@link ReadStream#andThen(StreamCloser, ReadStream)} or
+	 * {@link ReadStream#butFirst(StreamCloser, ReadStream)} methods. The
+	 * supplied {@link StreamCloser} operates on each stream (including the
+	 * last) after it has been exhausted.
+	 *
+	 * <p>
+	 * All unclosed streams are operated on by the {@link StreamCloser} when
+	 * {@link CloseableStream#close()} is called.
+	 *
+	 * @param streams
+	 *            streams from which byte data is to be read
+	 * @param closer
+	 *            logic to be performed on each stream before returning data
+	 *            from the next stream
+	 * @return a stream that concatenates the byte data of multiple streams.
+	 */
+
+	public static ReadStream concatReadStreams(StreamCloser closer, ReadStream... streams) {
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		if (streams == null) throw new IllegalArgumentException("null streams");
+		for (ReadStream stream : streams) {
+			if (stream == null) throw new IllegalArgumentException("null stream");
+		}
+		return new SeqReadStream(closer, streams);
+	}
+
+	/**
+	 * <p>
+	 * A stream that writes byte data to a fixed sequence of underlying streams.
+	 *
+	 * <p>
+	 * This is a multi-stream analogue of
+	 * {@link WriteStream#andThen(WriteStream)} or
+	 * {@link WriteStream#butFirst(WriteStream)} methods. Each stream is
+	 * closed after it has been filled, with the last stream being closed on
+	 * an end of stream condition.
+	 *
+	 * <p>
+	 * All unclosed streams are closed when {@link CloseableStream#close()} is
+	 * called.
+	 *
+	 * @param streams
+	 *            streams to which byte data is to be written
+	 * @return a stream that splits its writing across multiple streams
+	 */
+
+	public static WriteStream concatWriteStreams(WriteStream... streams) {
+		if (streams == null) throw new IllegalArgumentException("null streams");
+		for (WriteStream stream : streams) {
+			if (stream == null) throw new IllegalArgumentException("null stream");
+		}
+		return new SeqWriteStream(StreamCloser.closeStream(), streams);
+	}
+
+	/**
+	 * <p>
+	 * A stream that writes byte data to a fixed sequence of underlying streams.
+	 *
+	 * <p>
+	 * This is a multi-stream analogue of
+	 * {@link WriteStream#andThen(StreamCloser, WriteStream)} or
+	 * {@link WriteStream#butFirst(StreamCloser, WriteStream)} methods. Each
+	 * stream is closed after it has been filled, with the last stream being
+	 * closed on an end of stream condition.
+	 *
+	 * <p>
+	 * All unclosed streams are operated on by the {@link StreamCloser} when
+	 * {@link CloseableStream#close()} is called.
+	 *
+	 * @param streams
+	 *            streams to which byte data is to be written
+	 * @param closer
+	 *            logic to be performed on each stream before writing data to
+	 *            the next stream
+	 * @return a stream that splits its writing across multiple streams
+	 */
+
+	public static WriteStream concatWriteStreams(StreamCloser closer, WriteStream... streams) {
+		if (closer == null) throw new IllegalArgumentException("null closer");
+		if (streams == null) throw new IllegalArgumentException("null streams");
+		for (WriteStream stream : streams) {
+			if (stream == null) throw new IllegalArgumentException("null stream");
+		}
+		return new SeqWriteStream(closer, streams);
+	}
+
 	private Streams() { }
 
 }

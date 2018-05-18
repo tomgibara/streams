@@ -23,6 +23,23 @@ import junit.framework.TestCase;
 
 public class SeqStreamTest /*extends FuzzStreamTest*/ extends TestCase {
 
+	public void testVoid() {
+		ReadStream r = Streams.concatReadStreams();
+		try {
+			r.readByte();
+			fail();
+		} catch (EndOfStreamException e) {
+			/* expected */
+		}
+		WriteStream w = Streams.concatWriteStreams();
+		try {
+			w.writeByte((byte) 0);
+			fail();
+		} catch (EndOfStreamException e) {
+			/* expected */
+		}
+	}
+
 	public void testSplitRead() {
 		Random r = new Random(0);
 		for (int i = 0; i < 1000; i++) {
@@ -113,4 +130,28 @@ public class SeqStreamTest /*extends FuzzStreamTest*/ extends TestCase {
 
 	}
 
+	public void testPosition() {
+		{
+			ReadStream[] streams = new ReadStream[20];
+			for (int i = 0; i < streams.length; i++) {
+				streams[i] = Streams.bytes(new byte[2]).readStream();
+			}
+			ReadStream s = Streams.concatReadStreams(StreamCloser.closeStream(), streams);
+			for (int i = 0; i < 20 * 2; i++) {
+				assertEquals(i, s.position());
+				s.readByte();
+			}
+		}
+		{
+			WriteStream[] streams = new WriteStream[20];
+			for (int i = 0; i < streams.length; i++) {
+				streams[i] = Streams.bytes(2,2).writeStream();
+			}
+			WriteStream s = Streams.concatWriteStreams(StreamCloser.closeStream(), streams);
+			for (int i = 0; i < 20 * 2; i++) {
+				assertEquals(i, s.position());
+				s.writeByte((byte) i);
+			}
+		}
+	}
 }
