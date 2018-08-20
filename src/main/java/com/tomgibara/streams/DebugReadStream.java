@@ -37,6 +37,13 @@ class DebugReadStream extends WrappedReadStream {
 	}
 
 	@Override
+	public long position() throws StreamException {
+		writeIdentity();
+		writer.println("position()");
+		return super.position();
+	}
+
+	@Override
 	public void close() throws StreamException {
 		writeIdentity();
 		writer.println("close()");
@@ -156,6 +163,13 @@ class DebugReadStream extends WrappedReadStream {
 	}
 
 	@Override
+	public void skip(long length) throws StreamException {
+		writeIdentity();
+		writer.println("fillBuffer(" + length + ")");
+		super.skip(length);
+	}
+
+	@Override
 	public ReadStream bounded(long length) {
 		writeIdentity();
 		writer.println("bounded(" + length + ")");
@@ -167,6 +181,41 @@ class DebugReadStream extends WrappedReadStream {
 		writeIdentity();
 		writer.println("closedWith(" + debugString(closer) + ")");
 		return super.closedWith(closer);
+	}
+
+	@Override
+	public ReadStream andThen(ReadStream stream) {
+		writeIdentity();
+		writer.println("andThen(" + debugString(stream) + ")");
+		return super.andThen(stream);
+	}
+
+	@Override
+	public ReadStream andThen(StreamCloser closer, ReadStream stream) {
+		writeIdentity();
+		writer.println("andThen(" + debugString(closer) + "," + debugString(stream) + ")");
+		return super.andThen(closer, stream);
+	}
+
+	@Override
+	public ReadStream butFirst(ReadStream stream) {
+		writeIdentity();
+		writer.println("butFirst(" + debugString(stream) + ")");
+		return super.butFirst(stream);
+	}
+
+	@Override
+	public ReadStream butFirst(ReadStream stream, StreamCloser closer) {
+		writeIdentity();
+		writer.println("butFirst(" + debugString(stream) + "," + debugString(closer) + ")");
+		return super.butFirst(stream, closer);
+	}
+
+	@Override
+	public ReadStream debug(PrintWriter writer, String identity) {
+		writeIdentity();
+		writer.println("debug(" + debugString(writer) + "," + identity + ")");
+		return super.debug(writer, identity);
 	}
 
 	@Override

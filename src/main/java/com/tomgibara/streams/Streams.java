@@ -118,6 +118,12 @@ public final class Streams {
 		return obj == null ? "null" : obj.getClass().getTypeName() + '#' + System.identityHashCode(obj);
 	}
 
+	static String debugString(StreamCloser closer) {
+		if (closer == StreamCloser.closeStream()) return "closeStream";
+		if (closer == StreamCloser.doNothing()) return "doNothing";
+		if (closer == StreamCloser.reportClosed()) return "reportClosed";
+		return debugString((Object) closer);
+	}
 
 	/**
 	 * Creates a new {@link StreamBytes} to accumulate bytes written via a

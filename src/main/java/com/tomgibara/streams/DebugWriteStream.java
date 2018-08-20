@@ -164,6 +164,41 @@ final class DebugWriteStream extends WrappedWriteStream {
 	}
 
 	@Override
+	public WriteStream andThen(WriteStream stream) {
+		writeIdentity();
+		writer.println("andThen(" + debugString(stream) + ")");
+		return super.andThen(stream);
+	}
+
+	@Override
+	public WriteStream andThen(StreamCloser closer, WriteStream stream) {
+		writeIdentity();
+		writer.println("andThen(" + debugString(closer) + "," + debugString(stream) + ")");
+		return super.andThen(closer, stream);
+	}
+
+	@Override
+	public WriteStream butFirst(WriteStream stream) {
+		writeIdentity();
+		writer.println("butFirst(" + debugString(stream) + ")");
+		return super.butFirst(stream);
+	}
+
+	@Override
+	public WriteStream butFirst(WriteStream stream, StreamCloser closer) {
+		writeIdentity();
+		writer.println("butFirst(" + debugString(stream) + "," + debugString(closer) + ")");
+		return super.butFirst(stream, closer);
+	}
+
+	@Override
+	public WriteStream debug(PrintWriter writer, String identity) {
+		writeIdentity();
+		writer.println("debug(" + debugString(writer) + "," + identity + ")");
+		return super.debug(writer, identity);
+	}
+
+	@Override
 	public OutputStream asOutputStream() {
 		writeIdentity();
 		writer.println("asOutputStream()");
@@ -203,6 +238,13 @@ final class DebugWriteStream extends WrappedWriteStream {
 		writeIdentity();
 		writer.println("writeWith(" + debugString(serializer) + ")");
 		return super.writeWith(serializer);
+	}
+
+	@Override
+	public long position() throws StreamException {
+		writeIdentity();
+		writer.println("position()");
+		return super.position();
 	}
 
 	@Override
