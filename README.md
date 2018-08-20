@@ -132,11 +132,11 @@ Streams.streamInput(someInput).to(Streams.streamOutput(someOutput)).transferFull
 
 ```java
 // create a stream using a lambda
-List<Byte> values = new ArrayList<Byte>();
-try (WriteStream rs = v -> values.add(v)) {
+List<Byte> values = new ArrayList<>();
+try (WriteStream ws = values::add) {
 	// the stream has all the supporting methods, eg.
-	rs.bounded(10);
-	rs.drainBuffer(buffer);
+	ws.bounded(10);
+	ws.drainBuffer(buffer);
 }
 
 // use a lightweight serialization API to read & write non-primitive values
