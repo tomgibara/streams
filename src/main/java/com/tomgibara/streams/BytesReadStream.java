@@ -162,6 +162,18 @@ final class BytesReadStream implements ReadStream {
 	}
 
 	@Override
+	public void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		if (position < 0) StreamException.raiseClosed();
+		int remaining = limit - position;
+		if (length > remaining) {
+			position = remaining;
+			throw EndOfStreamException.instance();
+		}
+		position += length;
+	}
+
+	@Override
 	public StreamBuffering getBuffering() {
 		return StreamBuffering.PREFER_ANY;
 	}

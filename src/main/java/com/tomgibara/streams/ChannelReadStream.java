@@ -125,6 +125,33 @@ final class ChannelReadStream implements ReadStream {
 		}
 	}
 
+	@Override
+	public void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		// attempt to get the position
+		long position;
+		try {
+			position = seeker.position();
+		} catch (IOException e) {
+			throw new StreamException(e);
+		}
+		if (position < 0L) { // seeker not actually supported, so fall back to default implementation
+			ReadStream.super.skip(length);
+		}
+		// use position to skip
+		position += length;
+		try {
+			long size = seeker.size();
+			if (position > size) {
+				seeker.position(size);
+				throw EndOfStreamException.instance();
+			}
+			seeker.position(position);
+		} catch (IOException e) {
+			throw new StreamException(e);
+		}
+	}
+
 	/**
 	 * Creates a stream which reads from the underlying channel. Bytes will be
 	 * read starting from the current channel position. No more than

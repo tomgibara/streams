@@ -340,6 +340,39 @@ public interface ReadStream extends CloseableStream {
 	// convenience methods
 
 	/**
+	 * Skips over a specified number of bytes from the stream; the skipped bytes
+	 * are discarded. If the stream contains fewer unread bytes, an
+	 * {@link EndOfStreamException} is raised.
+	 *
+	 * @param length
+	 *            the number of bytes to skip
+	 * @throws StreamException
+	 *             if an error occurred when skipping the bytes
+	 * @throws IllegalArgumentException
+	 *             if the length is negative
+	 */
+	default void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		if (length >= Streams.SKIP_BUFFER_LIMIT) {
+			int bufferSize = Streams.SKIP_BUFFER_SIZE;
+			ByteBuffer buffer = Streams.createTemporaryBuffer(getBuffering(), bufferSize);
+			if (buffer != null) {
+				do {
+					int r = length > Integer.MAX_VALUE ? bufferSize : Math.min((int) length, bufferSize);
+					buffer.position(r).flip();
+					fillBuffer(buffer);
+					if (buffer.hasRemaining()) throw EndOfStreamException.instance();
+					length -= r;
+				} while (length > 0);
+			}
+			// falls through if no buffering
+		}
+		for (; length > 0; length --) {
+			readByte();
+		}
+	}
+
+	/**
 	 * A reader that draws from the same stream of bytes, but which will not
 	 * permit more than the specified number of bytes to be read without
 	 * reporting an end-of-stream condition.

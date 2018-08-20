@@ -16,6 +16,7 @@
  */
 package com.tomgibara.streams;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -119,6 +120,33 @@ final class InputReadStream implements ReadStream {
 			} catch (EndOfStreamException e) {
 				// swallowed - unfilled buffer indicates EOS
 				return;
+			}
+		}
+	}
+
+	@Override
+	public void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		int zeroCount = 0;
+		while (length > 0L) {
+			try {
+				long r = in.skip(length);
+				if (r > 0) { // skip did skip some
+					zeroCount = -1; // note this
+					length -= r;
+				} else {
+					// consider the possibility that skip is not implemented
+					if (zeroCount >= 0 && zeroCount >= Streams.ZERO_SKIP_LIMIT) {
+						// don't trust that this skip method is implemented, fall back
+						ReadStream.super.skip(length);
+						return;
+					}
+					// check if this is really an EOS situation
+					if (in.read() < 0) throw EndOfStreamException.instance();
+					length --;
+				}
+			} catch (IOException e) {
+				throw new StreamException(e);
 			}
 		}
 	}

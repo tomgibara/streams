@@ -96,6 +96,16 @@ final class BufferReadStream implements ReadStream {
 	}
 
 	@Override
+	public void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		if (length > buffer.remaining()) {
+			buffer.position(buffer.limit());
+			throw EndOfStreamException.instance();
+		}
+		buffer.position(buffer.position() + (int) length);
+	}
+
+	@Override
 	public StreamBuffering getBuffering() {
 		return buffer.isDirect() ? StreamBuffering.PREFER_DIRECT : StreamBuffering.PREFER_INDIRECT;
 	}

@@ -62,6 +62,12 @@ public final class Streams {
 	};
 
 	static final int BUFFER_SIZE = bufferSize();
+	// the size of skip beyond which a temporary buffer will be allocated to batch skipped bytes
+	static final int SKIP_BUFFER_LIMIT = 64;
+	// the size of buffer used for default skip implementation
+	static final int SKIP_BUFFER_SIZE = 256;
+	// heuristic: attempting skip five times, without ever advancing, indicates that skip is trivially implemented
+	static final int ZERO_SKIP_LIMIT = 5;
 
 	private static int bufferSize() {
 		PrivilegedAction<String> action = () -> { return System.getProperty(BUFFER_SIZE_PROPERTY); };
@@ -83,6 +89,15 @@ public final class Streams {
 
 	static SeekableByteChannel seekerForChannel(Channel channel) {
 		return channel instanceof SeekableByteChannel ? (SeekableByteChannel) channel : NULL_SEEKER;
+	}
+
+	static ByteBuffer createTemporaryBuffer(StreamBuffering buffering, int bufferSize) {
+		switch (buffering) {
+		case PREFER_ANY     :
+		case PREFER_INDIRECT: return ByteBuffer.allocate      (bufferSize);
+		case PREFER_DIRECT  : return ByteBuffer.allocateDirect(bufferSize);
+		default             : return null;
+		}
 	}
 
 	// methods below are to report arguments in debug streams

@@ -452,6 +452,47 @@ abstract class FuzzStreamTest extends TestCase {
 		assertEquals(1L, r.position());
 		r.readBytes(new byte[100]);
 		assertEquals(101L, r.position());
+	}
 
+	public void testSkip() {
+		Random random = new Random(0L);
+		for (int i = 0; i < 1000; i++) {
+			// parameters
+			int s = Streams.SKIP_BUFFER_SIZE;
+			int pre = random.nextInt(2 * s);
+			int length = random.nextInt(random.nextInt(4 * s));
+			int skip = random.nextInt(random.nextInt(4 * s));
+			int over = Math.min(length, skip);
+			int post = length - over;
+			// data
+			byte[] pres = new byte[pre];
+			random.nextBytes(pres);
+			byte[] overs = new byte[over];
+			byte[] posts = new byte[post];
+			random.nextBytes(posts);
+			// populate writer
+			WriteStream writer = newWriter();
+			writer.writeBytes(pres);
+			writer.writeBytes(overs);
+			writer.writeBytes(posts);
+			// test reader
+			ReadStream reader = newReader(writer);
+			for (int j = 0; j < pre; j++) {
+				assertEquals(pres[j], reader.readByte());
+			}
+			if (skip > length) {
+				try {
+					reader.skip(skip);
+					fail("expected EOS exception");
+				} catch (EndOfStreamException e) {
+					/* expected */
+				}
+			} else {
+				reader.skip(skip);
+				for (int j = 0; j < post; j++) {
+					assertEquals(posts[j], reader.readByte());
+				}
+			}
+		}
 	}
 }

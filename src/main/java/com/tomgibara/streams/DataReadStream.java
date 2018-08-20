@@ -142,6 +142,36 @@ final class DataReadStream implements ReadStream {
 	}
 
 	@Override
+	public void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		int zeroCount = 0;
+		while (length > 0L) {
+			int len = length <= Integer.MAX_VALUE ? (int) length : Integer.MAX_VALUE;
+			try {
+				int r = in.skipBytes(len);
+				if (r > 0) { // skip did skip some
+					zeroCount = -1; // note this
+					length -= r;
+				} else {
+					// consider the possibility that skip is not implemented
+					if (zeroCount >= 0 && zeroCount >= Streams.ZERO_SKIP_LIMIT) {
+						// don't trust that this skip method is implemented, fall back
+						ReadStream.super.skip(length);
+						return;
+					}
+					// check if this is really an EOS situation
+					in.readByte();
+					length --;
+				}
+			} catch (EOFException e) {
+				throw EndOfStreamException.instance();
+			} catch (IOException e) {
+				throw new StreamException(e);
+			}
+		}
+	}
+
+	@Override
 	public InputStream asInputStream() {
 		if (in instanceof DataInputStream) {
 			return (DataInputStream) in;

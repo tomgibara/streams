@@ -64,6 +64,16 @@ final class SingleReadStream implements ReadStream {
 	}
 
 	@Override
+	public void skip(long length) throws StreamException {
+		if (length < 0L) throw new IllegalArgumentException("negative length");
+		if (length > 0L && !read) {
+			read = true;
+			length --;
+		}
+		if (length > 0L) throw EndOfStreamException.instance();
+	}
+
+	@Override
 	public ReadStream bounded(long length) {
 		if (length < 0L) throw new IllegalArgumentException("negative length");
 		return read || length == 0L ? EmptyReadStream.INSTANCE : this;

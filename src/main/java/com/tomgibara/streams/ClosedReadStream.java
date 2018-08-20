@@ -121,6 +121,12 @@ class ClosedReadStream implements ReadStream {
 	}
 
 	@Override
+	public void skip(long length) throws StreamException {
+		checkClosed();
+		stream.skip(length);
+	}
+
+	@Override
 	public StreamBuffering getBuffering() {
 		return stream.getBuffering();
 	}
