@@ -21,6 +21,7 @@ import static com.tomgibara.streams.StreamBuffering.PREFER_DIRECT;
 import static com.tomgibara.streams.StreamBuffering.PREFER_INDIRECT;
 import static com.tomgibara.streams.StreamBuffering.UNSUPPORTED;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**
@@ -216,12 +217,12 @@ public final class StreamTransfer {
 
 	@SuppressWarnings("resource")
 	private Result transferBuffered() {
-		buffer.clear();
+		((Buffer) buffer).clear();
 		long count = 0L;
 		while (true) {
 			source.fillBuffer(buffer);
 			boolean srcExhausted = buffer.hasRemaining();
-			buffer.flip();
+			((Buffer) buffer).flip();
 			count += buffer.remaining();
 			target.drainBuffer(buffer);
 			boolean dstExhausted = buffer.hasRemaining();
@@ -234,7 +235,7 @@ public final class StreamTransfer {
 					byte[] bytes = new byte[buffer.remaining()];
 					buffer.put(bytes);
 					residual = new BytesReadStream(bytes);
-					buffer.clear();
+					((Buffer) buffer).clear();
 				}
 				return new Result(count, srcExhausted, dstExhausted, residual.andThen(source));
 			}

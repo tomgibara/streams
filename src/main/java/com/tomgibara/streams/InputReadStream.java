@@ -19,6 +19,7 @@ package com.tomgibara.streams;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**
@@ -112,7 +113,7 @@ final class InputReadStream implements ReadStream {
 					} else {
 						int position = Math.min(available, buffer.remaining());
 						readFully(array, offset + buffer.position(), offset + position);
-						buffer.position(position);
+						((Buffer) buffer).position(position);
 					}
 				}
 			} catch (IOException e) {

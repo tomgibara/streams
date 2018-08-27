@@ -18,6 +18,7 @@ package com.tomgibara.streams;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
@@ -324,7 +325,7 @@ public interface ReadStream extends CloseableStream {
 			byte[] array = buffer.array();
 			int remaining = buffer.remaining();
 			int read = tryReadBytes(array, offset, remaining);
-			buffer.position(buffer.position() + read);
+			((Buffer) buffer).position(buffer.position() + read);
 		} else {
 			try {
 				do {
