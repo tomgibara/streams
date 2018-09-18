@@ -111,9 +111,10 @@ final class InputReadStream implements ReadStream {
 						if (b == -1) return; //EOS
 						buffer.put((byte) b);
 					} else {
-						int position = Math.min(available, buffer.remaining());
-						readFully(array, offset + buffer.position(), offset + position);
-						((Buffer) buffer).position(position);
+						int position = offset + buffer.position();
+						int length = Math.min(available, buffer.remaining());
+						readFully(array, position, length);
+						((Buffer) buffer).position(position + length);
 					}
 				}
 			} catch (IOException e) {
